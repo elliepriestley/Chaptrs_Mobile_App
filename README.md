@@ -25,7 +25,6 @@
   * [Installation](#installation)
 * [Contributing](#contributing)
 * [License](#license)
-* [Acknowledgements](#acknowledgements)
 
 ## About The Project
 
