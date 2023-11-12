@@ -1,29 +1,11 @@
-import { StyleSheet, View, Text, Button, Pressable } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Formik, Field } from 'formik';
-import * as Yup from 'yup';
 import CustomInput from '../components/CustomInput';
+import signupSchema from '../data/schemas/signupSchema';
+import api from '../utils/api';
 
-function SignupScreen() {
+function SignupScreen({navigation}) {
   // Handling form validation
-  const signupSchema = Yup.object({
-    username: Yup.string().required('Username is required'),
-    email: Yup.string()
-      .email('Email is not valid')
-      .required('Email is required'),
-    password: Yup.string()
-      .matches(/\w*[a-z]\w*/, 'Password must have a lowercase letter')
-      .matches(/\w*[A-Z]\w*/, 'Password must have a uppercase letter')
-      .matches(/\d/, 'Password must have a number')
-      .matches(
-        /[!@#$%^&*()\-_"=+{}; :,<.>]/,
-        'Password must have a special character',
-      )
-      .min(8, ({ min }) => `Password must be at least ${min} characters`)
-      .required('Password is required'),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref('password'), null], 'Passwords must match')
-      .required('Please confirm your password'),
-  });
 
   const initialValues = {
     username: '',
@@ -32,14 +14,19 @@ function SignupScreen() {
     confirmPassword: '',
   };
 
-  const signUp = (values, { setSubmitting }) => {
+  const onSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2));
+    try {
+      const formData = { ...values };
+      delete formData.confirmPassword;
+      const data = await api.signupUser(formData);
+      console.log(data);
+      if (data) navigation.navigate('Login', { email: values.email, password: values.password });
+    } catch (error) {
+      alert(error.message || 'Something went wrong');
+    } finally {
       setSubmitting(false);
-    }, 2500);
-    console.log('Sign up pressed');
-    console.log(values);
+    }
   };
 
   return (
@@ -47,7 +34,7 @@ function SignupScreen() {
       <Formik
         initialValues={initialValues}
         validationSchema={signupSchema}
-        onSubmit={signUp}
+        onSubmit={onSubmit}
       >
         {({ handleSubmit, isValid }) => (
           <View style={styles.signupContainer}>
@@ -57,12 +44,14 @@ function SignupScreen() {
               name='email'
               placeholder='Email Address'
               keyboardType='email-address'
+              textContentType='emailAddress'
               label='Email Address'
             />
             <Field
               component={CustomInput}
               name='username'
               placeholder='Username'
+              textContentType='username'
               label='Username'
             />
             <Field
@@ -70,6 +59,7 @@ function SignupScreen() {
               name='password'
               placeholder='Password'
               secureTextEntry
+              textContentType='newPassword'
               label='Password'
             />
             <Field
@@ -77,15 +67,16 @@ function SignupScreen() {
               name='confirmPassword'
               placeholder='Confirm Password'
               secureTextEntry
+              textContentType='newPassword'
               label='Confirm Password'
             />
-            <Pressable
+            <TouchableOpacity
               style={isValid ? styles.submit : styles.submitDisabled}
               onPress={handleSubmit}
               disabled={!isValid}
             >
               <Text style={{ color: 'white' }}>Sign Up</Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
         )}
       </Formik>
