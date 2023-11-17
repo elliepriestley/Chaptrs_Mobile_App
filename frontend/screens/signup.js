@@ -1,10 +1,11 @@
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { Formik, Field } from 'formik';
 import CustomInput from '../components/CustomInput';
 import signupSchema from '../data/schemas/signupSchema';
 import api from '../utils/api';
+import Logo from '../components/Logo';
 
-function SignupScreen({navigation}) {
+function SignupScreen({ navigation }) {
   // Handling form validation
 
   const initialValues = {
@@ -21,7 +22,11 @@ function SignupScreen({navigation}) {
       delete formData.confirmPassword;
       const data = await api.signupUser(formData);
       console.log(data);
-      if (data) navigation.navigate('Login', { email: values.email, password: values.password });
+      if (data)
+        navigation.navigate('Login', {
+          email: values.email,
+          password: values.password,
+        });
     } catch (error) {
       alert(error.message || 'Something went wrong');
     } finally {
@@ -31,6 +36,11 @@ function SignupScreen({navigation}) {
 
   return (
     <View style={styles.container}>
+      <Logo />
+      <Text style={{ fontSize: 20, marginLeft: 40, marginBottom: 20 }}>
+        <Text style={{ color: '#695203' }}>Hey!</Text>
+        {' Join now'}
+      </Text>
       <Formik
         initialValues={initialValues}
         validationSchema={signupSchema}
@@ -38,21 +48,23 @@ function SignupScreen({navigation}) {
       >
         {({ handleSubmit, isValid }) => (
           <View style={styles.signupContainer}>
-            <Text style={styles.heading}>Sign Up</Text>
+            <View style={styles.heading}>
+              <Text style={{ fontSize: 20 }}>Sign Up</Text>
+            </View>
             <Field
               component={CustomInput}
               name='email'
-              placeholder='Email Address'
+              placeholder='Email'
               keyboardType='email-address'
               textContentType='emailAddress'
-              label='Email Address'
+              label='email'
             />
             <Field
               component={CustomInput}
               name='username'
               placeholder='Username'
               textContentType='username'
-              label='Username'
+              label='username'
             />
             <Field
               component={CustomInput}
@@ -60,7 +72,7 @@ function SignupScreen({navigation}) {
               placeholder='Password'
               secureTextEntry
               textContentType='newPassword'
-              label='Password'
+              label='password'
             />
             <Field
               component={CustomInput}
@@ -68,15 +80,23 @@ function SignupScreen({navigation}) {
               placeholder='Confirm Password'
               secureTextEntry
               textContentType='newPassword'
-              label='Confirm Password'
+              label='confirm password'
             />
             <TouchableOpacity
               style={isValid ? styles.submit : styles.submitDisabled}
               onPress={handleSubmit}
               disabled={!isValid}
             >
-              <Text style={{ color: 'white' }}>Sign Up</Text>
+              <Text style={{ textAlign: 'center' }}>Sign Up</Text>
             </TouchableOpacity>
+            <Text
+              style={{ fontSize: 15, textAlign: 'center', marginBottom: 20 }}
+            >
+              Already have an account?{' '}
+              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                <Text style={styles.underline}>Log In</Text>
+              </TouchableOpacity>
+            </Text>
           </View>
         )}
       </Formik>
@@ -90,47 +110,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
   },
   heading: {
     fontSize: 25,
-    fontWeight: 'bold',
-    textAlign: 'center',
     marginBottom: 20,
-  },
-  input: {
-    padding: 15,
-    borderColor: 'black',
-    borderWidth: 1,
-    marginBottom: 5,
-    backgroundColor: '#fff',
-  },
-  errorText: {
-    fontSize: 10,
-    color: 'red',
-    marginBottom: 10,
+    paddingBottom: 5,
+    borderBottomWidth: 1,
+    borderColor: '#DCC8A9',
+    alignSelf: 'flex-start',
   },
   submit: {
-    marginTop: 20,
-    marginBottom: 20,
-    backgroundColor: '#86A789',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  submitDisabled: {
-    marginTop: 20,
-    marginBottom: 20,
-    backgroundColor: '#red',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    marginVertical: 20,
+    backgroundColor: '#DCC8A9',
+    padding: 10,
+    borderRadius: 999,
+    marginHorizontal: 50,
   },
   signupContainer: {
-    width: '80%',
-    alignItems: 'center',
-    padding: 20,
+    width: '100%',
+    padding: 40,
     elevation: 10,
-    backgroundColor: '#EBF3E8',
-    borderRadius: 10,
+    backgroundColor: '#F8F6F2',
+    borderRadius: 50,
+    height: '70%',
   },
+  underline: { textDecorationLine: 'underline', color: '#695203' },
 });
