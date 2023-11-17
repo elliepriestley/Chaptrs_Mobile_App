@@ -17,7 +17,9 @@ function LoginScreen({ navigation, route }) {
       delete formData.confirmPassword;
       const data = await api.loginUser(formData);
       console.log(data);
-      if (data) navigation.navigate('Home');
+      if (data) {
+        navigation.navigate('Main');
+      }
     } catch (error) {
       alert(error.message || 'Something went wrong');
     } finally {
