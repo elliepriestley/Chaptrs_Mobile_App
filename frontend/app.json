@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "frontend",
-    "slug": "frontend",
+    "name": "Chaptrs",
+    "slug": "chaptrs",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
