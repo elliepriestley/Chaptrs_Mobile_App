@@ -33,11 +33,11 @@ const styles = StyleSheet.create({
   textInput: {
     height: 40,
     width: '100%',
-    margin: 10,
+    marginVertical: 10,
     backgroundColor: 'white',
-    borderColor: 'gray',
-    borderWidth: StyleSheet.hairlineWidth,
-    borderRadius: 10,
+    borderColor: '#695203',
+    borderWidth: 1,
+    borderRadius: 999,
     padding: 10,
   },
   errorText: {
