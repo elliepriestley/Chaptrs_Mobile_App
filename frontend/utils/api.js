@@ -4,6 +4,7 @@ class Api {
     this._headers = headers;
   }
   signupUser = async (formData) => {
+    console.log(baseUrl)
     try {
       const response = await fetch(`${this._baseUrl}/users`, {
         method: 'POST',

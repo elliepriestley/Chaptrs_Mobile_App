@@ -19,6 +19,7 @@ function TabNavigator() {
     <Tab.Navigator
       initialRouteName='Home'
       screenOptions={{
+        headerShown: false,
         tabBarActiveTintColor: '#DCC8A9',
         tabBarShowLabel: false,
         tabBarInactiveTintColor: 'white',

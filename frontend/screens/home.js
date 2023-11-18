@@ -1,41 +1,38 @@
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
-import Logo from '../assets/chaptrs.jpg';
+import { StyleSheet, View, Text, Image } from 'react-native';
+import LogoMedium from '../components/LogoMedium';
 
-function HomeScreen({ navigation }) {
-  const logout = () => {
-    navigation.navigate('Welcome');
-  };
+function HomeScreen() {
+
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Welcome to Chaptrs</Text>
-      <Image source={Logo} style={styles.logo} />
-      <Text style={{ marginBottom: 20 }}>
-        The social media app for book lovers
-      </Text>
-      <TouchableOpacity onPress={logout}>
-        <Text>Logout</Text>
-      </TouchableOpacity>
+      <View style={{marginHorizontal: 25}}>
+        <LogoMedium />
+        <Text style={styles.heading}>Upcoming Sessions</Text>
+        <View style={[styles.line, {width: 219}]} />
+        <Text style={styles.heading}>Past Sessions</Text>
+        <View style={[styles.line, {width: 153}]} />
+      </View>
     </View>
   );
 }
-
-export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   heading: {
-    fontSize: 50,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 20,
+    fontFamily: 'Sansation-Regular',
+    fontSize: 24,
+    paddingBottom: 5,
+    marginTop: 30,
   },
-  logo: {
-    width: 300,
-    maxHeight: 300,
+  line: {
+    height: 0,
+    borderTopColor: '#DCC8A9',
+    borderTopWidth: 2,
+    marginTop: 5
   },
 });
+
+export default HomeScreen;
