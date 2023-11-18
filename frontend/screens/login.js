@@ -1,8 +1,9 @@
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { Formik, Field } from 'formik';
 import CustomInput from '../components/CustomInput';
 import loginSchema from '../data/schemas/loginSchema';
 import api from '../utils/api';
+import Logo from '../components/Logo';
 
 function LoginScreen({ navigation, route }) {
   const initialValues = {
@@ -28,6 +29,10 @@ function LoginScreen({ navigation, route }) {
   };
   return (
     <View style={styles.container}>
+      <Logo />
+      <Text style={{ fontSize: 20, marginLeft: 40, marginBottom: 20 }}>
+        Welcome back!
+      </Text>
       <Formik
         initialValues={initialValues}
         validationSchema={loginSchema}
@@ -35,7 +40,9 @@ function LoginScreen({ navigation, route }) {
       >
         {({ handleSubmit, isValid }) => (
           <View style={styles.signupContainer}>
-            <Text style={styles.heading}>Sign Up</Text>
+            <View style={styles.heading}>
+              <Text style={{ fontSize: 20 }}>Log In</Text>
+            </View>
             <Field
               component={CustomInput}
               name='email'
@@ -53,12 +60,24 @@ function LoginScreen({ navigation, route }) {
               label='Password'
             />
             <TouchableOpacity
-              style={isValid ? styles.submit : styles.submitDisabled}
+              style={
+                isValid
+                  ? styles.submit
+                  : { ...styles.submit, backgroundColor: '#ddd' }
+              }
               onPress={handleSubmit}
               disabled={!isValid}
             >
-              <Text style={{ color: 'white' }}>Login</Text>
+              <Text style={{ textAlign: 'center' }}>Login</Text>
             </TouchableOpacity>
+            <Text
+              style={{ fontSize: 15, textAlign: 'center', marginBottom: 20 }}
+            >
+              Don't have an account?{' '}
+              <TouchableOpacity onPress={() => navigation.navigate('Sign Up')}>
+                <Text style={styles.underline}>Sign Up</Text>
+              </TouchableOpacity>
+            </Text>
           </View>
         )}
       </Formik>
@@ -72,47 +91,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
   },
   heading: {
     fontSize: 25,
-    fontWeight: 'bold',
-    textAlign: 'center',
     marginBottom: 20,
-  },
-  input: {
-    padding: 15,
-    borderColor: 'black',
-    borderWidth: 1,
-    marginBottom: 5,
-    backgroundColor: '#fff',
-  },
-  errorText: {
-    fontSize: 10,
-    color: 'red',
-    marginBottom: 10,
+    paddingBottom: 5,
+    borderBottomWidth: 1,
+    borderColor: '#DCC8A9',
+    alignSelf: 'flex-start',
   },
   submit: {
-    marginTop: 20,
-    marginBottom: 20,
-    backgroundColor: '#86A789',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  submitDisabled: {
-    marginTop: 20,
-    marginBottom: 20,
-    backgroundColor: '#red',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    marginVertical: 20,
+    backgroundColor: '#DCC8A9',
+    padding: 10,
+    borderRadius: 999,
+    marginHorizontal: 50,
   },
   signupContainer: {
-    width: '80%',
-    alignItems: 'center',
-    padding: 20,
+    width: '100%',
+    padding: 40,
     elevation: 10,
-    backgroundColor: '#EBF3E8',
-    borderRadius: 10,
+    backgroundColor: '#F8F6F2',
+    borderRadius: 50,
+    height: '70%',
   },
+  underline: { textDecorationLine: 'underline', color: '#695203' },
 });
