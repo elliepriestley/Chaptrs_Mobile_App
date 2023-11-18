@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Keyboard, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
 import { Formik, Field } from 'formik';
 import CustomInput from '../components/CustomInput';
 import signupSchema from '../data/schemas/signupSchema';
@@ -19,6 +19,7 @@ function SignupScreen({ navigation }) {
     setSubmitting(true);
     try {
       const formData = { ...values };
+      console.log(formData)
       delete formData.confirmPassword;
       const data = await api.signupUser(formData);
       console.log(data);
@@ -35,72 +36,85 @@ function SignupScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <Logo />
-      <Text style={{ fontSize: 20, marginLeft: 40, marginBottom: 20 }}>
-        <Text style={{ color: '#695203' }}>Hey!</Text>
-        {' Join now'}
-      </Text>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={signupSchema}
-        onSubmit={onSubmit}
-      >
-        {({ handleSubmit, isValid }) => (
-          <View style={styles.signupContainer}>
-            <View style={styles.heading}>
-              <Text style={{ fontSize: 20 }}>Sign Up</Text>
-            </View>
-            <Field
-              component={CustomInput}
-              name='email'
-              placeholder='Email'
-              keyboardType='email-address'
-              textContentType='emailAddress'
-              label='email'
-            />
-            <Field
-              component={CustomInput}
-              name='username'
-              placeholder='Username'
-              textContentType='username'
-              label='username'
-            />
-            <Field
-              component={CustomInput}
-              name='password'
-              placeholder='Password'
-              secureTextEntry
-              textContentType='newPassword'
-              label='password'
-            />
-            <Field
-              component={CustomInput}
-              name='confirmPassword'
-              placeholder='Confirm Password'
-              secureTextEntry
-              textContentType='newPassword'
-              label='confirm password'
-            />
-            <TouchableOpacity
-              style={isValid ? styles.submit : styles.submitDisabled}
-              onPress={handleSubmit}
-              disabled={!isValid}
-            >
-              <Text style={{ textAlign: 'center' }}>Sign Up</Text>
-            </TouchableOpacity>
-            <Text
-              style={{ fontSize: 15, textAlign: 'center', marginBottom: 20 }}
-            >
-              Already have an account?{' '}
-              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                <Text style={styles.underline}>Log In</Text>
-              </TouchableOpacity>
+    <KeyboardAvoidingView
+      behavior={"padding"} enabled  style={{flexGrow: 1, height: '100%'}}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView automaticallyAdjustKeyboardInsets={true} style={{ flex: 1 }}>
+          <View style={styles.container}>
+            <Logo />
+            <Text style={{ fontSize: 20, marginLeft: 40, marginBottom: 20, fontFamily: 'Sansation-Regular' }}>
+              <Text style={{ color: '#695203', fontFamily: 'Sansation-Regular' }}>Hey!</Text>
+              {' Join now'}
             </Text>
+
+            <Formik
+              initialValues={initialValues}
+              validationSchema={signupSchema}
+              onSubmit={onSubmit}
+            >
+              {({ handleSubmit, isValid }) => (
+                <View style={styles.signupContainer}>
+                  <View style={styles.heading}>
+                    <Text style={{ fontSize: 20, fontFamily: 'Sansation-Regular' }}>Sign Up</Text>
+                  </View>
+                  <Field
+                    component={CustomInput}
+                    name='email'
+                    placeholder='Email'
+                    keyboardType='email-address'
+                    textContentType='emailAddress'
+                    label='email'
+                  />
+                  <Field
+                    component={CustomInput}
+                    name='username'
+                    placeholder='Username'
+                    textContentType='username'
+                    label='username'
+                  />
+                  <Field
+                    component={CustomInput}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    name='password'
+                    placeholder='Password'
+                    // secureTextEntry
+                    textContentType='newPassword'
+                    label='password'
+                  />
+                  <Field
+                    component={CustomInput}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    name='confirmPassword'
+                    placeholder='Confirm Password'
+                    // secureTextEntry
+                    textContentType='newPassword'
+                    label='confirm password'
+                  />
+                  <TouchableOpacity
+                    style={isValid ? styles.submit : styles.submitDisabled}
+                    onPress={handleSubmit}
+                    disabled={!isValid}
+                  >
+                    <Text style={{ textAlign: 'center', fontFamily: 'Sansation-Regular' }}>Sign Up</Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{ fontSize: 15, textAlign: 'center', marginBottom: 20, fontFamily: 'Sansation-Regular' }}
+                  >
+                    Already have an account?{' '}
+                    <TouchableOpacity style={{marginBottom: -2}} onPress={() => navigation.navigate('Login')}>
+                      <Text style={styles.underline}>Log In</Text>
+                    </TouchableOpacity>
+                  </Text>
+                </View>
+              )}
+            </Formik>
           </View>
-        )}
-      </Formik>
-    </View>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -108,11 +122,10 @@ export default SignupScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'flex-end',
+    backgroundColor: '#fff'
   },
   heading: {
+    fontFamily: 'Sansation-Regular',
     fontSize: 25,
     marginBottom: 20,
     paddingBottom: 5,
@@ -130,10 +143,14 @@ const styles = StyleSheet.create({
   signupContainer: {
     width: '100%',
     padding: 40,
-    elevation: 10,
     backgroundColor: '#F8F6F2',
     borderRadius: 50,
-    height: '70%',
+    height: '100%',
   },
-  underline: { textDecorationLine: 'underline', color: '#695203' },
+  underline: {
+    fontSize: 15,
+    textDecorationLine: 'underline',
+    color: '#695203',
+    fontFamily: 'Sansation-Regular'
+  },
 });
