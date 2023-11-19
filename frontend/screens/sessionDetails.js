@@ -9,9 +9,11 @@ import {
 import LogoMedium from '../components/LogoMedium';
 import Heading from '../components/Heading';
 import { Location, Calendar, Clock } from 'iconsax-react-native';
+import AvatarGroup from '../components/AvatarGroup';
 
 function SessionDetailsScreen({ route }) {
   const session = route.params?.session;
+  console.log(session.participants);
   const categories = ['adventure fiction', 'seastory', 'encyclopedic novel'];
   const colours = ['#E8C0DC', '#0FA7B047', '#F8964D7D'];
   return (
@@ -103,50 +105,22 @@ function SessionDetailsScreen({ route }) {
           >
             Participants:
           </Text>
-          <View style={{ flexDirection: 'row', gap: 10 }}>
-            {['A', 'B', 'C'].map((user, index) => {
-              return (
-                <Image
-                  key={index}
-                  style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: '50%',
-                    transform: [{ translateX: index * -20 }],
-                  }}
-                  source={{
-                    uri: `https://ui-avatars.com/api/?length=1&background=random&name=${user[0]}}`,
-                  }}
-                />
-              );
-            })}
-            <Image
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: '50%',
-                transform: [{ translateX: 3 * -20 }],
-              }}
-              source={{
-                uri: `https://ui-avatars.com/api/?length=2&background=random&name=%${'-3'}}}`,
-              }}
-            />
-          </View>
+          {/* <AvatarGroup users={session.participants} /> */}
+          <AvatarGroup users={session.participants} />
         </View>
         <View style={styles.detailContainer}>
-          <Text style={styles.details}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Location style={styles.icon} color='black' size={24} />
-            {session.location}
-          </Text>
-          <Text style={styles.details}>
+            <Text style={styles.details}>{session.location}</Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Calendar style={styles.icon} color='black' size={24} />
-            {session.date}
-          </Text>
-
-          <Text style={styles.details}>
+            <Text style={styles.details}>{session.date}</Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Clock style={styles.icon} color='black' size={24} />
-            {session.time}
-          </Text>
+            <Text style={styles.details}>{session.time}</Text>
+          </View>
         </View>
         <TouchableOpacity style={styles.joinButton}>
           <Text
@@ -237,7 +211,8 @@ const styles = StyleSheet.create({
   },
   category: {
     backgroundColor: '#F8964D7D',
-    padding: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
     borderRadius: 999,
     alignSelf: 'flex-start',
   },
