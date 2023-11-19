@@ -26,13 +26,13 @@ function TabNavigator() {
         tabBarStyle: {
           marginHorizontal: 15,
           paddingHorizontal: 15,
-          borderRadius: '999',
+          borderRadius: 999,
           backgroundColor: '#000000',
           bottom: 20,
         },
         tabBarItemStyle: {
-          paddingVertical: 30,
-          top: 8,
+          // paddingVertical: 30,
+          // top: 8,
         },
       }}
     >
