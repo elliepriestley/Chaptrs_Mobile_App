@@ -2,13 +2,10 @@ import {
   StyleSheet,
   View,
   Text,
-  Image,
-  Button,
   ImageBackground,
   TouchableOpacity,
 } from 'react-native';
 import BgImg from '../assets/chaptrs.jpg';
-import Logo from '../components/Logo';
 
 function WelcomeScreen({ navigation }) {
   return (
