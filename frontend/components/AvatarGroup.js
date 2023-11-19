@@ -1,17 +1,22 @@
 import { StyleSheet, View, Image, Text } from 'react-native';
 
-function AvatarGroup({ users = [], maxAvatars = 3 }) {
+function AvatarGroup({
+  users = [],
+  maxAvatars = 3,
+  size = 30,
+  overlap = size / 4,
+}) {
   return (
-    <View style={{ flexDirection: 'row', gap: 10 }}>
+    <View style={{ flexDirection: 'row' }}>
       {users.slice(0, maxAvatars).map((user, index) => {
         return (
           <Image
             key={index}
             style={{
-              width: 30,
-              height: 30,
+              width: size,
+              height: size,
               borderRadius: 999,
-              transform: [{ translateX: index * -20 }],
+              transform: [{ translateX: index * -overlap }],
             }}
             source={{
               uri:
@@ -24,16 +29,16 @@ function AvatarGroup({ users = [], maxAvatars = 3 }) {
       {users.length > maxAvatars && (
         <View
           style={{
-            width: 30,
-            height: 30,
+            width: size,
+            height: size,
             borderRadius: 999,
-            transform: [{ translateX: maxAvatars * -20 }],
+            transform: [{ translateX: maxAvatars * -overlap }],
             backgroundColor: '#DCC8A9',
             alignItems: 'center',
             justifyContent: 'center',
           }}
         >
-          <Text style={{ fontSize: 14, fontFamily: 'Sansation-Regular' }}>
+          <Text style={{ fontSize: size / 2, fontFamily: 'Sansation-Regular' }}>
             {`+${users.length - maxAvatars}`}
           </Text>
         </View>

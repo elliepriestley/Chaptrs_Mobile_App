@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
 import { Danger } from 'iconsax-react-native';
 
-function Books() {
+export default function BookScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Books Page</Text>
@@ -11,8 +11,6 @@ function Books() {
     </View>
   );
 }
-
-export default Books;
 
 const styles = StyleSheet.create({
   container: {
