@@ -39,10 +39,10 @@ function LoginScreen({ navigation, route }) {
     }
   };
 
-  const DemoLogin = async () => {
-    await api.loginUser({ email: '123@123.com', password: 'Qwerty1!' });
-    navigation.navigate('Main');
-  };
+const DemoLogin = async () => {
+  await api.loginUser({email: '123@123.com', password: 'Qwerty1!'})
+  navigation.navigate('Main');
+}
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
