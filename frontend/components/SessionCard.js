@@ -1,46 +1,55 @@
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { Location, Calendar, Clock } from 'iconsax-react-native';
+import { useNavigation } from '@react-navigation/native';
 
 function SessionCard({ session }) {
-  return (
-    <View style={styles.container}>
-      <Image
-        style={styles.image}
-        source={{
-          uri: session.chosen_book.cover_photo,
-        }}
-      />
-      <View style={{ alignSelf: 'center', width: '50%' }}>
-        <Text style={styles.title}>{session.chosen_book.title}</Text>
-        <Text style={styles.author}>
-          {session.chosen_book.authors.join(', ')}
-        </Text>
-        <View style={styles.detailContainer}>
-          <Text style={styles.details}>
-            <Location style={styles.icon} color='black' size={8} />
-            {session.location}
-          </Text>
-          <Text style={styles.details}>
-            <Calendar style={styles.icon} color='black' size={8} />
-            {session.date}
-          </Text>
+  const navigation = useNavigation();
 
-          <Text style={styles.details}>
-            <Clock style={styles.icon} color='black' size={8} />
-            {session.time}
+  const handlePress = () => {
+    navigation.navigate('Session Details', { session });
+  };
+
+  return (
+    <TouchableOpacity onPress={handlePress}>
+      <View style={styles.container}>
+        <Image
+          style={styles.image}
+          source={{
+            uri: session.chosen_book.cover_photo,
+          }}
+        />
+        <View style={{ alignSelf: 'center', width: '50%' }}>
+          <Text style={styles.title}>{session.chosen_book.title}</Text>
+          <Text style={styles.author}>
+            {session.chosen_book.authors.join(', ')}
           </Text>
-        </View>
-        <View style={styles.bookclubContainer}>
-          <Image
-            style={styles.bookclubImage}
-            source={{
-              uri: session.bookclub.image,
-            }}
-          />
-          <Text style={styles.bookclubText}>{session.bookclub.name}</Text>
+          <View style={styles.detailContainer}>
+            <Text style={styles.details}>
+              <Location style={styles.icon} color='black' size={8} />
+              {session.location}
+            </Text>
+            <Text style={styles.details}>
+              <Calendar style={styles.icon} color='black' size={8} />
+              {session.date}
+            </Text>
+
+            <Text style={styles.details}>
+              <Clock style={styles.icon} color='black' size={8} />
+              {session.time}
+            </Text>
+          </View>
+          <View style={styles.bookclubContainer}>
+            <Image
+              style={styles.bookclubImage}
+              source={{
+                uri: session.bookclub.image,
+              }}
+            />
+            <Text style={styles.bookclubText}>{session.bookclub.name}</Text>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

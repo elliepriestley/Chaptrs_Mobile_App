@@ -7,6 +7,7 @@ import WelcomeScreen from './screens/welcome.js';
 import LoginScreen from './screens/login.js';
 import SignupScreen from './screens/signup.js';
 import TabNavigator from './navigators/TabNavigator.js';
+import SessionDetailsScreen from './screens/sessionDetails.js';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -36,6 +37,7 @@ export default function App() {
           component={TabNavigator}
           options={{ headerShown: false }}
         />
+        <Stack.Screen name='Session Details' component={SessionDetailsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
