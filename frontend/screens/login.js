@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Keyboard,
   TouchableWithoutFeedback,
+  Button,
 } from 'react-native';
 import { Formik, Field } from 'formik';
 import CustomInput from '../components/CustomInput';
@@ -37,6 +38,12 @@ function LoginScreen({ navigation, route }) {
       setSubmitting(false);
     }
   };
+
+  const DemoLogin = async () => {
+    await api.loginUser({ email: '123@123.com', password: 'Qwerty1!' });
+    navigation.navigate('Main');
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
@@ -108,6 +115,7 @@ function LoginScreen({ navigation, route }) {
                   <Text style={styles.underline}>Sign Up</Text>
                 </TouchableOpacity>
               </Text>
+              <Button title='Demo Login' color={'red'} onPress={DemoLogin} />
             </View>
           )}
         </Formik>
