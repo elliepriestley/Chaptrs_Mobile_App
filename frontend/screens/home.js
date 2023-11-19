@@ -1,16 +1,14 @@
 import { StyleSheet, View, Text, Image } from 'react-native';
 import LogoMedium from '../components/LogoMedium';
+import Heading from '../components/Heading';
 
 function HomeScreen() {
-
   return (
     <View style={styles.container}>
-      <View style={{marginHorizontal: 25}}>
+      <View style={{ marginHorizontal: 25 }}>
         <LogoMedium />
-        <Text style={styles.heading}>Upcoming Sessions</Text>
-        <View style={[styles.line, {width: 219}]} />
-        <Text style={styles.heading}>Past Sessions</Text>
-        <View style={[styles.line, {width: 153}]} />
+        <Heading text='Upcoming Sessions' headingStyles={{ marginTop: 20 }} />
+        <Heading text='Past Sessions' />
       </View>
     </View>
   );
@@ -31,7 +29,7 @@ const styles = StyleSheet.create({
     height: 0,
     borderTopColor: '#DCC8A9',
     borderTopWidth: 2,
-    marginTop: 5
+    marginTop: 5,
   },
 });
 
