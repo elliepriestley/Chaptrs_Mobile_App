@@ -10,6 +10,7 @@ export default [
       cover_photo:
         'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQ8iGnc5gbcxN18ZZMDBbYaIIuD3Yl8c7k-KH8FFaLdpz6XuAdV',
     },
+    participants: ['Monica', 'Rachel', 'Phoebe', 'Ross', 'Chandler', 'Joey'],
     bookclub: {
       name: 'The Boundless Bookworms',
       image:
@@ -27,6 +28,7 @@ export default [
       cover_photo:
         'https://m.media-amazon.com/images/I/A1Xy2f66SmL._SL1500_.jpg',
     },
+    participants: ['Monica', 'Rachel'],
     bookclub: {
       name: 'The Creative Chronicles',
       image:
@@ -44,6 +46,7 @@ export default [
       cover_photo:
         'https://storage.googleapis.com/circlesoft/document/photos/004/060/950/original_the_secret.jpg?1699933046',
     },
+    participants: ['Monica', 'Rachel', 'Phoebe', 'Ross', 'Chandler', 'Joey'],
     bookclub: {
       name: 'Chapter Chasers',
       image:
@@ -61,6 +64,7 @@ export default [
       cover_photo:
         'https://storage.googleapis.com/circlesoft/document/photos/003/997/234/large_temp_img.jpg20231113-1-172w3f7?1699837376',
     },
+    participants: ['Monica', 'Rachel', 'Phoebe', 'Ross', 'Chandler', 'Joey'],
     bookclub: {
       name: 'The Creative Chronicles',
       image:
