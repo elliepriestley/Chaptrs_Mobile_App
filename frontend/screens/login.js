@@ -1,9 +1,18 @@
-import { StyleSheet, View, Text, TouchableOpacity,Keyboard, TouchableWithoutFeedback } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Keyboard,
+  TouchableWithoutFeedback,
+  Button,
+} from 'react-native';
 import { Formik, Field } from 'formik';
 import CustomInput from '../components/CustomInput';
 import loginSchema from '../data/schemas/loginSchema';
 import api from '../utils/api';
 import Logo from '../components/Logo';
+import Heading from '../components/Heading';
 
 function LoginScreen({ navigation, route }) {
   // Handling form validation
@@ -29,11 +38,24 @@ function LoginScreen({ navigation, route }) {
       setSubmitting(false);
     }
   };
+
+const DemoLogin = async () => {
+  await api.loginUser({email: '123@123.com', password: 'Qwerty1!'})
+  navigation.navigate('Main');
+}
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <Logo />
-        <Text style={{ fontSize: 20, marginLeft: 40, marginBottom: 20, fontFamily: 'Sansation-Regular' }}>
+        <Text
+          style={{
+            fontSize: 20,
+            marginLeft: 40,
+            marginBottom: 20,
+            fontFamily: 'Sansation-Regular',
+          }}
+        >
           Welcome back!
         </Text>
         <Formik
@@ -43,9 +65,7 @@ function LoginScreen({ navigation, route }) {
         >
           {({ handleSubmit, isValid }) => (
             <View style={styles.signupContainer}>
-              <View style={styles.heading}>
-                <Text style={{ fontSize: 20, fontFamily: 'Sansation-Regular' }}>Log In</Text>
-              </View>
+              <Heading text='Log In' textStyles={{ fontSize: 20 }} />
               <Field
                 component={CustomInput}
                 name='email'
@@ -71,16 +91,31 @@ function LoginScreen({ navigation, route }) {
                 onPress={handleSubmit}
                 disabled={!isValid}
               >
-                <Text style={{ textAlign: 'center', fontFamily: 'Sansation-Regular', }}>Login</Text>
-              </TouchableOpacity>
                 <Text
-                  style={{ fontSize: 15, textAlign: 'center', fontFamily: 'Sansation-Regular' }}
+                  style={{
+                    textAlign: 'center',
+                    fontFamily: 'Sansation-Regular',
+                  }}
                 >
-                  Don't have an account?{' '}
-                  <TouchableOpacity style={{marginBottom: -2}} onPress={() => navigation.navigate('Sign Up')}>
-                    <Text style={styles.underline}>Sign Up</Text>
-                  </TouchableOpacity>
+                  Login
                 </Text>
+              </TouchableOpacity>
+              <Text
+                style={{
+                  fontSize: 15,
+                  textAlign: 'center',
+                  fontFamily: 'Sansation-Regular',
+                }}
+              >
+                Don't have an account?{' '}
+                <TouchableOpacity
+                  style={{ marginBottom: -2 }}
+                  onPress={() => navigation.navigate('Sign Up')}
+                >
+                  <Text style={styles.underline}>Sign Up</Text>
+                </TouchableOpacity>
+              </Text>
+              <Button title='Demo Login' color={'red'} onPress={DemoLogin} />
             </View>
           )}
         </Formik>
@@ -122,6 +157,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textDecorationLine: 'underline',
     color: '#695203',
-    fontFamily: 'Sansation-Regular' 
+    fontFamily: 'Sansation-Regular',
   },
 });
