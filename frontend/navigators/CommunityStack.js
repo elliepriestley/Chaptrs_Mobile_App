@@ -18,7 +18,10 @@ export default function CommunityStackScreen() {
       }}
     >
       <CommunityStack.Screen name='Community' component={CommunityScreen} />
-      <CommunityStack.Screen name='New Bookclub' component={NewBookclubScreen} />
+      <CommunityStack.Screen
+        name='New Bookclub'
+        component={NewBookclubScreen}
+      />
     </CommunityStack.Navigator>
   );
 }
