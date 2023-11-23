@@ -69,3 +69,6 @@ typings/
 # cypress.io
 cypress/screenshots
 cypress/videos
+
+# Android Studio project settings
+.idea
