@@ -9,7 +9,6 @@ import {
 import Heading from '../components/Heading';
 import { Location, Calendar, Clock } from 'iconsax-react-native';
 import AvatarGroup from '../components/AvatarGroup';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 function SessionDetailsScreen({ route }) {
   const session = route.params?.session;
