@@ -2,17 +2,17 @@ import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
 import { Danger } from 'iconsax-react-native';
 
-function NotificationScreen() {
+function NewBookclubScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Notifications Page</Text>
+      <Text style={styles.heading}>New Bookclub Page</Text>
       <Text style={styles.subheading}>Under Construction</Text>
       <Danger size={50} color='orange' />
     </View>
   );
 }
 
-export default NotificationScreen;
+export default NewBookclubScreen;
 
 const styles = StyleSheet.create({
   container: {
