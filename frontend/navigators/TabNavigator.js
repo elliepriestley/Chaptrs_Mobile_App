@@ -1,15 +1,16 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from '../screens/home.js';
 import ProfileScreen from '../screens/profile.js';
-import NotificationScreen from '../screens/notifications.js';
 import NewSessionScreen from '../screens/newSession.js';
-import BooksScreen from '../screens/books.js';
+import HomeStackScreen from './HomeStack.js';
+import BookStackScreen from './BookStack.js';
+import CommunityStackScreen from './CommunityStack.js';
+import HeaderCenter from '../components/HeaderCenter.js';
 import {
   BookSquare,
   Profile,
   AddCircle,
   Category,
-  Notification,
+  People,
 } from 'iconsax-react-native';
 
 const Tab = createBottomTabNavigator();
@@ -17,7 +18,7 @@ const Tab = createBottomTabNavigator();
 function TabNavigator() {
   return (
     <Tab.Navigator
-      initialRouteName='Home'
+      initialRouteName='HomeStack'
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: '#DCC8A9',
@@ -26,19 +27,17 @@ function TabNavigator() {
         tabBarStyle: {
           marginHorizontal: 15,
           paddingHorizontal: 15,
+          paddingBottom: 0,
           borderRadius: 999,
           backgroundColor: '#000000',
-          bottom: 20,
-        },
-        tabBarItemStyle: {
-          // paddingVertical: 30,
-          // top: 8,
+          marginBottom: 20,
+          position: 'absolute',
         },
       }}
     >
       <Tab.Screen
-        name='Home'
-        component={HomeScreen}
+        name='HomeStack'
+        component={HomeStackScreen}
         options={{
           tabBarIcon: ({ color }) => {
             return <Category size={32} color={color} variant='Outline' />;
@@ -46,11 +45,11 @@ function TabNavigator() {
         }}
       />
       <Tab.Screen
-        name='Books'
-        component={BooksScreen}
+        name='CommunityStack'
+        component={CommunityStackScreen}
         options={{
           tabBarIcon: ({ color }) => {
-            return <BookSquare size={32} color={color} variant='Outline' />;
+            return <People size={32} color={color} variant='Outline' />;
           },
         }}
       />
@@ -64,11 +63,11 @@ function TabNavigator() {
         }}
       />
       <Tab.Screen
-        name='Notifications'
-        component={NotificationScreen}
+        name='BookStack'
+        component={BookStackScreen}
         options={{
           tabBarIcon: ({ color }) => {
-            return <Notification size={32} color={color} variant='Outline' />;
+            return <BookSquare size={32} color={color} variant='Outline' />;
           },
         }}
       />
@@ -76,6 +75,12 @@ function TabNavigator() {
         name='Profile'
         component={ProfileScreen}
         options={{
+          headerShown: true,
+          headerTitle: HeaderCenter,
+          headerTitleAlign: 'center',
+          headerTintColor: 'black',
+          headerShadowVisible: false,
+          // headerBackTitleVisible: false,
           tabBarIcon: ({ color }) => {
             return <Profile size={32} color={color} variant='Outline' />;
           },

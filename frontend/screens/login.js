@@ -13,8 +13,10 @@ import loginSchema from '../data/schemas/loginSchema';
 import api from '../utils/api';
 import Logo from '../components/Logo';
 import Heading from '../components/Heading';
+import { useAuth } from '../utils/authContext';
 
 function LoginScreen({ navigation, route }) {
+  const { setUser, setToken } = useAuth();
   // Handling form validation
 
   const initialValues = {
@@ -30,7 +32,10 @@ function LoginScreen({ navigation, route }) {
       const data = await api.loginUser(formData);
       console.log(data);
       if (data) {
-        navigation.navigate('Main');
+        setUser({
+          email: values.email,
+        });
+        setToken(data.token);
       }
     } catch (error) {
       alert(error.message || 'Something went wrong');
@@ -39,10 +44,25 @@ function LoginScreen({ navigation, route }) {
     }
   };
 
-const DemoLogin = async () => {
-  await api.loginUser({email: '123@123.com', password: 'Qwerty1!'})
-  navigation.navigate('Main');
-}
+  const DemoLogin = async () => {
+    try {
+      const data = await api.loginUser({
+        email: '123@123.com',
+        password: 'Qwerty1!',
+      });
+      if (data) {
+        setUser({
+          email: '123@123.com',
+        });
+        setToken(data.token);
+      }
+    } catch (error) {
+      alert(error.message || 'Something went wrong');
+    }
+    setUser({
+      email: '123@123.com',
+    });
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

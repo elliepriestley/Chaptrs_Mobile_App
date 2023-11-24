@@ -1,14 +1,12 @@
-import { StyleSheet, View, FlatList } from 'react-native';
-import LogoMedium from '../components/LogoMedium';
+import { StyleSheet, View, FlatList, ScrollView } from 'react-native';
 import Heading from '../components/Heading';
 import SessionCard from '../components/SessionCard';
 import exampleSessions from '../data/exampleSessions';
 
 function HomeScreen() {
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={{ marginHorizontal: 25 }}>
-        <LogoMedium />
         <Heading text='Upcoming Sessions' headingStyles={{ marginTop: 20 }} />
         <FlatList
           style={{ marginBottom: 20 }}
@@ -32,7 +30,7 @@ function HomeScreen() {
           ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -40,6 +38,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingBottom: 50,
   },
   heading: {
     fontFamily: 'Sansation-Regular',

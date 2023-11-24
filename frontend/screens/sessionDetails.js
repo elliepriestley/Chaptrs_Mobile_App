@@ -6,22 +6,22 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import LogoMedium from '../components/LogoMedium';
 import Heading from '../components/Heading';
 import { Location, Calendar, Clock } from 'iconsax-react-native';
 import AvatarGroup from '../components/AvatarGroup';
 
 function SessionDetailsScreen({ route }) {
   const session = route.params?.session;
-  console.log(session.participants);
   const categories = ['adventure fiction', 'seastory', 'encyclopedic novel'];
   const colours = ['#E8C0DC', '#0FA7B047', '#F8964D7D'];
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      style={styles.container}
+    >
       <View style={{ marginHorizontal: 25 }}>
-        <LogoMedium />
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Heading text='Details' headingStyles={{ marginTop: 20 }} />
+          <Heading text='Details' headingStyles={{ marginTop: 10 }} />
         </View>
         <View style={styles.book}>
           <Image
@@ -105,7 +105,6 @@ function SessionDetailsScreen({ route }) {
           >
             Participants:
           </Text>
-          {/* <AvatarGroup users={session.participants} /> */}
           <AvatarGroup users={session.participants} />
         </View>
         <View style={styles.detailContainer}>
@@ -129,11 +128,11 @@ function SessionDetailsScreen({ route }) {
               fontFamily: 'Sansation-Regular',
             }}
           >
-            join meeting
+            join
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -142,11 +141,13 @@ export default SessionDetailsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
+    paddingBottom: 100,
   },
   book: {
     flexDirection: 'row',
     gap: 10,
-    height: 200,
+    height: 180,
     marginBottom: 20,
   },
   image: {
