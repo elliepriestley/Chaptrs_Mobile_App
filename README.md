@@ -17,14 +17,16 @@
 
 ## Table Of Contents
 
-* [About the Project](#about-the-project)
-* [Authors](#authors)
-* [Built With](#built-with)
-* [Getting Started](#getting-started)
-  * [Prerequisites](#prerequisites)
-  * [Installation](#installation)
-* [Contributing](#contributing)
-* [License](#license)
+- [Table Of Contents](#table-of-contents)
+- [About The Project](#about-the-project)
+- [Authors](#authors)
+- [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Contributing](#contributing)
+  - [Creating A Pull Request](#creating-a-pull-request)
+- [License](#license)
 
 ## About The Project
 
@@ -134,6 +136,15 @@ This should give you a QR Code which you can scan using your camera app on iOS (
 To run on the Android Studio emulator, press `a` in the terminal while the simulator is running
 
 To run on the XCode emulator, press `i` in the terminal while the simulator is running
+
+7. Create a .env file in the root of the frontend folder with the following
+
+```
+EXPO_PUBLIC_API_URL=http://192.168.1.???:8080
+```
+Replace the ??? part with the appropriate digits from the IP address particular to your device, where you run the frontend. You can find this IP address after running npm start in the frontend folder (just under the QR code in a line starting “Metro waiting on …”). Leave the port the same as above (8080). 
+
+Restart the backend and the frontend. This step is needed to signup/login. 
 
 ## Contributing
 
