@@ -6,7 +6,7 @@ const JWT = require('jsonwebtoken');
 const cors = require('cors');
 
 const booksRouter = require('./routes/books');
-const bookclubsRouter = require('./routes/books');
+const bookclubsRouter = require('./routes/bookclubs');
 const authenticationRouter = require('./routes/authentication');
 const usersRouter = require('./routes/users');
 const sessionsRouter = require('./routes/sessions');
