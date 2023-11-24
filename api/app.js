@@ -6,6 +6,7 @@ const JWT = require('jsonwebtoken');
 const cors = require('cors');
 
 const booksRouter = require('./routes/books');
+const bookclubsRouter = require('./routes/books');
 const authenticationRouter = require('./routes/authentication');
 const usersRouter = require('./routes/users');
 const sessionsRouter = require('./routes/sessions');
@@ -22,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // route setup
 app.use('/books', booksRouter);
+app.use('/bookclubs', bookclubsRouter);
 app.use('/tokens', authenticationRouter);
 app.use('/users', usersRouter);
 app.use('/sessions', sessionsRouter);
