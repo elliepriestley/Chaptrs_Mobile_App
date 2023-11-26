@@ -4,6 +4,7 @@ import { useFonts } from 'expo-font';
 import TabNavigator from './navigators/TabNavigator.js';
 import AuthStack from './navigators/AuthStack';
 import { AuthProvider, useAuth } from './utils/authContext.jsx';
+import { MainProvider } from './utils/mainContext.jsx';
 
 // Determine which navigator to use based on whether the user is logged in
 function NavigationSelector() {
@@ -20,9 +21,11 @@ export default function App() {
   }
   return (
     <AuthProvider>
+    <MainProvider>
       <NavigationContainer>
         <NavigationSelector />
       </NavigationContainer>
+    </MainProvider>
     </AuthProvider>
   );
 }

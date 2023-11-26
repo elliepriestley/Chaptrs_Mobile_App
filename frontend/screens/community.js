@@ -10,11 +10,31 @@ import React, { useEffect, useState } from 'react';
 import { AddCircle, Scroll, UserAdd } from 'iconsax-react-native';
 import Heading from '../components/Heading';
 import BookclubCard from '../components/BookclubCard';
-import bookclubs from '../data/exampleBookclubs.js';
+import { useMainContext } from '../utils/mainContext';
+import { useAuth } from '../utils/authContext';
+import api from '../utils/api';
 
 export default function CommunityScreen({ navigation: { navigate } }) {
+  const { token, setToken } = useAuth();
+  const { bookclubs, setBookclubs } = useMainContext();
   const [searchValue, setSearchValue] = useState('');
-  const [filteredBookclubs, setFilteredBookclubs] = useState(bookclubs);
+  const [filteredBookclubs, setFilteredBookclubs] = useState([]);
+
+  useEffect(() => {
+    getBookclubs();
+  }, []);
+
+  const getBookclubs = async () => {
+    try {
+      const bookclubsData = await api.getBookclubs(token);
+      setBookclubs(bookclubsData.bookclubs);
+      setFilteredBookclubs(bookclubsData.bookclubs);
+      setSearchValue('')
+      if (bookclubsData.token) setToken(bookclubsData.token);
+    } catch (error) {
+      alert(error.message);
+    }
+  }
 
   useEffect(() => {
     if (searchValue === '') {
@@ -48,7 +68,7 @@ export default function CommunityScreen({ navigation: { navigate } }) {
       />
       <ScrollView contentContainerStyle={{ gap: 15 }}>
         {filteredBookclubs.map((bookclub) => {
-          return <BookclubCard key={bookclub.id} bookclub={bookclub} />;
+          return <BookclubCard key={bookclub._id} bookclub={bookclub} />;
         })}
       </ScrollView>
     </View>

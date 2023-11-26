@@ -2,31 +2,70 @@ import { StyleSheet, View, FlatList, ScrollView } from 'react-native';
 import Heading from '../components/Heading';
 import SessionCard from '../components/SessionCard';
 import exampleSessions from '../data/exampleSessions';
+import { useEffect, useState } from 'react';
+import { useMainContext } from '../utils/mainContext';
+import api from '../utils/api';
+import { useAuth } from '../utils/authContext';
 
 function HomeScreen() {
+  const { token, setToken } = useAuth();
+  const { sessions, setSessions } = useMainContext();
+  const [upcomingSessions, setUpcomingSessions] = useState([]);
+  const [pastSessions, setPastSessions] = useState([]);
+
+  useEffect(() => {
+    getSessions();
+  }, []);
+
+  useEffect(() => {
+    console.log('token', token);
+  }, [token]);
+
+  const getSessions = async () => {
+    try {
+      const sessionsData = await api.getSessions(token);
+      console.log('sessionData', sessionsData);
+      setSessions(sessionsData.sessions);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  useEffect(() => {
+    console.log(sessions);
+    const upcomingSessions = sessions.filter(
+      (session) => new Date(session.datetime) > new Date(),
+    );
+    const pastSessions = sessions.filter(
+      (session) => new Date(session.datetime) < new Date(),
+    );
+    setUpcomingSessions(upcomingSessions);
+    setPastSessions(pastSessions);
+  }, [sessions]);
+
   return (
     <ScrollView style={styles.container}>
       <View style={{ marginHorizontal: 25 }}>
         <Heading text='Upcoming Sessions' headingStyles={{ marginTop: 20 }} />
         <FlatList
           style={{ marginBottom: 20 }}
-          data={exampleSessions}
+          data={upcomingSessions}
           renderItem={({ item }) => {
             return <SessionCard session={item} />;
           }}
           horizontal={true}
-          keyExtractor={(session) => session.id}
+          keyExtractor={(session) => session._id}
           ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
         />
         <Heading text='Past Sessions' />
         <FlatList
           style={{ marginBottom: 20 }}
-          data={exampleSessions}
+          data={pastSessions}
           renderItem={({ item }) => {
             return <SessionCard session={item} />;
           }}
           horizontal={true}
-          keyExtractor={(session) => session.id}
+          keyExtractor={(session) => session._id}
           ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
         />
       </View>

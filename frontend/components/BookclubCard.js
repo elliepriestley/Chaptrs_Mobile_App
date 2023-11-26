@@ -28,7 +28,7 @@ export default function BookclubCard({ bookclub }) {
       </View>
       <View style={{ gap: 5 }}>
         <Text style={{ fontFamily: 'Sansation-Regular', fontSize: 14 }}>
-          Members
+          {bookclub.members.length === 0 ? 'No Members' : 'Members'}
         </Text>
         <AvatarGroup users={bookclub.members} />
       </View>

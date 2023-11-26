@@ -36,6 +36,66 @@ class Api {
       return new Promise.reject(error);
     }
   };
+  createSession = async (formData, token) => {
+    try {
+      const response = await fetch(`${this._baseUrl}/sessions`, {
+        method: 'POST',
+        headers: { ...this._headers, Authorization: 'Bearer ' + token },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      return data;
+    } catch (error) {
+      return new Promise.reject(error);
+    }
+  };
+  createBook = async (formData, token) => {
+    try {
+      const response = await fetch(`${this._baseUrl}/books`, {
+        method: 'POST',
+        headers: { ...this._headers, Authorization: 'Bearer ' + token },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      return data;
+    } catch (error) {
+      return new Promise.reject(error);
+    }
+  };
+  getSessions = async (token) => {
+    try {
+      const response = await fetch(`${this._baseUrl}/sessions`, {
+        headers: { ...this._headers, Authorization: 'Bearer ' + token },
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      return data;
+    } catch (error) {
+      return new Promise.reject(error);
+    }
+  };
+  getBookclubs = async (token) => {
+    try {
+      const response = await fetch(`${this._baseUrl}/bookclubs`, {
+        headers: { ...this._headers, Authorization: 'Bearer ' + token },
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      return data;
+    } catch (error) {
+      return new Promise.reject(error);
+    }
+  };
   findBooks = async (query) => {
     try {
       const res = await fetch(

@@ -1,12 +1,7 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 
-export default function BookCard({ book, setShowModal, setSelectedBook }) {
-  handlePress = () => {
-    console.log(book);
-    setSelectedBook(book);
-    setShowModal(false);
-  };
+export default function SelectedBook({ book }) {
   if (book) {
     return (
       <TouchableOpacity onPress={handlePress}>
@@ -32,27 +27,24 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     gap: 10,
-    height: 100,
+    height: 130,
     padding: 10,
     borderRadius: 10,
     backgroundColor: '#E9E1D54D',
     overflow: 'scroll',
   },
   image: {
-    width: 60,
+    width: 80,
     height: '100%',
     borderRadius: 10,
   },
   title: {
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: 'Sansation-Regular',
   },
   author: {
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: 'Sansation-Regular',
     color: '#695203',
-  },
-  icon: {
-    marginRight: 5,
   },
 });

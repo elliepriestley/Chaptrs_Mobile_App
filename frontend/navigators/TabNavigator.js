@@ -57,10 +57,17 @@ function TabNavigator() {
         name='New Session'
         component={NewSessionScreen}
         options={{
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerTitle: HeaderCenter,
+          headerTintColor: 'black',
+          headerShadowVisible: false,
+          headerBackTitleVisible: false,
           tabBarIcon: ({ color }) => {
             return <AddCircle size={32} color={color} variant='Outline' />;
           },
         }}
+        screenOptions={{}}
       />
       <Tab.Screen
         name='BookStack'
