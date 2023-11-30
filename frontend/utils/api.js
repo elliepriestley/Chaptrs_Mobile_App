@@ -4,7 +4,7 @@ class Api {
     this._headers = headers;
   }
   signupUser = async (formData) => {
-    console.log(baseUrl)
+    console.log(baseUrl);
     try {
       const response = await fetch(`${this._baseUrl}/users`, {
         method: 'POST',
@@ -32,6 +32,89 @@ class Api {
         throw new Error(data.message);
       }
       return data;
+    } catch (error) {
+      return new Promise.reject(error);
+    }
+  };
+  createSession = async (formData, token) => {
+    try {
+      const response = await fetch(`${this._baseUrl}/sessions`, {
+        method: 'POST',
+        headers: { ...this._headers, Authorization: 'Bearer ' + token },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      return data;
+    } catch (error) {
+      return new Promise.reject(error);
+    }
+  };
+  createBook = async (formData, token) => {
+    try {
+      const response = await fetch(`${this._baseUrl}/books`, {
+        method: 'POST',
+        headers: { ...this._headers, Authorization: 'Bearer ' + token },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      return data;
+    } catch (error) {
+      return new Promise.reject(error);
+    }
+  };
+  getSessions = async (token) => {
+    try {
+      const response = await fetch(`${this._baseUrl}/sessions`, {
+        headers: { ...this._headers, Authorization: 'Bearer ' + token },
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      return data;
+    } catch (error) {
+      return new Promise.reject(error);
+    }
+  };
+  getBookclubs = async (token) => {
+    try {
+      const response = await fetch(`${this._baseUrl}/bookclubs`, {
+        headers: { ...this._headers, Authorization: 'Bearer ' + token },
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      return data;
+    } catch (error) {
+      return new Promise.reject(error);
+    }
+  };
+  findBooks = async (query) => {
+    try {
+      const res = await fetch(
+        `https://www.googleapis.com/books/v1/volumes?q=${query}`,
+      );
+      const data = await res.json();
+      console.log(data);
+      const books = data.items.map((book) => {
+        return {
+          title: book.volumeInfo.title || 'No title',
+          authors: book.volumeInfo.authors || [],
+          published: new Date(book.volumeInfo.publishedDate) || null,
+          description: book.volumeInfo.description || 'No description',
+          cover_photo: book.volumeInfo.imageLinks.thumbnail || null,
+          categories: book.volumeInfo.categories || null,
+          isbn: book.volumeInfo.industryIdentifiers[0].identifier || null,
+        };
+      });
+      return books;
     } catch (error) {
       return new Promise.reject(error);
     }

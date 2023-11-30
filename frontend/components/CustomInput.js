@@ -13,7 +13,7 @@ const CustomInput = (props) => {
 
   return (
     <>
-      <Text style={styles.label}>{label || name[0] + name.splice(1, -1)}</Text>
+      {label && <Text style={styles.label}>{label}</Text>}
       <TextInput
         style={[styles.textInput, hasError && styles.errorInput]}
         value={value}

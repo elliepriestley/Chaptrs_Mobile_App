@@ -30,22 +30,30 @@ function SessionCard({ session }) {
             </Text>
             <Text style={styles.details}>
               <Calendar style={styles.icon} color='black' size={8} />
-              {session.date}
+              {new Date(session.datetime).toLocaleDateString('en-gb', {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+              })}
             </Text>
 
             <Text style={styles.details}>
               <Clock style={styles.icon} color='black' size={8} />
-              {session.time}
+              {new Date(session.datetime).toLocaleTimeString('en-gb', {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
             </Text>
           </View>
           <View style={styles.bookclubContainer}>
             <Image
               style={styles.bookclubImage}
               source={{
-                uri: session.bookclub.image,
+                uri: session.bookclub?.image,
               }}
             />
-            <Text style={styles.bookclubText}>{session.bookclub.name}</Text>
+            <Text style={styles.bookclubText}>{session.bookclub?.name}</Text>
           </View>
         </View>
       </View>

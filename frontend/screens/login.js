@@ -32,10 +32,10 @@ function LoginScreen({ navigation, route }) {
       const data = await api.loginUser(formData);
       console.log(data);
       if (data) {
+        setToken(data.token);
         setUser({
           email: values.email,
         });
-        setToken(data.token);
       }
     } catch (error) {
       alert(error.message || 'Something went wrong');
@@ -51,10 +51,10 @@ function LoginScreen({ navigation, route }) {
         password: 'Qwerty1!',
       });
       if (data) {
+        setToken(data.token);
         setUser({
           email: '123@123.com',
         });
-        setToken(data.token);
       }
     } catch (error) {
       alert(error.message || 'Something went wrong');
