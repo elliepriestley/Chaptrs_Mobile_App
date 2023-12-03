@@ -15,35 +15,25 @@ import { useAuth } from '../utils/authContext';
 import api from '../utils/api';
 
 export default function CommunityScreen({ navigation: { navigate } }) {
-  const { token, setToken } = useAuth();
+  const { user, token, setToken } = useAuth();
   const { bookclubs, setBookclubs } = useMainContext();
   const [searchValue, setSearchValue] = useState('');
   const [filteredBookclubs, setFilteredBookclubs] = useState([]);
 
   useEffect(() => {
-    getBookclubs();
-  }, []);
-
-  const getBookclubs = async () => {
-    try {
-      const bookclubsData = await api.getBookclubs(token);
-      setBookclubs(bookclubsData.bookclubs);
-      setFilteredBookclubs(bookclubsData.bookclubs);
-      setSearchValue('')
-      if (bookclubsData.token) setToken(bookclubsData.token);
-    } catch (error) {
-      alert(error.message);
-    }
-  }
+    setFilteredBookclubs(bookclubs);
+  }, [bookclubs]);
 
   useEffect(() => {
     if (searchValue === '') {
       setFilteredBookclubs(bookclubs);
     } else {
       setFilteredBookclubs(
-        bookclubs.filter((bookclub) =>
-          bookclub.name.toLowerCase().includes(searchValue.toLowerCase()),
-        ),
+        bookclubs
+          .filter((bookclub) =>
+            bookclub.name.toLowerCase().includes(searchValue.toLowerCase()),
+          )
+          .sort((a, b) => a.name - b.name),
       );
     }
   }, [searchValue]);

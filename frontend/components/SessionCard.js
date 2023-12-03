@@ -24,27 +24,30 @@ function SessionCard({ session }) {
             {session.chosen_book.authors.join(', ')}
           </Text>
           <View style={styles.detailContainer}>
-            <Text style={styles.details}>
-              <Location style={styles.icon} color='black' size={8} />
-              {session.location}
-            </Text>
-            <Text style={styles.details}>
-              <Calendar style={styles.icon} color='black' size={8} />
-              {new Date(session.datetime).toLocaleDateString('en-gb', {
-                weekday: 'short',
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-              })}
-            </Text>
-
-            <Text style={styles.details}>
-              <Clock style={styles.icon} color='black' size={8} />
-              {new Date(session.datetime).toLocaleTimeString('en-gb', {
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Location style={styles.icon} color='black' size={12} />
+              <Text style={styles.details}>{session.location}</Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Calendar style={styles.icon} color='black' size={12} />
+              <Text style={styles.details}>
+                {new Date(session.datetime).toLocaleDateString('en-gb', {
+                  weekday: 'short',
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
+              </Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Clock style={styles.icon} color='black' size={12} />
+              <Text style={styles.details}>
+                {new Date(session.datetime).toLocaleTimeString('en-gb', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </Text>
+            </View>
           </View>
           <View style={styles.bookclubContainer}>
             <Image
@@ -104,7 +107,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     marginLeft: 10,
     lineHeight: 10,
-    flexShrink: 1,
+    flex: 1,
   },
   bookclubImage: {
     borderRadius: 100,
@@ -116,6 +119,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderColor: '#DCC8A9',
     borderWidth: 1,
+    minHeight: 40,
     padding: 5,
     borderRadius: 999,
     flexShrink: 1,

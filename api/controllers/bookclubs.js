@@ -77,6 +77,29 @@ const BookclubsController = {
       res.status(400).json({ message: err.message });
     }
   },
+  JoinBookclub: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const bookclub = await Bookclub.findByIdAndUpdate(
+        id,
+        { $addToSet: { members: req.user_id } },
+        {
+          new: true,
+        },
+      );
+      if (!bookclub) {
+        throw new Error('Bookclub does not exist');
+      }
+      const token = TokenGenerator.jsonwebtoken(req.user_id);
+      res.status(201).json({
+        message: `${bookclub.name} bookclub has been updated`,
+        token: token,
+        bookclub: bookclub,
+      });
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+  },
 };
 
 module.exports = BookclubsController;

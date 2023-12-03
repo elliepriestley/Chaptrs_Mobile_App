@@ -8,6 +8,7 @@ const BookclubSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
+      autopopulate: true,
     },
   ],
   suggested_books: [
@@ -15,14 +16,18 @@ const BookclubSchema = new mongoose.Schema({
       user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        autopopulate: true,
       },
       book_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Book',
+        autopopulate: true,
       },
     },
   ],
 });
+
+BookclubSchema.plugin(require('mongoose-autopopulate'));
 
 const Bookclub = mongoose.model('Bookclub', BookclubSchema);
 

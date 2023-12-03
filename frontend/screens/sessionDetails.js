@@ -9,11 +9,37 @@ import {
 import Heading from '../components/Heading';
 import { Location, Calendar, Clock } from 'iconsax-react-native';
 import AvatarGroup from '../components/AvatarGroup';
+import api from '../utils/api';
+import { useAuth } from '../utils/authContext';
+import { useMainContext } from '../utils/mainContext';
 
-function SessionDetailsScreen({ route }) {
+function SessionDetailsScreen({ route, navigation: { navigate } }) {
+  const { user, token, setToken } = useAuth();
+  const { sessions, setSessions } = useMainContext();
   const session = route.params?.session;
   const categories = ['adventure fiction', 'seastory', 'encyclopedic novel'];
   const colours = ['#E8C0DC', '#0FA7B047', '#F8964D7D'];
+  const joined = !session.users_attending
+    .map((attendingUser) => attendingUser._id)
+    .includes(user._id);
+
+  const joinSession = async () => {
+    try {
+      const data = await api.joinSession(session._id, token);
+      console.log(data.session.users_attending);
+      session.users_attending = data.session.users_attending;
+      setSessions((prev) => {
+        const oldSessions = prev.filter(
+          (prevSession) => prevSession._id !== session._id,
+        );
+        return [...oldSessions, session];
+      });
+      navigate('Home');
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   return (
     <ScrollView
       contentContainerStyle={styles.container}
@@ -83,10 +109,7 @@ function SessionDetailsScreen({ route }) {
               marginBottom: 20,
             }}
           >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat.
+            {session.description || 'No description provided.'}
           </Text>
         </ScrollView>
         <View
@@ -103,9 +126,11 @@ function SessionDetailsScreen({ route }) {
               fontSize: 18,
             }}
           >
-            Participants:
+            {session.users_attending.length === 0
+              ? 'Be the first to attend. Join now!'
+              : 'Participants:'}
           </Text>
-          <AvatarGroup users={session.participants} />
+          <AvatarGroup users={session.users_attending} />
         </View>
         <View style={styles.detailContainer}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -114,23 +139,37 @@ function SessionDetailsScreen({ route }) {
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Calendar style={styles.icon} color='black' size={24} />
-            <Text style={styles.details}>{session.date}</Text>
+            <Text style={styles.details}>
+              {new Date(session.datetime).toLocaleDateString('en-gb', {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+              })}
+            </Text>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Clock style={styles.icon} color='black' size={24} />
-            <Text style={styles.details}>{session.time}</Text>
+            <Text style={styles.details}>
+              {new Date(session.datetime).toLocaleTimeString('en-gb', {
+                minute: '2-digit',
+                hour: '2-digit',
+              })}
+            </Text>
           </View>
         </View>
-        <TouchableOpacity style={styles.joinButton}>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontFamily: 'Sansation-Regular',
-            }}
-          >
-            join
-          </Text>
-        </TouchableOpacity>
+        {joined && (
+          <TouchableOpacity style={styles.joinButton} onPress={joinSession}>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontFamily: 'Sansation-Regular',
+              }}
+            >
+              join
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </ScrollView>
   );

@@ -15,7 +15,9 @@ const AuthenticationController = {
         res.status(401).json({ message: 'Login details incorrect' });
       } else {
         const token = TokenGenerator.jsonwebtoken(user.id);
-        res.status(201).json({ token: token, message: 'User authorised' });
+        res
+          .status(201)
+          .json({ token: token, message: 'User authorised', user: user });
       }
     });
   },

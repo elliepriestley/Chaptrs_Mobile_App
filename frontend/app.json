@@ -5,16 +5,14 @@
     "version": "1.0.0",
     "description": "Chaptrs is a social media app for book lovers.",
     "orientation": "portrait",
-    "icon": "./assets/logoMedium.png",
+    "icon": "./assets/logoSquare.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/chaptrs.jpg",
+      "image": "./assets/logoSquare.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.rpatrick.chaptrs"

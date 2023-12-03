@@ -2,12 +2,14 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import LogoMedium from '../components/LogoMedium';
 import { useAuth } from '../utils/authContext';
+import { useMainContext } from '../utils/mainContext';
 import { ScrollView } from 'react-native';
 import Heading from '../components/Heading';
 import globalStyles from '../styles/globalStyles';
 
 function Profile({ navigation }) {
-  const { setUser, setToken } = useAuth();
+  const { user, setUser, setToken } = useAuth();
+  const { myBookclubs } = useMainContext();
   const logout = () => {
     setUser(null);
     setToken(null);
@@ -25,25 +27,32 @@ function Profile({ navigation }) {
             style={styles.userProfile}
             source={require('../assets/images/userProfile.png')}
           />
-          <Text style={styles.userName}>Alina E</Text>
-          <Text style={styles.subheading}>About</Text>
-          <View style={[styles.line, { width: 53 }]} />
-          <Text style={[styles.text, { marginTop: 25 }]}>
+          <Text style={styles.userName}>{user.username}</Text>
+          <Heading text='About' textStyles={{ fontSize: 18 }} />
+          <Text style={[styles.text, { marginBottom: 20 }]}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
             ad minim veniam, quis nostrud
           </Text>
-          <Text style={styles.subheading}>BookClub</Text>
-          <View style={[styles.line, { width: 82 }]} />
-          <View style={styles.bookclubContainer}>
-            <Image
-              style={styles.bookclubImage}
-              source={require('../assets/images/bookclubImage.png')}
-            />
-            <Text style={[styles.text, { marginLeft: 10 }]}>
-              Ranter's Book Nook
-            </Text>
-          </View>
+          <Heading text='Bookclubs' textStyles={{ fontSize: 18 }} />
+          <ScrollView
+            contentContainerStyle={{ gap: 10 }}
+            style={{ height: 80 }}
+          >
+            {myBookclubs.map((bookclub) => {
+              return (
+                <View key={bookclub._id} style={styles.bookclubContainer}>
+                  <Image
+                    style={styles.bookclubImage}
+                    source={{ uri: bookclub.image }}
+                  />
+                  <Text style={[styles.text, { marginLeft: 10 }]}>
+                    {bookclub.name}
+                  </Text>
+                </View>
+              );
+            })}
+          </ScrollView>
         </View>
       </ScrollView>
       <TouchableOpacity
@@ -88,12 +97,6 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     marginTop: 20,
   },
-  subheading: {
-    fontFamily: 'Sansation-Regular',
-    fontSize: 18,
-    paddingBottom: 5,
-    marginTop: 30,
-  },
   userProfile: {
     height: 115,
     width: 115,
@@ -106,6 +109,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 25,
     fontFamily: 'Sansation-Regular',
+    marginBottom: 20,
   },
   text: {
     fontFamily: 'Sansation-Regular',
@@ -118,8 +122,7 @@ const styles = StyleSheet.create({
     width: 35,
   },
   bookclubContainer: {
-    marginTop: 25,
-    marginBottom: 25,
+    // marginBottom: 25,
     alignItems: 'center',
     flexDirection: 'row',
     borderColor: '#DCC8A9',

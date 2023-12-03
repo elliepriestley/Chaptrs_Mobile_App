@@ -9,6 +9,7 @@ router.get('/', tokenChecker, SessionsController.FindAll);
 router.get('/:id', tokenChecker, SessionsController.FindById);
 router.delete('/:id', tokenChecker, SessionsController.DeleteById);
 router.patch('/:id', tokenChecker, SessionsController.UpdateById);
+router.patch('/:id/join', tokenChecker, SessionsController.joinSession);
 // router.post("/:session_id/attend", tokenChecker, SessionsController.AddAttending);
 
 
