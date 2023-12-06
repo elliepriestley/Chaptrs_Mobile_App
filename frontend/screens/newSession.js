@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Field } from 'formik';
 import Heading from '../components/Heading';
 import CustomInput from '../components/CustomInput';
@@ -13,10 +13,10 @@ import SelectedBook from '../components/SelectedBook';
 import { useMainContext } from '../utils/mainContext';
 
 export default function NewSessionScreen({ navigation: { navigate } }) {
-  const { bookclubs, setSessions } = useMainContext();
+  const { setBookclubs, myBookclubs, setSessions } = useMainContext();
   const [selectedBook, setSelectedBook] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const { token, setToken } = useAuth();
+  const { user, token, setToken } = useAuth();
   const initialValues = {
     location: '',
     datetime: new Date(),
@@ -31,7 +31,6 @@ export default function NewSessionScreen({ navigation: { navigate } }) {
       const data = await api.createSession(sessionData, token);
       if (data) setToken(data.token);
       setSessions((prev) => [...prev, data.session]);
-      console.log('data', data);
       alert(data.message);
       setSelectedBook(null);
       resetForm();
@@ -68,7 +67,7 @@ export default function NewSessionScreen({ navigation: { navigate } }) {
                 setFieldValue('bookclub', itemValue);
               }}
             >
-              {bookclubs.map((bookclub) => {
+              {myBookclubs.map((bookclub) => {
                 return (
                   <Picker.Item
                     key={bookclub?._id}

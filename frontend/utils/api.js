@@ -68,6 +68,42 @@ class Api {
       return new Promise.reject(error);
     }
   };
+  joinSession = async (sessionId, token) => {
+    try {
+      const response = await fetch(
+        `${this._baseUrl}/sessions/${sessionId}/join`,
+        {
+          method: 'PATCH',
+          headers: { ...this._headers, Authorization: 'Bearer ' + token },
+        },
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      return data;
+    } catch (error) {
+      return new Promise.reject(error);
+    }
+  };
+  joinBookclub = async (bookclubId, token) => {
+    try {
+      const response = await fetch(
+        `${this._baseUrl}/bookclubs/${bookclubId}/join`,
+        {
+          method: 'PATCH',
+          headers: { ...this._headers, Authorization: 'Bearer ' + token },
+        },
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      return data;
+    } catch (error) {
+      return new Promise.reject(error);
+    }
+  };
   getSessions = async (token) => {
     try {
       const response = await fetch(`${this._baseUrl}/sessions`, {
@@ -109,7 +145,7 @@ class Api {
           authors: book.volumeInfo.authors || [],
           published: new Date(book.volumeInfo.publishedDate) || null,
           description: book.volumeInfo.description || 'No description',
-          cover_photo: book.volumeInfo.imageLinks.thumbnail || null,
+          cover_photo: book.volumeInfo.imageLinks?.thumbnail || null,
           categories: book.volumeInfo.categories || null,
           isbn: book.volumeInfo.industryIdentifiers[0].identifier || null,
         };

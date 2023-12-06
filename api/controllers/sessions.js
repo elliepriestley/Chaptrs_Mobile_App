@@ -39,19 +39,17 @@ const SessionsController = {
     }
   },
   Create: async (req, res) => {
-    console.log(req.body);
+    req.body.users_attending = [req.user_id];
     try {
-      const session = await Session.create(req.body)
-      await session.populate([
-        'chosen_book',
-        'bookclub',
-      ]);
+      const session = await Session.create(req.body);
       if (!session) {
         throw new Error('Session could not be created');
       }
       const token = TokenGenerator.jsonwebtoken(req.user_id);
       res.status(201).json({
-        message: `Session has been created at ${session.location} on ${session.datetime.toLocaleDateString()} at ${session.datetime.toLocaleTimeString()}`,
+        message: `Session has been created at ${
+          session.location
+        } on ${session.datetime.toLocaleDateString()} at ${session.datetime.toLocaleTimeString()}`,
         token: token,
         session: session,
       });
@@ -82,12 +80,32 @@ const SessionsController = {
       const { id } = req.params;
       const session = await Session.findByIdAndUpdate(id, req.body, {
         new: true,
-      })
-        .populate('chosen_book')
-        .populate('users_attending')
-        .populate('suggested_books.user_id')
-        .populate('suggested_books.book_id')
-        .populate('bookclub');
+      });
+      if (!session) {
+        throw new Error('Session does not exist');
+      }
+      const token = TokenGenerator.jsonwebtoken(req.user_id);
+      res.status(201).json({
+        message: `Session has been updated at ${
+          session.location
+        } on ${session.datetime.toLocaleDateString()} at ${session.datetime.toLocaleTimeString()}`,
+        token: token,
+        session: session,
+      });
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+  },
+  joinSession: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const session = await Session.findByIdAndUpdate(
+        id,
+        { $addToSet: { users_attending: req.user_id } },
+        {
+          new: true,
+        },
+      );
       if (!session) {
         throw new Error('Session does not exist');
       }

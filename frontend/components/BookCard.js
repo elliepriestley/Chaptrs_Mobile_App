@@ -3,7 +3,6 @@ import React from 'react';
 
 export default function BookCard({ book, setShowModal, setSelectedBook }) {
   handlePress = () => {
-    console.log(book);
     setSelectedBook(book);
     setShowModal(false);
   };
@@ -11,12 +10,31 @@ export default function BookCard({ book, setShowModal, setSelectedBook }) {
     return (
       <TouchableOpacity onPress={handlePress}>
         <View style={styles.container}>
-          <Image
-            style={styles.image}
-            source={{
-              uri: book.cover_photo,
-            }}
-          />
+          {book.cover_photo ? (
+            <Image
+              style={styles.image}
+              source={{
+                uri: book.cover_photo,
+              }}
+            />
+          ) : (
+            <View
+              style={[
+                styles.image,
+                { borderWidth: 1, backgroundColor: '#ddd' },
+              ]}
+            >
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontFamily: 'Sansation-Regular',
+                  fontSize: 12,
+                }}
+              >
+                Cover not available
+              </Text>
+            </View>
+          )}
           <View style={{ alignSelf: 'center', flex: 1 }}>
             <Text style={styles.title}>{book.title}</Text>
             <Text style={styles.author}>{book.authors.join(', ')}</Text>
@@ -42,6 +60,8 @@ const styles = StyleSheet.create({
     width: 60,
     height: '100%',
     borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 16,

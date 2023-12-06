@@ -9,23 +9,32 @@ import { MainProvider } from './utils/mainContext.jsx';
 // Determine which navigator to use based on whether the user is logged in
 function NavigationSelector() {
   const { user } = useAuth();
-  return <>{user ? <TabNavigator /> : <AuthStack />}</>;
+  return (
+    <>
+      {user ? (
+        <MainProvider>
+          <TabNavigator />
+        </MainProvider>
+      ) : (
+        <AuthStack />
+      )}
+    </>
+  );
 }
 
 export default function App() {
   const [fontsLoaded] = useFonts({
     'Sansation-Regular': require('./assets/fonts/sansation/Sansation_Regular.ttf'),
+    'Sansation-Bold': require('./assets/fonts/sansation/Sansation_Bold.ttf'),
   });
   if (!fontsLoaded) {
     return <Text>Loading...</Text>;
   }
   return (
     <AuthProvider>
-    <MainProvider>
       <NavigationContainer>
         <NavigationSelector />
       </NavigationContainer>
-    </MainProvider>
     </AuthProvider>
   );
 }

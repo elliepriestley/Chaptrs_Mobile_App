@@ -30,12 +30,10 @@ function LoginScreen({ navigation, route }) {
       const formData = { ...values };
       delete formData.confirmPassword;
       const data = await api.loginUser(formData);
-      console.log(data);
+      console.log('login data', data);
       if (data) {
         setToken(data.token);
-        setUser({
-          email: values.email,
-        });
+        setUser(data.user);
       }
     } catch (error) {
       alert(error.message || 'Something went wrong');
@@ -47,21 +45,17 @@ function LoginScreen({ navigation, route }) {
   const DemoLogin = async () => {
     try {
       const data = await api.loginUser({
-        email: '123@123.com',
+        email: 'user@test.com',
         password: 'Qwerty1!',
       });
       if (data) {
+        console.log('login data', data);
         setToken(data.token);
-        setUser({
-          email: '123@123.com',
-        });
+        setUser(data.user);
       }
     } catch (error) {
       alert(error.message || 'Something went wrong');
     }
-    setUser({
-      email: '123@123.com',
-    });
   };
 
   return (

@@ -8,40 +8,21 @@ import api from '../utils/api';
 import { useAuth } from '../utils/authContext';
 
 function HomeScreen() {
-  const { token, setToken } = useAuth();
-  const { sessions, setSessions } = useMainContext();
+  const { mySessions, setmySessions } = useMainContext();
   const [upcomingSessions, setUpcomingSessions] = useState([]);
   const [pastSessions, setPastSessions] = useState([]);
 
   useEffect(() => {
-    getSessions();
-  }, []);
-
-  useEffect(() => {
-    console.log('token', token);
-  }, [token]);
-
-  const getSessions = async () => {
-    try {
-      const sessionsData = await api.getSessions(token);
-      console.log('sessionData', sessionsData);
-      setSessions(sessionsData.sessions);
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
-  useEffect(() => {
-    console.log(sessions);
-    const upcomingSessions = sessions.filter(
+    mySessions.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
+    const upcomingSessions = mySessions.filter(
       (session) => new Date(session.datetime) > new Date(),
     );
-    const pastSessions = sessions.filter(
-      (session) => new Date(session.datetime) < new Date(),
-    );
+    const pastSessions = mySessions
+      .filter((session) => new Date(session.datetime) < new Date())
+      .reverse();
     setUpcomingSessions(upcomingSessions);
     setPastSessions(pastSessions);
-  }, [sessions]);
+  }, [mySessions]);
 
   return (
     <ScrollView style={styles.container}>

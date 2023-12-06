@@ -8,5 +8,6 @@ router.get('/', tokenChecker, BookclubsController.FindAll);
 router.get('/:id', tokenChecker, BookclubsController.FindById);
 router.delete('/:id', tokenChecker, BookclubsController.DeleteById);
 router.patch('/:id', tokenChecker, BookclubsController.UpdateById);
+router.patch('/:id/join', tokenChecker, BookclubsController.JoinBookclub);
 
 module.exports = router;

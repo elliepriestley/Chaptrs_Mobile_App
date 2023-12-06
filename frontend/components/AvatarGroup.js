@@ -20,8 +20,8 @@ function AvatarGroup({
             }}
             source={{
               uri:
-                user.photo ||
-                `https://ui-avatars.com/api/?length=1&background=random&name=${user[0]}}`,
+                user?.photo ||
+                `https://ui-avatars.com/api/?length=1&background=random&name=${user.username[0]}}`,
             }}
           />
         );
