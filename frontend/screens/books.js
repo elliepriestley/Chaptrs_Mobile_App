@@ -2,16 +2,14 @@ import {
   View,
   Text,
   StyleSheet,
-  FlatList,
-  TextInput,
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
 import Heading from '../components/Heading';
 import React, { useEffect, useState } from 'react';
-import { SearchNormal1 } from 'iconsax-react-native';
 import api from '../utils/api';
 import BookCard from '../components/BookCard';
+import SearchInput from '../components/SearchInput';
 
 export default function BookScreen() {
   const [books, setBooks] = useState([]);
@@ -40,25 +38,14 @@ export default function BookScreen() {
   return (
     <View style={styles.container}>
       <Heading text='Books' />
-      <View
-        style={{
-          flexDirection: 'row',
-          gap: 20,
-          alignItems: 'center',
-          marginBottom: 20,
-        }}
-      >
-        <TextInput
-          style={styles.search}
-          placeholder='Search'
-          returnKeyType='search'
-          placeholderTextColor='#69520377'
-          value={query}
-          onChangeText={setQuery}
-          onSubmitEditing={handleSearch}
-        />
-        <SearchNormal1 onPress={() => handleSearch()} size={36} color='black' />
-      </View>
+      {/* I made a component for search input to reuse it in other screens */}
+      <SearchInput
+        value={query}
+        onChangeText={setQuery}
+        onSubmitEditing={handleSearch}
+        onPress={handleSearch}
+        placeholder="Example: Harry Potter"
+      />
       {searching ? (
         <ActivityIndicator size='large' color='#695203' />
       ) : (
@@ -97,5 +84,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Sansation-Regular',
     fontSize: 16,
     textAlign: 'center',
+  },
+  icon: {
+    position: 'absolute',
+    right: 10,
   },
 });

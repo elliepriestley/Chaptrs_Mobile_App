@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { AddCircle, Scroll, UserAdd } from 'iconsax-react-native';
 import Heading from '../components/Heading';
 import BookclubCard from '../components/BookclubCard';
+import SearchInput from '../components/SearchInput';
 import { useMainContext } from '../utils/mainContext';
 import { useAuth } from '../utils/authContext';
 import api from '../utils/api';
@@ -44,17 +45,14 @@ export default function CommunityScreen({ navigation: { navigate } }) {
         <Heading text='Community' />
         <AddCircle
           onPress={() => navigate('New Bookclub')}
-          size={40}
+          size={36}
           color='black'
         />
       </View>
-      <TextInput
-        style={styles.search}
-        placeholder='Search'
-        returnKeyType='search'
-        placeholderTextColor='#69520377'
+      <SearchInput
         value={searchValue}
         onChangeText={setSearchValue}
+        placeholder="Example: Ranter's Book Nook"
       />
       <ScrollView contentContainerStyle={{ gap: 15 }}>
         {filteredBookclubs.map((bookclub) => {

@@ -17,8 +17,8 @@ import { useAuth } from '../utils/authContext';
 
 function LoginScreen({ navigation, route }) {
   const { setUser, setToken } = useAuth();
+  
   // Handling form validation
-
   const initialValues = {
     email: route.params?.email || '',
     password: route.params?.password || '',
