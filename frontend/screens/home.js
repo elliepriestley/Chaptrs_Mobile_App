@@ -26,21 +26,20 @@ function HomeScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={{ marginLeft: 25 }}>
-        <Heading text='Upcoming Sessions' headingStyles={{ marginTop: 20 }} />
+      <View>
+        <Heading text='Upcoming Sessions' headingStyles={{ marginTop: 20, marginLeft: 20 }} />
         <FlatList
-          style={{ marginBottom: 20 }}
+          style={{ marginBottom: 20, gap: -10 }}
           data={upcomingSessions}
           renderItem={({ item }) => {
             return <SessionCard session={item} />;
           }}
           horizontal={true}
+          alwaysBounceHorizontal={true}
           keyExtractor={(session) => session._id}
-          ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
         />
-        <Heading text='Past Sessions' />
+        <Heading text='Past Sessions' headingStyles={{ marginTop: 20, marginLeft: 20 }} />
         <FlatList
-          style={{ marginBottom: 20 }}
           data={pastSessions}
           renderItem={({ item }) => {
             return <SessionCard session={item} />;
@@ -65,6 +64,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     paddingBottom: 5,
     marginTop: 30,
+    marginLeft: 25
   },
   line: {
     height: 0,

@@ -11,61 +11,62 @@ function SessionCard({ session }) {
 
   return (
     <TouchableOpacity onPress={handlePress}>
-      <View style={styles.container}>
-        <Image
-          style={styles.image}
-          source={{
-            uri: session.chosen_book.cover_photo,
-          }}
-        />
-        <View style={{ alignSelf: 'center', width: '50%' }}>
-          <Text style={styles.title}>{session.chosen_book.title}</Text>
-          <Text style={styles.author}>
-            {session.chosen_book.authors.join(', ')}
-          </Text>
-          <View style={styles.detailContainer}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Location style={styles.icon} color='black' size={12} />
-              <Text style={styles.details}>{session.location}</Text>
+        <View style={styles.container}>
+          <Image
+            style={styles.image}
+            source={{
+              uri: session.chosen_book.cover_photo,
+            }}
+          />
+          <View style={{ alignSelf: 'center', width: '50%' }}>
+            <Text style={styles.title}>{session.chosen_book.title}</Text>
+            <Text style={styles.author}>
+              {session.chosen_book.authors.join(', ')}
+            </Text>
+            <View style={styles.detailContainer}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Location style={styles.icon} color='black' size={12} />
+                <Text style={styles.details}>{session.location}</Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Calendar style={styles.icon} color='black' size={12} />
+                <Text style={styles.details}>
+                  {new Date(session.datetime).toLocaleDateString('en-gb', {
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                </Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Clock style={styles.icon} color='black' size={12} />
+                <Text style={styles.details}>
+                  {new Date(session.datetime).toLocaleTimeString('en-gb', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </Text>
+              </View>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Calendar style={styles.icon} color='black' size={12} />
-              <Text style={styles.details}>
-                {new Date(session.datetime).toLocaleDateString('en-gb', {
-                  weekday: 'short',
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                })}
-              </Text>
+            <View style={styles.bookclubContainer}>
+              <Image
+                style={styles.bookclubImage}
+                source={{
+                  uri: session.bookclub?.image,
+                }}
+              />
+              <Text style={styles.bookclubText}>{session.bookclub?.name}</Text>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Clock style={styles.icon} color='black' size={12} />
-              <Text style={styles.details}>
-                {new Date(session.datetime).toLocaleTimeString('en-gb', {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </Text>
-            </View>
-          </View>
-          <View style={styles.bookclubContainer}>
-            <Image
-              style={styles.bookclubImage}
-              source={{
-                uri: session.bookclub?.image,
-              }}
-            />
-            <Text style={styles.bookclubText}>{session.bookclub?.name}</Text>
           </View>
         </View>
-      </View>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    marginLeft: 20,
     flexDirection: 'row',
     gap: 10,
     width: 320,
@@ -85,10 +86,10 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   author: {
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: 'Sansation-Regular',
     color: '#695203',
-    marginBottom: 15,
+    marginBottom: 10,
   },
   detailContainer: {
     gap: 4,
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   details: {
-    fontSize: 10,
+    fontSize: 12,
     fontFamily: 'Sansation-Regular',
   },
   bookclubText: {
