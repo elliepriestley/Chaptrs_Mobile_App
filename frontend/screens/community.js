@@ -54,7 +54,7 @@ export default function CommunityScreen({ navigation: { navigate } }) {
         onChangeText={setSearchValue}
         placeholder="Example: Ranter's Book Nook"
       />
-      <ScrollView contentContainerStyle={{ gap: 15 }}>
+      <ScrollView contentContainerStyle={{ gap: 15, paddingBottom: 100, }}>
         {filteredBookclubs.map((bookclub) => {
           return <BookclubCard key={bookclub._id} bookclub={bookclub} />;
         })}
@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     padding: 20,
-    paddingBottom: 110,
   },
   search: {
     height: 40,
