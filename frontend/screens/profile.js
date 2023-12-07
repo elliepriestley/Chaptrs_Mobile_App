@@ -18,8 +18,8 @@ function Profile({ navigation }) {
 
   return (
       <ScrollView style={styles.container}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Heading text='Account' />
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, marginHorizontal: 20 }}>
+            <Heading text='Profile' />
               <Edit
                 size={36}
                 color='black'
@@ -30,16 +30,13 @@ function Profile({ navigation }) {
             source={require('../assets/images/userProfile.png')}
           />
           <Text style={styles.userName}>{user.username}</Text>
-          <Heading text='About' textStyles={{ fontSize: 18 }} />
-          <Text style={[styles.text, { marginBottom: 20 }]}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud
+          <Heading text='About' textStyles={{ fontSize: 18 }} headingStyles={{ fontSize: 18, marginLeft: 20 }} />
+          <Text style={[styles.text, { marginBottom: 20, marginLeft: 20 }]}>
+            Tell about yourself...
           </Text>
-          <Heading text='Bookclubs' textStyles={{ fontSize: 18 }} />
+          <Heading text='Bookclubs' textStyles={{ fontSize: 18 }} headingStyles={{ fontSize: 18, marginLeft: 20 }} />
           <ScrollView
             horizontal={true}
-            contentContainerStyle={{ gap: 10 }}
             style={{ height: 70 }}
           >
             {myBookclubs.map((bookclub) => {
@@ -71,18 +68,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 20,
-  },
-  line: {
-    height: 0,
-    borderTopColor: '#DCC8A9',
-    borderTopWidth: 2,
-    marginTop: 5,
   },
   heading: {
     fontFamily: 'Sansation-Regular',
     fontSize: 24,
     paddingBottom: 5,
+    marginRight: 20
   },
   userProfile: {
     height: 115,
@@ -101,6 +92,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Sansation-Regular',
     fontSize: 16,
     lineHeight: 30,
+    marginLeft: 20
   },
   bookclubImage: {
     borderRadius: 100,
@@ -116,5 +108,6 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderRadius: 50,
     alignSelf: 'flex-start',
+    marginHorizontal: 10
   },
 });
