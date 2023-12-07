@@ -26,7 +26,7 @@ function HomeScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={{ marginHorizontal: 25 }}>
+      <View style={{ marginLeft: 25 }}>
         <Heading text='Upcoming Sessions' headingStyles={{ marginTop: 20 }} />
         <FlatList
           style={{ marginBottom: 20 }}

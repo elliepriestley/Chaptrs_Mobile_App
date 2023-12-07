@@ -86,6 +86,22 @@ class Api {
       return new Promise.reject(error);
     }
   };
+  createBookclub = async (formData, token) => {
+    try {
+      const response = await fetch(`${this._baseUrl}/bookclubs`, {
+        method: 'POST',
+        headers: { ...this._headers, Authorization: 'Bearer ' + token },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      return data;
+    } catch (error) {
+      return new Promise.reject(error);
+    }
+  };
   joinBookclub = async (bookclubId, token) => {
     try {
       const response = await fetch(

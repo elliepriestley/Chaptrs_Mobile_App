@@ -17,10 +17,7 @@ function Profile({ navigation }) {
   };
 
   return (
-    <>
-      <ScrollView
-        contentContainerStyle={styles.container}
-      >
+      <ScrollView style={styles.container}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Heading text='Account' />
               <Edit
@@ -41,8 +38,9 @@ function Profile({ navigation }) {
           </Text>
           <Heading text='Bookclubs' textStyles={{ fontSize: 18 }} />
           <ScrollView
+            horizontal={true}
             contentContainerStyle={{ gap: 10 }}
-            style={{ height: 80 }}
+            style={{ height: 70 }}
           >
             {myBookclubs.map((bookclub) => {
               return (
@@ -64,8 +62,6 @@ function Profile({ navigation }) {
             <Text style={styles.text}>log out</Text>
           </TouchableOpacity>
       </ScrollView>
-
-    </>
   );
 }
 
@@ -75,7 +71,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingBottom: 110,
     padding: 20,
   },
   line: {
@@ -88,14 +83,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Sansation-Regular',
     fontSize: 24,
     paddingBottom: 5,
-    // marginTop: 20,
   },
   userProfile: {
     height: 115,
     width: 115,
     borderRadius: 100,
     alignSelf: 'center',
-    marginTop: 30,
   },
   userName: {
     alignSelf: 'center',
@@ -115,7 +108,6 @@ const styles = StyleSheet.create({
     width: 35,
   },
   bookclubContainer: {
-    // marginBottom: 25,
     alignItems: 'center',
     flexDirection: 'row',
     borderColor: '#DCC8A9',

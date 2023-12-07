@@ -1,14 +1,54 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, ScrollView } from 'react-native';
-import { RadioButton } from 'react-native-paper';
 import React, { useState } from 'react';
+import { useAuth } from '../utils/authContext';
+import { useMainContext } from '../utils/mainContext';
 import Heading from '../components/Heading';
 import SearchInput from '../components/SearchInput';
+import { ArrowDown2, ArrowUp2 } from 'iconsax-react-native';
+import api from '../utils/api';
 
-function NewBookclubScreen() {
-  const [isLiked, setIsLiked] = useState(false);
+function NewBookclubScreen({ navigation }) {
+  const [isPrivate, setIsPrivate] = useState(false);
+  const [isShown, setIsShown] = useState(false);
+  const { user, token, setToken } = useAuth();
+  const { setBookclubs, myBookclubs, setSessions } = useMainContext();
+
+  const [bookclubInfo, setBookclubInfo] = useState({
+    name: '',
+    description: '',
+  });
 
   const onRadioBtnClick = () => {
-    setIsLiked(!isLiked);
+    setIsPrivate(!isPrivate);
+  };
+
+  const onArrowBtnClick = () => {
+    setIsShown(!isShown)
+  }
+
+  const handleInput = (key, value) => {
+    setBookclubInfo({
+      ...bookclubInfo,
+      [key]: value,
+    });
+  };
+
+  const handleSubmit = async() => { 
+    console.log('Form data:', bookclubInfo);
+    try {
+      const data = await api.createBookclub(bookclubInfo, token);
+      if (data) setToken(data.token);
+      console.log(data, "dataaaa")
+      setBookclubs((prev) => [...prev, data.bookclub])
+      alert(data.message);
+      setBookclubInfo({name: '', description: ''})
+    }
+      catch (error) {
+    alert(error.message || 'Something went wrong');
+    } finally {
+    console.log('success')
+    navigation.navigate('Community')
+    }
   };
 
   return (
@@ -30,6 +70,8 @@ function NewBookclubScreen() {
                 style={styles.input}
                 placeholder="Choose name for your bookclub"
                 placeholderTextColor='#69520377'
+                value={bookclubInfo.name}
+                onChangeText={(text) => handleInput('name', text)}
               />
               <Text style={styles.label}>Description</Text>
               <TextInput
@@ -38,19 +80,33 @@ function NewBookclubScreen() {
                 multiline
                 numberOfLines={6}
                 maxLength={240}
+                value={bookclubInfo.description}
+                onChangeText={(text) => handleInput('description', text)}
               />
               <Text style={styles.label}>Favourite genres</Text>
               <SearchInput placeholder="Example: fantasy" />
-              <View>
+              <View style={{gap: 10}}>
                 <View style={styles.radioButtonContainer}>
                   <TouchableOpacity onPress={onRadioBtnClick} style={styles.radioButton}>
-                    {isLiked ? <View style={styles.radioButtonIcon} /> : null}
+                    {isPrivate ? <View style={styles.radioButtonIcon} /> : null}
                   </TouchableOpacity>
                   <TouchableOpacity onPress={onRadioBtnClick}>
                     <Text style={styles.radioButtonText}>Private</Text>
                   </TouchableOpacity>
+                  <TouchableOpacity onPress={onArrowBtnClick}>
+                    { isShown ? <ArrowDown2 size={24} color='black' /> : <ArrowUp2 size={24} color='black' /> }
+                  </TouchableOpacity>
                 </View>
+                { !isShown ? <Text style={styles.caption}>Private: Other users won’t see your upcoming/past sessions</Text> : null}
               </View>
+            </View>
+            <View style={{width: '100%', justifyContent: 'center', alignItems: 'center'}}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleSubmit}
+              >
+                <Text>create bookclub</Text>
+              </TouchableOpacity>
             </View>
           </ScrollView>
         </TouchableWithoutFeedback>
@@ -96,6 +152,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Sansation-Regular',
     fontSize: 16,
     marginLeft: 16,
+    marginRight: 10,
   },
   input: {
     backgroundColor: 'white',
@@ -109,5 +166,18 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 120,
     padding: 10,
-  }
+  },
+  caption: {
+    color: "#695203",
+    fontSize: 12,
+    fontFamily: 'Sansation-Regular',
+  },
+  button: {
+    marginVertical: 20,
+    backgroundColor: '#DCC8A9',
+    padding: 10,
+    borderRadius: 999,
+    width: '60%',
+    alignItems: 'center',
+  },
 });

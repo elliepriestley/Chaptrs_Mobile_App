@@ -33,7 +33,7 @@ export default function BookclubCard({ bookclub }) {
           source={{ uri: bookclub.image }}
           style={{ width: 50, height: 50, borderRadius: 999 }}
         />
-        <Text style={{ flex: 1, fontFamily: 'Sansation-Bold', fontSize: 16 }}>
+        <Text style={{ flex: 1, fontFamily: 'Sansation-Bold', fontSize: 16, color: '#695203' }}>
           {bookclub.name}
         </Text>
         {bookclub.members.map((member) => member._id).includes(user._id) ? (
@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: 'Sansation-Regular',
-    fontSize: 14,
+    fontSize: 16,
+    marginBottom: 10,
   },
 });
