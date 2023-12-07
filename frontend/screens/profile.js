@@ -5,6 +5,7 @@ import { useAuth } from '../utils/authContext';
 import { useMainContext } from '../utils/mainContext';
 import { ScrollView } from 'react-native';
 import Heading from '../components/Heading';
+import { Edit } from 'iconsax-react-native';
 import globalStyles from '../styles/globalStyles';
 
 function Profile({ navigation }) {
@@ -19,10 +20,14 @@ function Profile({ navigation }) {
     <>
       <ScrollView
         contentContainerStyle={styles.container}
-        style={styles.container}
       >
-        <View style={{ marginHorizontal: 25 }}>
-          <Heading text='Account' />
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Heading text='Account' />
+              <Edit
+                size={36}
+                color='black'
+              />
+          </View>
           <Image
             style={styles.userProfile}
             source={require('../assets/images/userProfile.png')}
@@ -53,26 +58,13 @@ function Profile({ navigation }) {
               );
             })}
           </ScrollView>
-        </View>
+          <TouchableOpacity
+            onPress={logout}
+          >
+            <Text style={styles.text}>log out</Text>
+          </TouchableOpacity>
       </ScrollView>
-      <TouchableOpacity
-        style={[
-          globalStyles.button,
-          {
-            backgroundColor: '#DCC8A9',
-            position: 'absolute',
-            top: 0,
-            right: 20,
-            flexShrink: 1,
-            paddingHorizontal: 20,
-            marginHorizontal: 0,
-            marginVertical: 0,
-          },
-        ]}
-        onPress={logout}
-      >
-        <Text style={styles.text}>Logout</Text>
-      </TouchableOpacity>
+
     </>
   );
 }
@@ -83,7 +75,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingBottom: 100,
+    paddingBottom: 110,
+    padding: 20,
   },
   line: {
     height: 0,
@@ -95,7 +88,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Sansation-Regular',
     fontSize: 24,
     paddingBottom: 5,
-    marginTop: 20,
+    // marginTop: 20,
   },
   userProfile: {
     height: 115,
