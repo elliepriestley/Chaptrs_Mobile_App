@@ -6,6 +6,7 @@ import Heading from '../components/Heading';
 import SearchInput from '../components/SearchInput';
 import { ArrowDown2, ArrowUp2 } from 'iconsax-react-native';
 import api from '../utils/api';
+import bookclubImg from '../data/bookclubImg';
 
 function NewBookclubScreen({ navigation }) {
   const [isPrivate, setIsPrivate] = useState(false);
@@ -33,12 +34,14 @@ function NewBookclubScreen({ navigation }) {
     });
   };
 
-  const handleSubmit = async() => { 
-    console.log('Form data:', bookclubInfo);
+  const handleSubmit = async() => {
+    const randomImage = bookclubImg[Math.floor(Math.random() * bookclubImg.length)];
     try {
-      const data = await api.createBookclub(bookclubInfo, token);
+      const data = await api.createBookclub({
+        ...bookclubInfo,
+        image: randomImage.url
+      }, token);
       if (data) setToken(data.token);
-      console.log(data, "dataaaa")
       setBookclubs((prev) => [...prev, data.bookclub])
       alert(data.message);
       setBookclubInfo({name: '', description: ''})

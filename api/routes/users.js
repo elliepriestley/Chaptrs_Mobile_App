@@ -7,5 +7,6 @@ const UsersController = require('../controllers/users');
 router.post('/', UsersController.Create);
 router.get('/', tokenChecker, UsersController.FindAll);
 router.get('/me', tokenChecker, UsersController.FindMe);
+router.patch('/:id', tokenChecker, UsersController.UpdateById);
 
 module.exports = router;
