@@ -6,7 +6,6 @@ import { useMainContext } from '../utils/mainContext';
 import { ScrollView } from 'react-native';
 import Heading from '../components/Heading';
 import { Edit } from 'iconsax-react-native';
-import globalStyles from '../styles/globalStyles';
 
 function Profile({ navigation }) {
   const { user, setUser, setToken } = useAuth();
@@ -27,7 +26,9 @@ function Profile({ navigation }) {
           </View>
           <Image
             style={styles.userProfile}
-            source={require('../assets/images/userProfile.png')}
+            source={{
+              uri: user.profile_picture,
+            }}
           />
           <Text style={styles.userName}>{user.username}</Text>
           <Heading text='About' textStyles={{ fontSize: 18 }} headingStyles={{ fontSize: 18, marginLeft: 20 }} />
