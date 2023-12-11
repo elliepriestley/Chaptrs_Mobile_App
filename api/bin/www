@@ -29,8 +29,7 @@ app.set('port', port);
  * Connect to MongoDB
  **/
 
-var mongoDbUrl =
-  process.env.MONGODB_URL || 'mongodb://localhost:27017/Chaptrs_Mobile';
+var mongoDbUrl = process.env.MONGODB_URL || 'mongodb://0.0.0.0/Chaptrs_Mobile';
 mongoose.connect(mongoDbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
