@@ -19,13 +19,15 @@ export default function ChooseBookModal({
   showModal,
   setShowModal,
   setSelectedBook,
+  query,
+  setQuery,
 }) {
   const [books, setBooks] = useState([]);
-  const [query, setQuery] = useState('');
   const [searching, setSearching] = useState(false);
   const [error, setError] = useState(null);
 
   const handleSearch = async () => {
+    if (query === '') return;
     setSearching(true);
     try {
       const books = await api.findBooks(query);
@@ -36,6 +38,11 @@ export default function ChooseBookModal({
       setSearching(false);
     }
   };
+
+  useEffect(() => {
+    if (!showModal) return;
+    handleSearch();
+  }, [showModal]);
 
   useEffect(() => {
     if (error) {

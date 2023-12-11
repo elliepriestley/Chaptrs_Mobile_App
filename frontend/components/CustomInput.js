@@ -39,9 +39,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 999,
     padding: 10,
+    fontFamily: 'Sansation-Regular',
   },
   errorText: {
     fontSize: 10,
+    fontFamily: 'Sansation-Regular',
     color: 'red',
     marginBottom: 20,
     alignSelf: 'flex-start',
@@ -50,6 +52,7 @@ const styles = StyleSheet.create({
     borderColor: 'red',
   },
   label: {
+    fontFamily: 'Sansation-Regular',
     fontSize: 15,
     alignSelf: 'flex-start',
   },
