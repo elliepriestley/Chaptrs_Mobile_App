@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 
-export default function SelectedBook({ book }) {
+export default function SelectedBook({ book, onPress: handlePress }) {
   if (book) {
     return (
       <TouchableOpacity onPress={handlePress}>

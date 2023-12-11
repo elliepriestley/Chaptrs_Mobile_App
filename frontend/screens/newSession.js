@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Formik, Field } from 'formik';
 import Heading from '../components/Heading';
@@ -6,7 +12,7 @@ import CustomInput from '../components/CustomInput';
 import sessionSchema from '../data/schemas/sessionSchema';
 import api from '../utils/api';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Picker } from '@react-native-picker/picker';
+import { Picker, PickerIOS } from '@react-native-picker/picker';
 import { useAuth } from '../utils/authContext';
 import ChooseBookModal from '../components/ChooseBookModal';
 import SelectedBook from '../components/SelectedBook';
@@ -23,12 +29,13 @@ export default function NewSessionScreen({ navigation: { navigate } }) {
   const { user, token, setToken } = useAuth();
   const initialValues = {
     location: '',
-    description: '',
+    details: '',
     datetime: new Date(),
-    bookclub: '',
+    bookclub: myBookclubs[0] || null,
   };
 
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
+    if (!selectedBook) return alert('Please select a book');
     setSubmitting(true);
     try {
       const bookData = await api.createBook(selectedBook, token);
@@ -48,7 +55,10 @@ export default function NewSessionScreen({ navigation: { navigate } }) {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps='handled'
+    >
       <ChooseBookModal
         showModal={showModal}
         setShowModal={setShowModal}
@@ -64,13 +74,17 @@ export default function NewSessionScreen({ navigation: { navigate } }) {
       >
         {({ handleSubmit, isValid, values, setFieldValue }) => (
           <View style={styles.formContainer}>
+            <Text style={styles.label}>Book title</Text>
             <SearchInput
               value={query}
-              placeholder='Book title'
+              placeholder='Search'
               onChangeText={setQuery}
               onSubmitEditing={() => setShowModal(true)}
             />
-            <SelectedBook book={selectedBook} />
+            <SelectedBook
+              book={selectedBook}
+              onPress={() => setShowModal(true)}
+            />
             <Picker
               placeholder='Choose a bookclub'
               itemStyle={{
@@ -84,10 +98,9 @@ export default function NewSessionScreen({ navigation: { navigate } }) {
               mode='dropdown'
               selectionColor={'#DCC8A94D'}
               selectedValue={values.bookclub}
-              onValueChange={(itemValue, itemIndex) => {
-                console.log('itemValue', itemValue);
-                setFieldValue('bookclub', itemValue);
-              }}
+              onValueChange={(itemValue) =>
+                setFieldValue('bookclub', itemValue)
+              }
             >
               {myBookclubs.map((bookclub) => {
                 return (
@@ -106,21 +119,7 @@ export default function NewSessionScreen({ navigation: { navigate } }) {
               textContentType='location'
               label='Location'
             />
-            <Field
-              component={CustomInput}
-              name='description'
-              placeholder='Write a little about the session'
-              label='Description'
-              multiline
-            />
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 20,
-              }}
-            >
+            <View style={styles.datetimeContainer}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Calendar1 size={32} color='#695203' />
                 <DateTimePicker
@@ -156,6 +155,18 @@ export default function NewSessionScreen({ navigation: { navigate } }) {
                 />
               </View>
             </View>
+            <Field
+              component={CustomInput}
+              name='details'
+              placeholder='Write a little about the session'
+              label='Session details'
+              style={styles.inputArea}
+              editable
+              multiline
+              numberOfLines={6}
+              maxLength={240}
+            />
+            <View style={{ width: '100%', flex: 1 }} />
             <TouchableOpacity
               style={
                 isValid
@@ -177,14 +188,13 @@ export default function NewSessionScreen({ navigation: { navigate } }) {
           </View>
         )}
       </Formik>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
     padding: 20,
     paddingBottom: 110,
   },
@@ -211,5 +221,25 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     flex: 1,
+  },
+  datetimeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 20,
+    marginBottom: 20,
+  },
+  inputArea: {
+    fontFamily: 'Sansation-Regular',
+    backgroundColor: '#F8F6F2',
+    borderRadius: 10,
+    height: 120,
+    padding: 10,
+    marginBottom: 20,
+  },
+  label: {
+    fontFamily: 'Sansation-Regular',
+    fontSize: 15,
+    alignSelf: 'flex-start',
+    marginBottom: 10,
   },
 });

@@ -109,7 +109,7 @@ function SessionDetailsScreen({ route, navigation: { navigate } }) {
               marginBottom: 20,
             }}
           >
-            {session.description || 'No description provided.'}
+            {session.details || 'No details provided.'}
           </Text>
         </ScrollView>
         <View

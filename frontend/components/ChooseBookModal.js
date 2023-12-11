@@ -31,7 +31,7 @@ export default function ChooseBookModal({
     setSearching(true);
     try {
       const books = await api.findBooks(query);
-      setBooks(books);
+      setBooks(() => books);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     top: 100,
     padding: 15,
-    height: '70%',
+    height: '75%',
   },
   search: {
     flex: 1,

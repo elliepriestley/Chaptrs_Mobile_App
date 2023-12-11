@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const SessionSchema = new mongoose.Schema({
   datetime: { type: Date, required: true },
   location: { type: String, required: true },
-  description: String,
+  details: String,
   bookclub: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Bookclub',
