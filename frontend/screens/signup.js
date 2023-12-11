@@ -14,6 +14,7 @@ import signupSchema from '../data/schemas/signupSchema';
 import api from '../utils/api';
 import Logo from '../components/Logo';
 import Heading from '../components/Heading';
+import profileImg from '../data/profileImg';
 
 function SignupScreen({ navigation }) {
   // Handling form validation
@@ -27,12 +28,16 @@ function SignupScreen({ navigation }) {
 
   const onSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
+    const randomImage = profileImg[Math.floor(Math.random() * profileImg.length)];
     try {
       const formData = { ...values };
       console.log(formData);
       delete formData.confirmPassword;
-      const data = await api.signupUser(formData);
-      console.log(data);
+      const data = await api.signupUser({
+        ...formData,
+        profile_picture: randomImage.url
+      });
+      console.log(data, 'with profile img i hope');
       if (data)
         navigation.navigate('Login', {
           email: values.email,
