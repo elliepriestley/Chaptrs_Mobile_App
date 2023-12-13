@@ -1,13 +1,12 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
-import LogoMedium from '../components/LogoMedium';
 import { useAuth } from '../utils/authContext';
 import { useMainContext } from '../utils/mainContext';
 import { ScrollView } from 'react-native';
 import Heading from '../components/Heading';
 import { Edit } from 'iconsax-react-native';
 
-function Profile({ navigation }) {
+function Profile({ navigation: { navigate } }) {
   const { user, setUser, setToken } = useAuth();
   const { myBookclubs } = useMainContext();
   const logout = () => {
@@ -20,6 +19,7 @@ function Profile({ navigation }) {
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, marginHorizontal: 20 }}>
             <Heading text='Profile' />
               <Edit
+                onPress={() => navigate('Edit Profile')}
                 size={36}
                 color='black'
               />
@@ -33,7 +33,7 @@ function Profile({ navigation }) {
           <Text style={styles.userName}>{user.username}</Text>
           <Heading text='About' textStyles={{ fontSize: 18 }} headingStyles={{ fontSize: 18, marginLeft: 20 }} />
           <Text style={[styles.text, { marginBottom: 20, marginLeft: 20 }]}>
-            Tell about yourself...
+            {user.description}
           </Text>
           <Heading text='Bookclubs' textStyles={{ fontSize: 18 }} headingStyles={{ fontSize: 18, marginLeft: 20 }} />
           <ScrollView
@@ -105,8 +105,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderColor: '#DCC8A9',
     borderWidth: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
     borderRadius: 50,
     alignSelf: 'flex-start',
     marginHorizontal: 10

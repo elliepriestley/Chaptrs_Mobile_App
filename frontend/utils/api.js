@@ -171,6 +171,22 @@ class Api {
       return new Promise.reject(error);
     }
   };
+  editUserInfo = async (userId, formData, token) => {
+      try {
+        const response = await fetch(`${this._baseUrl}/users/${userId}`, {
+          method: 'PATCH',
+          headers: { ...this._headers, Authorization: 'Bearer ' + token },
+          body: JSON.stringify(formData),
+        });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      return data;
+    } catch (error) {
+      return new Promise.reject(error);
+    }
+  }
 }
 
 const baseUrl = process.env.EXPO_PUBLIC_API_URL;
