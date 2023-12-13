@@ -19,23 +19,30 @@ export default function ChooseBookModal({
   showModal,
   setShowModal,
   setSelectedBook,
+  query,
+  setQuery,
 }) {
   const [books, setBooks] = useState([]);
-  const [query, setQuery] = useState('');
   const [searching, setSearching] = useState(false);
   const [error, setError] = useState(null);
 
   const handleSearch = async () => {
+    if (query === '') return;
     setSearching(true);
     try {
       const books = await api.findBooks(query);
-      setBooks(books);
+      setBooks(() => books);
     } catch (error) {
       setError(error.message);
     } finally {
       setSearching(false);
     }
   };
+
+  useEffect(() => {
+    if (!showModal) return;
+    handleSearch();
+  }, [showModal]);
 
   useEffect(() => {
     if (error) {
@@ -117,7 +124,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     top: 100,
     padding: 15,
-    height: '70%',
+    height: '75%',
   },
   search: {
     flex: 1,
