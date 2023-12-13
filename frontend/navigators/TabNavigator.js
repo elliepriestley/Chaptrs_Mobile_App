@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import ProfileScreen from '../screens/profile.js';
+import ProfileStackScreen from './ProfileStack.js';
 import NewSessionScreen from '../screens/newSession.js';
 import HomeStackScreen from './HomeStack.js';
 import BookStackScreen from './BookStack.js';
@@ -79,15 +79,9 @@ function TabNavigator() {
         }}
       />
       <Tab.Screen
-        name='Profile'
-        component={ProfileScreen}
+        name='ProfileStack'
+        component={ProfileStackScreen}
         options={{
-          headerShown: true,
-          headerTitle: HeaderCenter,
-          headerTitleAlign: 'center',
-          headerTintColor: 'black',
-          headerShadowVisible: false,
-          // headerBackTitleVisible: false,
           tabBarIcon: ({ color }) => {
             return <Profile size={32} color={color} variant='Outline' />;
           },

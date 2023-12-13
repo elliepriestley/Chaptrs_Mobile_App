@@ -13,7 +13,6 @@ import BookclubCard from '../components/BookclubCard';
 import SearchInput from '../components/SearchInput';
 import { useMainContext } from '../utils/mainContext';
 import { useAuth } from '../utils/authContext';
-import api from '../utils/api';
 
 export default function CommunityScreen({ navigation: { navigate } }) {
   const { user, token, setToken } = useAuth();

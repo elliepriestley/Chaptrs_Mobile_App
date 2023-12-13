@@ -7,7 +7,7 @@ import { ScrollView } from 'react-native';
 import Heading from '../components/Heading';
 import { Edit } from 'iconsax-react-native';
 
-function Profile({ navigation }) {
+function Profile({ navigation: { navigate } }) {
   const { user, setUser, setToken } = useAuth();
   const { myBookclubs } = useMainContext();
   const logout = () => {
@@ -20,6 +20,7 @@ function Profile({ navigation }) {
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, marginHorizontal: 20 }}>
             <Heading text='Profile' />
               <Edit
+                onPress={() => navigate('Edit Profile')}
                 size={36}
                 color='black'
               />
@@ -105,8 +106,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderColor: '#DCC8A9',
     borderWidth: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
     borderRadius: 50,
     alignSelf: 'flex-start',
     marginHorizontal: 10
