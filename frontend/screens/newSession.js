@@ -8,7 +8,8 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 import { Formik, Field } from 'formik';
-import { Picker } from '@react-native-picker/picker';
+// import { Picker } from '@react-native-picker/picker';
+import RNPickerSelect from 'react-native-picker-select';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 // utils, context, data
@@ -25,7 +26,7 @@ import SelectedBook from '../components/SelectedBook';
 import SearchInput from '../components/SearchInput';
 
 // icons
-import { Calendar, Clock } from 'iconsax-react-native';
+import { Calendar, Clock, ArrowDown2 } from 'iconsax-react-native';
 
 const initialDateTime = new Date();
 initialDateTime.setSeconds(0);
@@ -61,6 +62,7 @@ export default function NewSessionScreen({ navigation: { navigate } }) {
       setSessions((prev) => [...prev, data.session]);
       alert(data.message);
       setSelectedBook(null);
+      setQuery('');
       resetForm();
       navigate('Home');
     } catch (error) {
@@ -82,7 +84,7 @@ export default function NewSessionScreen({ navigation: { navigate } }) {
         query={query}
         setQuery={setQuery}
       />
-      <Heading text='Create a session' />
+      <Heading text='Add new session' />
       <Formik
         initialValues={initialValues}
         validationSchema={sessionSchema}
@@ -101,43 +103,63 @@ export default function NewSessionScreen({ navigation: { navigate } }) {
               book={selectedBook}
               onPress={() => setShowModal(true)}
             />
-            <Picker
-              placeholder='Choose a bookclub'
-              itemStyle={{
-                color: '#695203',
-                fontFamily: 'Sansation-Regular',
-                fontSize: 18,
-                height: 70,
-                overflow: 'hidden',
-                justifyContent: 'center',
-              }}
-              mode='dropdown'
-              selectionColor={'#DCC8A94D'}
-              selectedValue={values.bookclub}
+            <Text style={styles.label}>Bookclub</Text>
+            <RNPickerSelect
+              items={myBookclubs.map((bookclub) => {
+                return { label: bookclub.name, value: bookclub._id };
+              })}
               onValueChange={(itemValue) =>
                 setFieldValue('bookclub', itemValue)
               }
-            >
-              {myBookclubs.map((bookclub) => {
-                return (
-                  <Picker.Item
-                    key={bookclub?._id}
-                    label={bookclub?.name}
-                    value={bookclub?._id}
-                  />
-                );
-              })}
-            </Picker>
+              Icon={() => {
+                return <ArrowDown2 color='black' />;
+              }}
+              doneText='Select'
+              pickerProps={{
+                mode: 'dropdown',
+                selectionColor: '#DCC8A94D',
+                itemStyle: { fontFamily: 'Sansation-Regular' },
+              }}
+              placeholder={{ value: null, label: 'Choose a bookclub' }}
+              value={values.bookclub}
+              style={{
+                inputIOS: {
+                  fontFamily: 'Sansation-Regular',
+                },
+                placeholder: {
+                  fontFamily: 'Sansation-Regular',
+                  color: '#69520377',
+                },
+                iconContainer: {
+                  top: -4,
+                },
+                done: {
+                  color: 'black',
+                  fontFamily: 'Sansation-Regular',
+                },
+                modalViewBottom: {
+                  padding: 20,
+                },
+                viewContainer: {
+                  borderRadius: 999,
+                  borderColor: '#695203',
+                  padding: 10,
+                  marginBottom: 20,
+                  borderWidth: 1,
+                },
+              }}
+            />
             <Field
               component={CustomInput}
               name='location'
               placeholder='Whereabouts?'
               textContentType='location'
               label='Location'
+              placeholderTextColor='#69520377'
             />
             <View style={styles.datetimeContainer}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Calendar size={32} color='black' />
+                <Calendar size={32} strokeWidth='8px' color='black' />
                 <TouchableOpacity
                   style={styles.datetimeDisplay}
                   onPress={() => setShowDatePicker(true)}
@@ -240,7 +262,7 @@ export default function NewSessionScreen({ navigation: { navigate } }) {
                   fontFamily: 'Sansation-Regular',
                 }}
               >
-                create
+                create session
               </Text>
             </TouchableOpacity>
           </View>

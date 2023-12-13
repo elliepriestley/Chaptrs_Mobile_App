@@ -7,7 +7,6 @@ export default function SearchInput({ value, onChangeText, onSubmitEditing, onPr
         <View
             style={{
                 flexDirection: 'row',
-                flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
                 marginBottom: 20,
