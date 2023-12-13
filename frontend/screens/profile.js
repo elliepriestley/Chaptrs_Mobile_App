@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
-import LogoMedium from '../components/LogoMedium';
 import { useAuth } from '../utils/authContext';
 import { useMainContext } from '../utils/mainContext';
 import { ScrollView } from 'react-native';
@@ -34,7 +33,7 @@ function Profile({ navigation: { navigate } }) {
           <Text style={styles.userName}>{user.username}</Text>
           <Heading text='About' textStyles={{ fontSize: 18 }} headingStyles={{ fontSize: 18, marginLeft: 20 }} />
           <Text style={[styles.text, { marginBottom: 20, marginLeft: 20 }]}>
-            Tell about yourself...
+            {user.description}
           </Text>
           <Heading text='Bookclubs' textStyles={{ fontSize: 18 }} headingStyles={{ fontSize: 18, marginLeft: 20 }} />
           <ScrollView

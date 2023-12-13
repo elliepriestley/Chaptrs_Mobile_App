@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema(
     location: String,
     date_joined: { type: Date, default: Date.now },
     profile_picture: String,
+    description: String,
   },
   {
     toJSON: {
