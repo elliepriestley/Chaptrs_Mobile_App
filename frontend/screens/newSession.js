@@ -1,3 +1,4 @@
+// external libraries
 import {
   View,
   Text,
@@ -5,32 +6,48 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Formik, Field } from 'formik';
+// import { Picker } from '@react-native-picker/picker';
+import RNPickerSelect from 'react-native-picker-select';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+
+// utils, context, data
+import { useAuth } from '../utils/authContext';
+import { useMainContext } from '../utils/mainContext';
+import api from '../utils/api';
+import sessionSchema from '../data/schemas/sessionSchema';
+
+// Components
 import Heading from '../components/Heading';
 import CustomInput from '../components/CustomInput';
-import sessionSchema from '../data/schemas/sessionSchema';
-import api from '../utils/api';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { Picker, PickerIOS } from '@react-native-picker/picker';
-import { useAuth } from '../utils/authContext';
 import ChooseBookModal from '../components/ChooseBookModal';
 import SelectedBook from '../components/SelectedBook';
-import { useMainContext } from '../utils/mainContext';
 import SearchInput from '../components/SearchInput';
-import { useRef } from 'react';
-import { Calendar1, Clock } from 'iconsax-react-native';
+
+// icons
+import { Calendar, Clock, ArrowDown2 } from 'iconsax-react-native';
+
+const initialDateTime = new Date();
+initialDateTime.setSeconds(0);
+const currentMins = initialDateTime.getMinutes();
+if (currentMins !== 0) {
+  initialDateTime.setMinutes(0);
+  initialDateTime.setHours(initialDateTime.getHours() + 1);
+}
 
 export default function NewSessionScreen({ navigation: { navigate } }) {
   const { setBookclubs, myBookclubs, setSessions } = useMainContext();
   const [selectedBook, setSelectedBook] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
   const [query, setQuery] = useState('');
   const { user, token, setToken } = useAuth();
   const initialValues = {
     location: '',
     details: '',
-    datetime: new Date(),
+    datetime: initialDateTime,
     bookclub: myBookclubs[0] || null,
   };
 
@@ -45,6 +62,7 @@ export default function NewSessionScreen({ navigation: { navigate } }) {
       setSessions((prev) => [...prev, data.session]);
       alert(data.message);
       setSelectedBook(null);
+      setQuery('');
       resetForm();
       navigate('Home');
     } catch (error) {
@@ -66,7 +84,7 @@ export default function NewSessionScreen({ navigation: { navigate } }) {
         query={query}
         setQuery={setQuery}
       />
-      <Heading text='Create a session' />
+      <Heading text='Add new session' />
       <Formik
         initialValues={initialValues}
         validationSchema={sessionSchema}
@@ -85,73 +103,135 @@ export default function NewSessionScreen({ navigation: { navigate } }) {
               book={selectedBook}
               onPress={() => setShowModal(true)}
             />
-            <Picker
-              placeholder='Choose a bookclub'
-              itemStyle={{
-                color: '#695203',
-                fontFamily: 'Sansation-Regular',
-                fontSize: 18,
-                height: 70,
-                overflow: 'hidden',
-                justifyContent: 'center',
-              }}
-              mode='dropdown'
-              selectionColor={'#DCC8A94D'}
-              selectedValue={values.bookclub}
+            <Text style={styles.label}>Bookclub</Text>
+            <RNPickerSelect
+              items={myBookclubs.map((bookclub) => {
+                return { label: bookclub.name, value: bookclub._id };
+              })}
               onValueChange={(itemValue) =>
                 setFieldValue('bookclub', itemValue)
               }
-            >
-              {myBookclubs.map((bookclub) => {
-                return (
-                  <Picker.Item
-                    key={bookclub?._id}
-                    label={bookclub?.name}
-                    value={bookclub?._id}
-                  />
-                );
-              })}
-            </Picker>
+              Icon={() => {
+                return <ArrowDown2 color='black' />;
+              }}
+              doneText='Select'
+              pickerProps={{
+                mode: 'dropdown',
+                selectionColor: '#DCC8A94D',
+                itemStyle: { fontFamily: 'Sansation-Regular' },
+              }}
+              placeholder={{ value: null, label: 'Choose a bookclub' }}
+              value={values.bookclub}
+              style={{
+                inputIOS: {
+                  fontFamily: 'Sansation-Regular',
+                },
+                placeholder: {
+                  fontFamily: 'Sansation-Regular',
+                  color: '#69520377',
+                },
+                iconContainer: {
+                  top: -4,
+                },
+                done: {
+                  color: 'black',
+                  fontFamily: 'Sansation-Regular',
+                },
+                modalViewBottom: {
+                  padding: 20,
+                },
+                viewContainer: {
+                  borderRadius: 999,
+                  borderColor: '#695203',
+                  padding: 10,
+                  marginBottom: 20,
+                  borderWidth: 1,
+                },
+              }}
+            />
             <Field
               component={CustomInput}
               name='location'
               placeholder='Whereabouts?'
               textContentType='location'
               label='Location'
+              placeholderTextColor='#69520377'
             />
             <View style={styles.datetimeContainer}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Calendar1 size={32} color='#695203' />
-                <DateTimePicker
-                  value={values.datetime}
-                  minimumDate={new Date()}
-                  onChange={(event, date) => {
-                    const datetime = new Date(
-                      Date.parse(
-                        `${date.toDateString()} ${values.datetime.toTimeString()}`,
-                      ),
-                    );
-                    setFieldValue('datetime', datetime);
+                <Calendar size={32} strokeWidth='8px' color='black' />
+                <TouchableOpacity
+                  style={styles.datetimeDisplay}
+                  onPress={() => setShowDatePicker(true)}
+                >
+                  <Text style={styles.text}>
+                    {values.datetime.toLocaleDateString('en-GB', {
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric',
+                    })}
+                  </Text>
+                </TouchableOpacity>
+                <View
+                  style={{
+                    backgroundColor: '#DCC8A9',
+                    borderRadius: 999,
                   }}
-                  mode={'date'}
-                  accentColor='#695203'
-                />
+                >
+                  <DateTimePickerModal
+                    isVisible={showDatePicker}
+                    value={values.datetime}
+                    minimumDate={new Date()}
+                    onCancel={() => setShowDatePicker(false)}
+                    onConfirm={(date) => {
+                      const datetime = new Date(
+                        Date.parse(
+                          `${date.toDateString()} ${values.datetime.toTimeString()}`,
+                        ),
+                      );
+                      setFieldValue('datetime', datetime);
+                      setShowDatePicker(false);
+                    }}
+                    date={values.datetime}
+                    mode='date'
+                    display='inline'
+                    accentColor='#695203'
+                    buttonTextColorIOS='#695203'
+                  />
+                </View>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Clock size={32} color='#695203' />
-                <DateTimePicker
+                <Clock size={32} color='black' />
+                <TouchableOpacity
+                  style={[styles.datetimeDisplay, { minWidth: 80 }]}
+                  onPress={() => setShowTimePicker(true)}
+                >
+                  <Text style={styles.text}>
+                    {values.datetime.toLocaleTimeString('en-GB', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </Text>
+                </TouchableOpacity>
+                <DateTimePickerModal
+                  isVisible={showTimePicker}
                   value={values.datetime}
-                  minuteInterval={1}
-                  onChange={(event, time) => {
+                  date={values.datetime}
+                  minuteInterval={15}
+                  onCancel={() => setShowTimePicker(false)}
+                  onConfirm={(time) => {
                     const datetime = new Date(
                       Date.parse(
                         `${values.datetime.toDateString()} ${time.toTimeString()}`,
                       ),
                     );
                     setFieldValue('datetime', datetime);
+                    setShowTimePicker(false);
                   }}
-                  mode={'time'}
+                  mode='time'
+                  display='spinner'
                   accentColor='#695203'
+                  buttonTextColorIOS='#695203'
                 />
               </View>
             </View>
@@ -182,7 +262,7 @@ export default function NewSessionScreen({ navigation: { navigate } }) {
                   fontFamily: 'Sansation-Regular',
                 }}
               >
-                create
+                create session
               </Text>
             </TouchableOpacity>
           </View>
@@ -227,6 +307,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 20,
     marginBottom: 20,
+  },
+  datetimeDisplay: {
+    backgroundColor: '#DCC8A9',
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 999,
+    marginLeft: 10,
   },
   inputArea: {
     fontFamily: 'Sansation-Regular',
