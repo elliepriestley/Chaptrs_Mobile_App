@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     height: 100,
     padding: 10,
     borderRadius: 10,
-    backgroundColor: '#E9E1D54D',
+    backgroundColor: '#ffffff',
     overflow: 'scroll',
   },
   image: {
