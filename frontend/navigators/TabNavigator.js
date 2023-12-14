@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ProfileStackScreen from './ProfileStack.js';
 import NewSessionScreen from '../screens/newSession.js';
 import HomeStackScreen from './HomeStack.js';
-import BookStackScreen from './BookStack.js';
+import NoteStackScreen from './NoteStack.js';
 import CommunityStackScreen from './CommunityStack.js';
 import HeaderCenter from '../components/HeaderCenter.js';
 import {
@@ -70,8 +70,8 @@ function TabNavigator() {
         screenOptions={{}}
       />
       <Tab.Screen
-        name='BookStack'
-        component={BookStackScreen}
+        name='NoteStack'
+        component={NoteStackScreen}
         options={{
           tabBarIcon: ({ color }) => {
             return <BookSquare size={32} color={color} variant='Outline' />;
