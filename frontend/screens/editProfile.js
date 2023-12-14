@@ -1,23 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
     View,
     Text,
     StyleSheet,
     TextInput,
-    Image,
     ScrollView,
     TouchableOpacity
 } from 'react-native';
 import { useAuth } from '../utils/authContext';
 import api from '../utils/api';
 import Heading from '../components/Heading';
+import MultiSelect from 'react-native-multiple-select';
+import bookGenres from '../data/bookGenres';
 
 function EditProfileScreen({ navigation }) {
     const { user, setUser, token, setToken } = useAuth();
     const [newUserInfo, setNewUserInfo] = useState({
-        username:  user.username,
+        username: user.username,
         description: user.description,
     });
+
+    const [selectedItems, setSelectedItems] = useState([]);
+
+    const multiSelectRef = useRef(null);
+
+    const onSelectedItemsChange = (items) => {
+        setSelectedItems(items);
+    };
 
     const handleInput = (key, value) => {
         setNewUserInfo({
@@ -26,9 +35,13 @@ function EditProfileScreen({ navigation }) {
         });
     };
 
-    const handleSubmit = async() => {
+    const handleSubmit = async () => {
         try {
-            const data = await api.editUserInfo(user._id, newUserInfo, token);
+            const selectedGenres = selectedItems.map((itemId) => {
+                const genre = bookGenres.find((item) => item.id === itemId);
+                return genre ? genre.name : '';
+            });
+            const data = await api.editUserInfo(user._id, {...newUserInfo,  genre: selectedGenres}, token);
             if (data) setToken(data.token);
             setUser(data.user);
         }
@@ -42,8 +55,8 @@ function EditProfileScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Heading text='Edit profile' />
             <ScrollView>
+            <Heading text='Edit profile' />
                 <View style={{ gap: 15, marginTop: 20 }}>
                     <Text style={styles.label}>Name</Text>
                     <TextInput
@@ -63,7 +76,34 @@ function EditProfileScreen({ navigation }) {
                         onChangeText={(text) => handleInput('description', text)}
                     />
                 </View>
-                <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                <View style={{ flex: 1 }}>
+                        <MultiSelect
+                            hideTags
+                            items={bookGenres}
+                            uniqueKey="id"
+                            ref={multiSelectRef}
+                            onSelectedItemsChange={onSelectedItemsChange}
+                            selectedItems={selectedItems}
+                            selectText="Pick Items"
+                            searchInputPlaceholderText="Search Items..."
+                            onChangeInput={(text) => console.log(text)}
+                            altFontFamily='Sansation-Regular'
+                            tagRemoveIconColor="#CCC"
+                            tagBorderColor="#CCC"
+                            tagTextColor="#CCC"
+                            selectedItemTextColor="#CCC"
+                            selectedItemIconColor="#CCC"
+                            itemTextColor="#000"
+                            displayKey="name"
+                            searchInputStyle={{ color: '#CCC' }}
+                            submitButtonColor="#CCC"
+                            submitButtonText="Submit"
+                        />
+                        <View>
+                            {multiSelectRef.current && multiSelectRef.current.getSelectedItemsExt(selectedItems)}
+                        </View>
+                    </View>
+                <View style={{ width: '100%', alignItems: 'center' }}>
                     <TouchableOpacity
                         style={styles.button}
                     >
@@ -73,7 +113,6 @@ function EditProfileScreen({ navigation }) {
                         <Text style={{ fontFamily: 'Sansation-Regular' }}>delete profile</Text>
                     </TouchableOpacity>
                 </View>
-
             </ScrollView>
         </View>
     );

@@ -9,6 +9,8 @@ import { Edit } from 'iconsax-react-native';
 function Profile({ navigation: { navigate } }) {
   const { user, setUser, setToken } = useAuth();
   const { myBookclubs } = useMainContext();
+  const colours = ['#E8C0DC', '#0FA7B047', '#F8964D7D'];
+
   const logout = () => {
     setUser(null);
     setToken(null);
@@ -54,6 +56,28 @@ function Profile({ navigation: { navigate } }) {
               );
             })}
           </ScrollView>
+          <View style={styles.categories}>
+              {user.genre.map((item, index) => {
+                return (
+                  <View
+                    key={index}
+                    style={[
+                      styles.category,
+                      { backgroundColor: colours[index % colours.length] },
+                    ]}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        fontFamily: 'Sansation-Regular',
+                      }}
+                    >
+                      {item}
+                    </Text>
+                  </View>
+                )
+              })}
+            </View>
           <TouchableOpacity
             onPress={logout}
           >
@@ -110,5 +134,20 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignSelf: 'flex-start',
     marginHorizontal: 10
+  },
+  categories: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    marginBottom: 15,
+    flex: 1,
+    paddingLeft: 20,
+  },
+  category: {
+    backgroundColor: '#F8964D7D',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 999,
+    alignSelf: 'flex-start',
   },
 });
