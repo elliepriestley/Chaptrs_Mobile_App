@@ -1,22 +1,21 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HeaderCenter from '../components/HeaderCenter.js';
-import BookScreen from '../screens/books.js';
+import NotesScreen from '../screens/notes.js';
 
-const BookStack = createNativeStackNavigator();
+const NoteStack = createNativeStackNavigator();
 
-export default function BookStackScreen() {
+export default function NoteStackScreen() {
   return (
-    <BookStack.Navigator
+    <NoteStack.Navigator
       screenOptions={{
         headerTitleAlign: 'center',
         headerTitle: HeaderCenter,
         headerTintColor: 'black',
         headerShadowVisible: false,
         headerBackTitleVisible: false,
-        headerBackTitleStyle: { color: 'green' },
       }}
     >
-      <BookStack.Screen name='Books' component={BookScreen} />
-    </BookStack.Navigator>
+      <NoteStack.Screen name='Books' component={NotesScreen} />
+    </NoteStack.Navigator>
   );
 }
