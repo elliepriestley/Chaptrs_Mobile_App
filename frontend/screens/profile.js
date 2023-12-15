@@ -5,11 +5,11 @@ import { useMainContext } from '../utils/mainContext';
 import { ScrollView } from 'react-native';
 import Heading from '../components/Heading';
 import { Edit } from 'iconsax-react-native';
+import GenreColorBlock from '../components/genreColorBlock';
 
 function Profile({ navigation: { navigate } }) {
   const { user, setUser, setToken } = useAuth();
   const { myBookclubs } = useMainContext();
-  const colours = ['#E8C0DC', '#0FA7B047', '#F8964D7D'];
 
   const logout = () => {
     setUser(null);
@@ -56,32 +56,12 @@ function Profile({ navigation: { navigate } }) {
               );
             })}
           </ScrollView>
-          <View style={styles.categories}>
-              {user.genre.map((item, index) => {
-                return (
-                  <View
-                    key={index}
-                    style={[
-                      styles.category,
-                      { backgroundColor: colours[index % colours.length] },
-                    ]}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontFamily: 'Sansation-Regular',
-                      }}
-                    >
-                      {item}
-                    </Text>
-                  </View>
-                )
-              })}
-            </View>
-          <TouchableOpacity
-            onPress={logout}
-          >
-            <Text style={styles.text}>log out</Text>
+          <Heading text='Genres' textStyles={{ fontSize: 18 }} headingStyles={{ fontSize: 18, marginLeft: 20 }} />
+          <View style={{paddingLeft: 20}}>
+            <GenreColorBlock genres={user.genre} />
+          </View>
+          <TouchableOpacity onPress={logout}>
+            <Text style={[styles.text, {marginBottom: 110}]}>log out</Text>
           </TouchableOpacity>
       </ScrollView>
   );

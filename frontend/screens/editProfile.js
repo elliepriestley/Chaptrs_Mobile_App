@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -10,22 +10,23 @@ import {
 import { useAuth } from '../utils/authContext';
 import api from '../utils/api';
 import Heading from '../components/Heading';
-import MultiSelect from 'react-native-multiple-select';
-import bookGenres from '../data/bookGenres';
+import CustomDropdown from '../components/CustomDropdown';
+import GenreColorBlock from '../components/genreColorBlock'
 
 function EditProfileScreen({ navigation }) {
     const { user, setUser, token, setToken } = useAuth();
     const [newUserInfo, setNewUserInfo] = useState({
         username: user.username,
         description: user.description,
+        genre: user.genre
     });
 
-    const [selectedItems, setSelectedItems] = useState([]);
+    const [selectedGenres, setSelectedGenres] = useState([]);
+    const [prevGenres, setPrevGenres] = useState(newUserInfo.genre);
 
-    const multiSelectRef = useRef(null);
-
-    const onSelectedItemsChange = (items) => {
-        setSelectedItems(items);
+    const handleGenresSelected = (selectedGenres) => {
+        console.log('Selected Genres:', selectedGenres);
+        setSelectedGenres(selectedGenres)
     };
 
     const handleInput = (key, value) => {
@@ -35,13 +36,13 @@ function EditProfileScreen({ navigation }) {
         });
     };
 
+    useEffect(() => {
+        console.log(selectedGenres)
+    }, [selectedGenres])
+
     const handleSubmit = async () => {
         try {
-            const selectedGenres = selectedItems.map((itemId) => {
-                const genre = bookGenres.find((item) => item.id === itemId);
-                return genre ? genre.name : '';
-            });
-            const data = await api.editUserInfo(user._id, {...newUserInfo,  genre: selectedGenres}, token);
+            const data = await api.editUserInfo(user._id, { ...newUserInfo, genre: selectedGenres }, token);
             if (data) setToken(data.token);
             setUser(data.user);
         }
@@ -50,13 +51,14 @@ function EditProfileScreen({ navigation }) {
         }
         finally {
             console.log('success')
+            navigation.navigate('Profile')
         }
     }
 
     return (
         <View style={styles.container}>
-            <ScrollView>
-            <Heading text='Edit profile' />
+            <ScrollView nestedScrollEnabled={true}>
+                <Heading text='Edit profile' />
                 <View style={{ gap: 15, marginTop: 20 }}>
                     <Text style={styles.label}>Name</Text>
                     <TextInput
@@ -75,34 +77,13 @@ function EditProfileScreen({ navigation }) {
                         value={newUserInfo.description}
                         onChangeText={(text) => handleInput('description', text)}
                     />
-                </View>
-                <View style={{ flex: 1 }}>
-                        <MultiSelect
-                            hideTags
-                            items={bookGenres}
-                            uniqueKey="id"
-                            ref={multiSelectRef}
-                            onSelectedItemsChange={onSelectedItemsChange}
-                            selectedItems={selectedItems}
-                            selectText="Pick Items"
-                            searchInputPlaceholderText="Search Items..."
-                            onChangeInput={(text) => console.log(text)}
-                            altFontFamily='Sansation-Regular'
-                            tagRemoveIconColor="#CCC"
-                            tagBorderColor="#CCC"
-                            tagTextColor="#CCC"
-                            selectedItemTextColor="#CCC"
-                            selectedItemIconColor="#CCC"
-                            itemTextColor="#000"
-                            displayKey="name"
-                            searchInputStyle={{ color: '#CCC' }}
-                            submitButtonColor="#CCC"
-                            submitButtonText="Submit"
-                        />
-                        <View>
-                            {multiSelectRef.current && multiSelectRef.current.getSelectedItemsExt(selectedItems)}
-                        </View>
+                    <Text style={styles.label}>Favourite genres</Text>
+                    <View>
+                        {selectedGenres.length === 0 ? <GenreColorBlock genres={prevGenres} /> : <GenreColorBlock genres={selectedGenres} />}
+                        <CustomDropdown onGenresSelected={handleGenresSelected} preSelectedGenres={prevGenres} />
                     </View>
+
+                </View>
                 <View style={{ width: '100%', alignItems: 'center' }}>
                     <TouchableOpacity
                         style={styles.button}
@@ -123,7 +104,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         padding: 20,
-        paddingBottom: 110,
+        paddingBottom: 100,
     },
     label: {
         fontSize: 16,
