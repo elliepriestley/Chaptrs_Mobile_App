@@ -6,6 +6,8 @@ const CustomInput = (props) => {
     field: { name, onBlur, onChange, value },
     form: { errors, touched, setFieldTouched },
     label,
+    inputStyle,
+    errorStyle,
     ...inputProps
   } = props;
 
@@ -16,7 +18,7 @@ const CustomInput = (props) => {
       {label && <Text style={styles.label}>{label}</Text>}
       <View style={{ position: 'relative' }}>
         <TextInput
-          style={[styles.textInput, hasError && styles.errorInput]}
+          style={[styles.textInput, inputStyle, hasError && styles.errorInput]}
           value={value}
           onChangeText={(text) => onChange(name)(text)}
           onBlur={() => {
@@ -25,7 +27,9 @@ const CustomInput = (props) => {
           }}
           {...inputProps}
         />
-        {hasError && <Text style={styles.errorText}>{errors[name]}</Text>}
+        {hasError && (
+          <Text style={[styles.errorText, errorStyle]}>{errors[name]}</Text>
+        )}
       </View>
     </>
   );

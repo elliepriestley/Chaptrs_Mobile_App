@@ -8,9 +8,11 @@ import {
   CloseSquare,
   Book1,
 } from 'iconsax-react-native';
+import NewNoteModal from '../components/NewNoteModal';
 
 export default function Note({ note }) {
   const [hideIcons, setHideIcons] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   const deleteNote = () => {
     // write delete note function
@@ -19,7 +21,9 @@ export default function Note({ note }) {
 
   const editNote = () => {
     // write edit note function
-    console.log('edit note');
+
+    console.log('edit note', note);
+    setShowModal(true);
   };
 
   return (
@@ -32,6 +36,11 @@ export default function Note({ note }) {
         marginBottom: 20,
       }}
     >
+      <NewNoteModal
+        setShowModal={setShowModal}
+        showModal={showModal}
+        note={note}
+      />
       <View
         style={{
           alignSelf: 'flex-start',

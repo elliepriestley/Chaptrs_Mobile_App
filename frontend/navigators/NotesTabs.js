@@ -1,19 +1,12 @@
 import * as React from 'react';
 import { View, useWindowDimensions, Text } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
-import CurrentBookTab from '../screens/currentBook';
-
-const SecondRoute = () => (
-  <View
-    style={{ flex: 1, backgroundColor: '#F8F6F2', borderTopLeftRadius: 50 }}
-  >
-    <Text>Past Books</Text>
-  </View>
-);
+import CurrentBookTab from '../screens/currentBookTab';
+import PastBooksTab from '../screens/pastBooksTab';
 
 const renderScene = SceneMap({
   currentBook: CurrentBookTab,
-  pastBooks: SecondRoute,
+  pastBooks: PastBooksTab,
 });
 
 export default function BookTabView() {
