@@ -4,19 +4,17 @@ import React from 'react';
 export default function SelectedBook({ book, onPress: handlePress }) {
   if (book) {
     return (
-      <TouchableOpacity onPress={handlePress}>
-        <View style={styles.container}>
-          <Image
-            style={styles.image}
-            source={{
-              uri: book.cover_photo,
-            }}
-          />
-          <View style={{ alignSelf: 'center', flex: 1 }}>
-            <Text style={styles.title}>{book.title}</Text>
-            <Text style={styles.author}>{book.authors.join(', ')}</Text>
-            <Text style={styles.author}>{book.published.getFullYear()}</Text>
-          </View>
+      <TouchableOpacity style={styles.container} onPress={handlePress}>
+        <Image
+          style={styles.image}
+          source={{
+            uri: book.cover_photo,
+          }}
+        />
+        <View style={{ alignSelf: 'center', flex: 1 }}>
+          <Text style={styles.title}>{book.title}</Text>
+          <Text style={styles.author}>{book.authors.join(', ')}</Text>
+          <Text style={styles.author}>{book.published.getFullYear()}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -32,6 +30,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#E9E1D54D',
     overflow: 'scroll',
+    marginBottom: 20,
   },
   image: {
     width: 80,

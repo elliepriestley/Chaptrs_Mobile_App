@@ -2,18 +2,15 @@ import {
   View,
   Text,
   StyleSheet,
-  FlatList,
-  TextInput,
   ScrollView,
   ActivityIndicator,
   Modal,
   Pressable,
 } from 'react-native';
-import Heading from './Heading';
-import React, { useEffect, useState } from 'react';
-import { SearchNormal1 } from 'iconsax-react-native';
+import React, { useEffect, useRef, useState } from 'react';
 import api from '../utils/api';
 import BookCard from './BookCard';
+import SearchInput from './SearchInput';
 
 export default function ChooseBookModal({
   showModal,
@@ -61,29 +58,12 @@ export default function ChooseBookModal({
       }}
     >
       <View style={styles.modal}>
-        <View
-          style={{
-            flexDirection: 'row',
-            gap: 20,
-            alignItems: 'center',
-            marginBottom: 20,
-          }}
-        >
-          <TextInput
-            style={styles.search}
-            placeholder='Search'
-            returnKeyType='search'
-            placeholderTextColor='#69520377'
-            value={query}
-            onChangeText={setQuery}
-            onSubmitEditing={handleSearch}
-          />
-          <SearchNormal1
-            onPress={() => handleSearch()}
-            size={36}
-            color='black'
-          />
-        </View>
+        <SearchInput
+          value={query}
+          onChangeText={setQuery}
+          onSubmitEditing={handleSearch}
+          placeholder='Search'
+        />
         {searching ? (
           <ActivityIndicator size='large' color='#695203' />
         ) : (
@@ -119,12 +99,13 @@ export default function ChooseBookModal({
 
 const styles = StyleSheet.create({
   modal: {
-    backgroundColor: '#efefef',
-    marginHorizontal: 20,
-    borderRadius: 20,
-    top: 100,
-    padding: 15,
-    height: '75%',
+    backgroundColor: '#F8F6F2',
+    borderRadius: 50,
+    padding: 35,
+    bottom: 0,
+    top: 160,
+    width: '100%',
+    position: 'absolute',
   },
   search: {
     flex: 1,
