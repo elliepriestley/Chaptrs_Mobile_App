@@ -15,6 +15,22 @@ const globalStyles = StyleSheet.create({
     borderRadius: 999,
     marginHorizontal: 50,
   },
+  smText: {
+    fontFamily: 'Sansation-Regular',
+    fontSize: 12,
+  },
+  mdText: {
+    fontFamily: 'Sansation-Regular',
+    fontSize: 16,
+  },
+  lgText: {
+    fontFamily: 'Sansation-Regular',
+    fontSize: 18,
+  },
+  xlText: {
+    fontFamily: 'Sansation-Regular',
+    fontSize: 20,
+  },
 });
 
 export default globalStyles;

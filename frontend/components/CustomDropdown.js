@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal, ScrollView, Pressable, StyleSheet } from 'react-native';
 import bookGenres from '../data/bookGenres';
+import { TickCircle } from 'iconsax-react-native'; 
 
 const CustomDropdown = ({ onGenresSelected, preSelectedGenres, modalVisible, setModalVisible }) => {
-    // const [modalVisible, setModalVisible] = useState(false);
     const [selectedGenres, setSelectedGenres] = useState(preSelectedGenres);
 
     useEffect(() => {
@@ -18,7 +18,6 @@ const CustomDropdown = ({ onGenresSelected, preSelectedGenres, modalVisible, set
         setSelectedGenres(updatedGenres);
     };
 
-
     const handleSave = () => {
         onGenresSelected(selectedGenres);
         setModalVisible(false);
@@ -28,7 +27,7 @@ const CustomDropdown = ({ onGenresSelected, preSelectedGenres, modalVisible, set
         <View>
             <View style={styles.centeredView}>
                 <Modal
-                    animationType="slide"
+                    animationType="fade"
                     transparent={true}
                     visible={modalVisible}
                     onRequestClose={() => {
@@ -42,26 +41,47 @@ const CustomDropdown = ({ onGenresSelected, preSelectedGenres, modalVisible, set
                                     return <TouchableOpacity
                                         key={index}
                                         style={[
-                                            styles.genreItem,
-                                            selectedGenres.includes(item.name) && styles.selectedGenreItem,
+                                            styles.genreItem, styles.textStyle
                                         ]}
                                         onPress={() => toggleGenre(item.name)}>
-                                        <Text style={styles.genreText}>{item.name}</Text>
+                                            <View style={styles.genreItemContainer}>
+                                                <Text style={[styles.genreText, styles.textStyle]}>{item.name}</Text>
+                                                {selectedGenres.includes(item.name)
+                                                ? <TickCircle
+                                                    size={24}
+                                                    color='#DCC8A9' />
+                                                : null}
+                                            </View>
                                     </TouchableOpacity>
                                 })}
                             </ScrollView>
-                            <TouchableOpacity
-                                style={[styles.button, styles.buttonClose]}
-                                onPress={() => {
-                                    handleSave();
-                                }}>
-                                <Text style={styles.textStyle}>Save</Text>
-                            </TouchableOpacity>
-                            <Pressable
-                                style={[styles.button, styles.buttonClose]}
-                                onPress={() => setModalVisible(!modalVisible)}>
-                                <Text style={styles.textStyle}>close</Text>
-                            </Pressable>
+                            <View style={styles.buttonContainer}>
+                                <TouchableOpacity
+                                    style={[styles.button, { backgroundColor: '#DCC8A9' }]}
+                                    onPress={() => {
+                                        handleSave();
+                                    }}
+                                >
+                                    <Text
+                                        style={[styles.textStyle, {
+                                            textAlign: 'center', 
+                                        }]}
+                                    >
+                                        save
+                                    </Text>
+                                </TouchableOpacity>
+                                <Pressable
+                                    style={[
+                                        styles.button,
+                                        { backgroundColor: 'black', color: 'white' },
+                                    ]}
+                                    onPress={() => setModalVisible(!modalVisible)}
+                                >
+                                    <Text style={[styles.textStyle, { color: 'white' }]}>
+                                        close
+                                    </Text>
+                                </Pressable>
+                            </View>
                         </View>
                     </View>
                 </Modal>
@@ -74,15 +94,18 @@ const CustomDropdown = ({ onGenresSelected, preSelectedGenres, modalVisible, set
 const styles = StyleSheet.create({
     centeredView: {
         flex: 1,
-        marginTop: 80,
+        padding: 10,
+        alignItems: 'center'
     },
     modalView: {
-        height: '80%',
-        width: '90%',
-        margin: 20,
+        position: 'absolute',
+        bottom: 10,
+        height: '38%',
+        width: '100%',
         backgroundColor: 'white',
         borderRadius: 20,
-        padding: 10,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -93,34 +116,36 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     button: {
-        borderRadius: 20,
+        marginTop: 10,
+        backgroundColor: '#DCC8A9',
+        alignItems: 'center',
         padding: 10,
-        elevation: 2,
-    },
-    buttonOpen: {
-        backgroundColor: '#DCC8A9',
-    },
-    buttonClose: {
-        backgroundColor: '#DCC8A9',
+        borderRadius: 999,
+        marginHorizontal: 20,
     },
     modalText: {
         marginBottom: 15,
         textAlign: 'left',
     },
+    genreItemContainer: {
+        flexDirection: 'row',
+        justifyContent: "space-between",
+        // alignContent: "center",
+        alignItems: "center"
+    },
     genreItem: {
-        padding: 10,
+        padding: 8,
         marginVertical: 5,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 10,
     },
     selectedGenreItem: {
-        backgroundColor: '#DCC8A9',
-        borderColor: '#DCC8A9',
+        color: '#DCC8A9',
     },
     genreText: {
         color: '#000',
     },
+    textStyle: {
+        fontFamily: 'Sansation-Regular',
+    }
 });
 
 export default CustomDropdown;

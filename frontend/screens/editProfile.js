@@ -24,18 +24,12 @@ function EditProfileScreen({ navigation }) {
 
     const [selectedGenres, setSelectedGenres] = useState([]);
     const [prevGenres, setPrevGenres] = useState(newUserInfo.genre);
-    const [query, setQuery] = useState('');
+    // const [query, setQuery] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
 
     const handleGenresSelected = (selectedGenres) => {
-        console.log('Selected Genres:', selectedGenres);
         setSelectedGenres(selectedGenres)
     };
-
-    const handleOpenDropdown = () => {
-        setModalVisible(!modalVisible)
-        console.log("opened")
-    }
 
     const handleInput = (key, value) => {
         setNewUserInfo({
@@ -45,8 +39,7 @@ function EditProfileScreen({ navigation }) {
     };
 
     useEffect(() => {
-        console.log(selectedGenres)
-    }, [selectedGenres])
+    }, [selectedGenres]);
 
     const handleSubmit = async () => {
         try {
@@ -94,14 +87,12 @@ function EditProfileScreen({ navigation }) {
                         {selectedGenres.length === 0
                         ? <GenreColorBlock genres={prevGenres} />
                         : <GenreColorBlock genres={selectedGenres} />}
-
                         <CustomDropdown
                             onGenresSelected={handleGenresSelected}
                             preSelectedGenres={prevGenres}
                             setModalVisible={setModalVisible}
                             modalVisible={modalVisible}
                         />
-
                     </View>
                 </View>
                 <View style={{ width: '100%', alignItems: 'center' }}>
@@ -110,13 +101,13 @@ function EditProfileScreen({ navigation }) {
                         onPress={handleSubmit}
                     >
                         <Text
-                            style={{ fontFamily: 'Sansation-Regular' }}>
+                            style={styles.textStyle}>
                             save changes
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity>
                         <Text
-                            style={{ fontFamily: 'Sansation-Regular' }}>
+                            style={styles.textStyle}>
                             delete profile
                         </Text>
                     </TouchableOpacity>
@@ -158,6 +149,9 @@ const styles = StyleSheet.create({
         width: '60%',
         alignItems: 'center',
     },
+    textStyle: {
+        fontFamily: 'Sansation-Regular',
+    }
 });
 
 export default EditProfileScreen;
