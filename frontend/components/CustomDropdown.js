@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal, ScrollView, Pressable, StyleSheet } from 'react-native';
 import bookGenres from '../data/bookGenres';
 
-const CustomDropdown = ({ onGenresSelected, preSelectedGenres }) => {
-    const [modalVisible, setModalVisible] = useState(false);
+const CustomDropdown = ({ onGenresSelected, preSelectedGenres, modalVisible, setModalVisible }) => {
+    // const [modalVisible, setModalVisible] = useState(false);
     const [selectedGenres, setSelectedGenres] = useState(preSelectedGenres);
 
     useEffect(() => {
@@ -26,16 +26,6 @@ const CustomDropdown = ({ onGenresSelected, preSelectedGenres }) => {
 
     return (
         <View>
-            <Pressable
-                style={[styles.button, styles.buttonOpen]}
-                onPress={() => setModalVisible(true)}>
-                <Text style={{
-                    textAlign: 'center',
-                    fontFamily: 'Sansation-Regular',
-                }}>
-                    Edit genres
-                </Text>
-            </Pressable>
             <View style={styles.centeredView}>
                 <Modal
                     animationType="slide"

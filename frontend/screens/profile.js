@@ -56,7 +56,7 @@ function Profile({ navigation: { navigate } }) {
               );
             })}
           </ScrollView>
-          <Heading text='Genres' textStyles={{ fontSize: 18 }} headingStyles={{ fontSize: 18, marginLeft: 20 }} />
+          <Heading text='Favourite genres' textStyles={{ fontSize: 18 }} headingStyles={{ fontSize: 18, marginLeft: 20 }} />
           <View style={{paddingLeft: 20}}>
             <GenreColorBlock genres={user.genre} />
           </View>
