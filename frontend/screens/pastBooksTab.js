@@ -1,39 +1,58 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-  FlatList,
-} from 'react-native';
+import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import { useMainContext } from '../utils/mainContext';
 import globalStyles from '../styles/globalStyles';
+import { useState, useEffect } from 'react';
+import Notes from '../components/Notes';
+import BookclubPill from '../components/BookclubPill';
 
 export default function PastBooksTab() {
   const { mySessions } = useMainContext();
-  const currentSession = mySessions[0];
-  console.log(currentSession);
+  const [pastSessions, setPastSessions] = useState(
+    mySessions
+      .filter((session) => new Date(session.datetime) < new Date())
+      .reverse(),
+  );
+
+  useEffect(() => {
+    const past = mySessions
+      .filter((session) => new Date(session.datetime) < new Date())
+      .reverse();
+    setPastSessions(past);
+  }, [mySessions]);
+
+  const [activeSession, setActiveSession] = useState(null);
   return (
     <View
       style={{
         flex: 1,
         backgroundColor: '#F8F6F2',
         borderTopLeftRadius: 50,
-        padding: 20,
+        padding: 15,
       }}
     >
-      <FlatList
-        data={[...mySessions, ...mySessions, ...mySessions, ...mySessions]}
-        renderItem={({ item }) => {
-          return <PastBookCard session={item} />;
-        }}
-        ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-      />
+      {activeSession ? (
+        <Notes setActiveSession={setActiveSession} session={activeSession} />
+      ) : (
+        <FlatList
+          contentContainerStyle={{ padding: 10, paddingBottom: 90 }}
+          style={{ borderTopLeftRadius: 30 }}
+          data={pastSessions}
+          renderItem={({ item }) => {
+            return (
+              <PastBookCard
+                setActiveSession={setActiveSession}
+                session={item}
+              />
+            );
+          }}
+          ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+        />
+      )}
     </View>
   );
 }
 
-function PastBookCard({ session }) {
+function PastBookCard({ session, setActiveSession }) {
   return (
     <View
       style={{
@@ -56,9 +75,10 @@ function PastBookCard({ session }) {
         <Text style={[globalStyles.smText, { marginBottom: 10 }]}>
           {session.chosen_book.authors.join(', ')}
         </Text>
-        <Text style={globalStyles.mdText}>Bookclub</Text>
+        <BookclubPill bookclub={session.bookclub} size={20} />
       </View>
       <TouchableOpacity
+        onPress={() => setActiveSession(session)}
         style={[globalStyles.button, { marginLeft: 0, paddingHorizontal: 10 }]}
       >
         <Text style={globalStyles.smText}>see notes</Text>

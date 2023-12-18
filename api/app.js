@@ -10,6 +10,7 @@ const bookclubsRouter = require('./routes/bookclubs');
 const authenticationRouter = require('./routes/authentication');
 const usersRouter = require('./routes/users');
 const sessionsRouter = require('./routes/sessions');
+const notesRouter = require('./routes/notes');
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use('/bookclubs', bookclubsRouter);
 app.use('/tokens', authenticationRouter);
 app.use('/users', usersRouter);
 app.use('/sessions', sessionsRouter);
+app.use('/notes', notesRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

@@ -54,19 +54,17 @@ export default function Note({ note }) {
         <Image
           style={{ width: 30, height: 30, borderRadius: 100 }}
           source={{
-            uri: 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png',
+            uri: `https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png`,
           }}
         />
         <View>
-          <Text style={globalStyles.mdText}>Rikie Patrick</Text>
-          <Text style={globalStyles.smText}>{new Date().toDateString()}</Text>
+          <Text style={globalStyles.mdText}>{note.user.username}</Text>
+          <Text style={[globalStyles.smText, { color: '#69520399' }]}>
+            {new Date(note.createdAt).toDateString()}
+          </Text>
         </View>
       </View>
-      <Text style={globalStyles.mdText}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac magna
-        sit amet purus gravida tristique. Nullam id dolor id nibh ultricies
-        vehicula ut id elit. Donec id elit non mi porta gravida at eget metus.
-      </Text>
+      <Text style={globalStyles.mdText}>{note.content}</Text>
       <View
         style={{
           position: 'absolute',
@@ -87,9 +85,18 @@ export default function Note({ note }) {
               }}
             >
               <Book1 color='#695203' size={24} />
-              <Text style={[globalStyles.smText, { color: '#695203' }]}>
-                Chapter 13
-              </Text>
+              <View>
+              {note.page &&
+                <Text style={[globalStyles.smText, { color: '#695203' }]}>
+                  Page {note.page}
+                </Text>
+              }
+                {note.chapter && (
+                  <Text style={[globalStyles.smText, { color: '#695203' }]}>
+                    {note.chapter}
+                  </Text>
+                )}
+              </View>
             </View>
             <TouchableOpacity onPress={() => setHideIcons(false)}>
               <More color='black' size={24} />
@@ -98,7 +105,7 @@ export default function Note({ note }) {
         ) : (
           <>
             <TouchableOpacity onPress={deleteNote}>
-              <BagCross color='black' size={24} />
+              <BagCross color='tomato' size={24} />
             </TouchableOpacity>
             <TouchableOpacity onPress={editNote}>
               <Edit2 color='black' size={24} />

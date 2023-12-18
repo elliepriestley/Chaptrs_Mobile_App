@@ -12,6 +12,7 @@ import AvatarGroup from '../components/AvatarGroup';
 import api from '../utils/api';
 import { useAuth } from '../utils/authContext';
 import { useMainContext } from '../utils/mainContext';
+import BookclubPill from '../components/BookclubPill';
 
 function SessionDetailsScreen({ route, navigation: { navigate } }) {
   const { user, token, setToken } = useAuth();
@@ -26,7 +27,6 @@ function SessionDetailsScreen({ route, navigation: { navigate } }) {
   const joinSession = async () => {
     try {
       const data = await api.joinSession(session._id, token);
-      console.log(data.session.users_attending);
       session.users_attending = data.session.users_attending;
       setSessions((prev) => {
         const oldSessions = prev.filter(
@@ -89,15 +89,7 @@ function SessionDetailsScreen({ route, navigation: { navigate } }) {
                 );
               })}
             </View>
-            <View style={styles.bookclubContainer}>
-              <Image
-                style={styles.bookclubImage}
-                source={{
-                  uri: session.bookclub.image,
-                }}
-              />
-              <Text style={styles.bookclubText}>{session.bookclub.name}</Text>
-            </View>
+            <BookclubPill bookclub={session.bookclub} size={30} />
           </View>
         </View>
         <Heading text='About session' textStyles={{ fontSize: 16 }} />
@@ -186,12 +178,12 @@ const styles = StyleSheet.create({
   book: {
     flexDirection: 'row',
     gap: 10,
-    height: 180,
+    // height: 200,
     marginBottom: 20,
   },
   image: {
-    width: 120,
-    height: '100%',
+    width: 100,
+    height: 150,
     borderRadius: 10,
   },
   title: {
@@ -215,26 +207,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Sansation-Regular',
   },
-  bookclubText: {
-    fontFamily: 'Sansation-Regular',
-    fontSize: 10,
-    marginLeft: 10,
-    lineHeight: 10,
-    flexShrink: 1,
-  },
-  bookclubImage: {
-    borderRadius: 100,
-    height: 30,
-    width: 30,
-  },
-  bookclubContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    borderColor: '#DCC8A9',
-    borderWidth: 1,
-    padding: 5,
-    borderRadius: 999,
-  },
   joinButton: {
     marginVertical: 20,
     backgroundColor: '#DCC8A9',
@@ -247,7 +219,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 10,
     marginBottom: 15,
-    flex: 1,
   },
   category: {
     backgroundColor: '#F8964D7D',
@@ -255,5 +226,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 999,
     alignSelf: 'flex-start',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 30,
   },
 });
