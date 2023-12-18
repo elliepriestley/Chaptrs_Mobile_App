@@ -10,7 +10,7 @@ import {
 import { useAuth } from '../utils/authContext';
 import api from '../utils/api';
 import Heading from '../components/Heading';
-import CustomDropdown from '../components/CustomDropdown';
+import GenresDropdown from '../components/GenresDropdown';
 import GenreColorBlock from '../components/genreColorBlock';
 import SearchInput from '../components/SearchInput';
 
@@ -87,7 +87,7 @@ function EditProfileScreen({ navigation }) {
                         {selectedGenres.length === 0
                         ? <GenreColorBlock genres={prevGenres} />
                         : <GenreColorBlock genres={selectedGenres} />}
-                        <CustomDropdown
+                        <GenresDropdown
                             onGenresSelected={handleGenresSelected}
                             preSelectedGenres={prevGenres}
                             setModalVisible={setModalVisible}
