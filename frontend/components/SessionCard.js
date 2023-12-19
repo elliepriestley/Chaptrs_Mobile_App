@@ -3,6 +3,8 @@ import { Location, Calendar, Clock } from 'iconsax-react-native';
 import BookclubPill from './BookclubPill';
 
 function SessionCard({ session, onPress, color = '#E9E1D54D' }) {
+  const datetime = new Date(session.datetime);
+
   return (
     <TouchableOpacity
       style={[styles.container, { backgroundColor: color }]}
@@ -17,9 +19,8 @@ function SessionCard({ session, onPress, color = '#E9E1D54D' }) {
       <View
         style={{
           alignItems: 'flex-start',
-          justifyContent: 'flex-start',
+          justifyContent: 'center',
           maxWidth: 200,
-          height: '100%',
         }}
       >
         <Text style={styles.title}>{session.chosen_book.title}</Text>
@@ -34,23 +35,27 @@ function SessionCard({ session, onPress, color = '#E9E1D54D' }) {
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Calendar style={styles.icon} color='black' size={12} />
             <Text style={styles.details}>
-              {new Date(session.datetime).toLocaleDateString('en-gb', {
+              {datetime.toLocaleDateString('en-gb', {
                 weekday: 'short',
                 year: 'numeric',
                 month: 'short',
                 day: 'numeric',
-              })}
-            </Text>
-          </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Clock style={styles.icon} color='black' size={12} />
-            <Text style={styles.details}>
-              {new Date(session.datetime).toLocaleTimeString('en-gb', {
+              })}{' '}
+              {datetime.toLocaleTimeString('en-gb', {
                 hour: '2-digit',
                 minute: '2-digit',
               })}
             </Text>
           </View>
+          {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Clock style={styles.icon} color='black' size={12} />
+            <Text style={styles.details}>
+              {datetime.toLocaleTimeString('en-gb', {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+            </Text>
+          </View> */}
         </View>
         <BookclubPill bookclub={session.bookclub} size={30} />
       </View>
