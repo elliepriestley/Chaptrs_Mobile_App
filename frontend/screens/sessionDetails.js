@@ -178,7 +178,6 @@ const styles = StyleSheet.create({
   book: {
     flexDirection: 'row',
     gap: 10,
-    // height: 200,
     marginBottom: 20,
   },
   image: {

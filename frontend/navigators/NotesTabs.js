@@ -56,7 +56,7 @@ function TabBar({ navigationState }) {
           >
             <Text
               style={{
-                fontSize: 20,
+                fontSize: 16,
                 fontFamily: 'Sansation-Regular',
                 textAlign: 'center',
               }}

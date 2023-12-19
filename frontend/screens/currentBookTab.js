@@ -51,6 +51,8 @@ export default function CurrentBookTab() {
                   alignSelf: 'flex-start',
                   marginLeft: 0,
                   paddingHorizontal: 20,
+                  paddingVertical: 5,
+                  marginTop: 10,
                 },
               ]}
             >

@@ -45,7 +45,15 @@ export default function PastBooksTab() {
               />
             );
           }}
-          ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+          ItemSeparatorComponent={() => (
+            <View
+              style={{
+                height: 1,
+                backgroundColor: '#DCC8A9',
+                marginVertical: 10,
+              }}
+            />
+          )}
           ListEmptyComponent={() => (
             <Text style={globalStyles.mdText}>
               You haven't been to any sessions yet.
@@ -75,16 +83,26 @@ function PastBookCard({ session, setActiveSession }) {
           borderRadius: 10,
         }}
       />
-      <View style={{ flexDirection: 'column', flex: 1, flexBasis: 150 }}>
-        <Text style={globalStyles.mdText}>{session.chosen_book.title}</Text>
-        <Text style={[globalStyles.smText, { marginBottom: 10 }]}>
+      <View
+        style={{ flexDirection: 'column', flex: 1, flexBasis: 150, gap: 5 }}
+      >
+        <Text style={globalStyles.smText}>{session.chosen_book.title}</Text>
+        <Text
+          style={[
+            globalStyles.smText,
+            { marginBottom: 10, fontSize: 10, color: '#695203' },
+          ]}
+        >
           {session.chosen_book.authors.join(', ')}
         </Text>
         <BookclubPill bookclub={session.bookclub} size={20} />
       </View>
       <TouchableOpacity
         onPress={() => setActiveSession(session)}
-        style={[globalStyles.button, { marginLeft: 0, paddingHorizontal: 10 }]}
+        style={[
+          globalStyles.button,
+          { marginLeft: 0, paddingHorizontal: 10, paddingVertical: 5 },
+        ]}
       >
         <Text style={globalStyles.smText}>see notes</Text>
       </TouchableOpacity>

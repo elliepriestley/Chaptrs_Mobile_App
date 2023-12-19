@@ -1,4 +1,11 @@
-import { StyleSheet, View, FlatList, ScrollView, Text } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  ScrollView,
+  Text,
+  useWindowDimensions,
+} from 'react-native';
 import Heading from '../components/Heading';
 import SessionCard from '../components/SessionCard';
 import { useEffect, useState } from 'react';
@@ -10,6 +17,7 @@ function HomeScreen() {
   const { mySessions } = useMainContext();
   const [upcomingSessions, setUpcomingSessions] = useState([]);
   const [pastSessions, setPastSessions] = useState([]);
+  const layout = useWindowDimensions();
 
   useEffect(() => {
     mySessions.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
@@ -33,6 +41,12 @@ function HomeScreen() {
       <View>
         <Heading text='Upcoming Sessions' headingStyles={{ marginTop: 20 }} />
         <FlatList
+          style={{ width: layout.width, transform: [{ translateX: -20 }] }}
+          contentContainerStyle={{
+            gap: 15,
+            marginBottom: 10,
+            paddingHorizontal: 20,
+          }}
           data={upcomingSessions}
           renderItem={({ item }) => {
             return (
@@ -47,7 +61,6 @@ function HomeScreen() {
           horizontal={true}
           alwaysBounceHorizontal={true}
           keyExtractor={(session) => session._id}
-          ItemSeparatorComponent={Separator}
           ListEmptyComponent={() => (
             <Text style={globalStyles.mdText}>
               You currently have no upcoming sessions
@@ -56,6 +69,12 @@ function HomeScreen() {
         />
         <Heading text='Past Sessions' headingStyles={{ marginTop: 20 }} />
         <FlatList
+          style={{ width: layout.width, transform: [{ translateX: -20 }] }}
+          contentContainerStyle={{
+            gap: 15,
+            marginBottom: 10,
+            paddingHorizontal: 20,
+          }}
           data={pastSessions}
           renderItem={({ item }) => {
             return (
@@ -69,7 +88,6 @@ function HomeScreen() {
           }}
           horizontal={true}
           keyExtractor={(session) => session._id}
-          ItemSeparatorComponent={Separator}
           ListEmptyComponent={() => (
             <Text style={globalStyles.mdText}>
               You haven't been to any sessions yet
@@ -81,24 +99,12 @@ function HomeScreen() {
   );
 }
 
-const Separator = () => {
-  return (
-    <View
-      style={{
-        width: 2,
-        marginHorizontal: 10,
-        borderRadius: 10,
-        backgroundColor: '#DCC8A9',
-      }}
-    />
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
     paddingHorizontal: 20,
+    gap: 10,
   },
 });
 
