@@ -52,7 +52,7 @@ export default function CurrentBookTab() {
             <Text style={globalStyles.mdText}>No notes have been left.</Text>
           )}
           renderItem={({ item }) => {
-            return <Note note={item} />;
+            return <Note note={item} sessionId={currentSession._id} />;
           }}
         />
       </View>

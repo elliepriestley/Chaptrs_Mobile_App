@@ -8,6 +8,7 @@ const CustomInput = (props) => {
     label,
     inputStyle,
     errorStyle,
+    displayError = true,
     ...inputProps
   } = props;
 
@@ -20,6 +21,7 @@ const CustomInput = (props) => {
         <TextInput
           style={[styles.textInput, inputStyle, hasError && styles.errorInput]}
           value={value}
+          selectionColor='#695203'
           onChangeText={(text) => onChange(name)(text)}
           onBlur={() => {
             setFieldTouched(name);
@@ -27,7 +29,7 @@ const CustomInput = (props) => {
           }}
           {...inputProps}
         />
-        {hasError && (
+        {hasError && displayError && (
           <Text style={[styles.errorText, errorStyle]}>{errors[name]}</Text>
         )}
       </View>

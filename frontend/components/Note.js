@@ -8,20 +8,36 @@ import {
   CloseSquare,
   Book1,
 } from 'iconsax-react-native';
+import api from '../utils/api';
 import NewNoteModal from '../components/NewNoteModal';
+import { useAuth } from '../utils/authContext';
+import { useMainContext } from '../utils/mainContext';
 
-export default function Note({ note }) {
+export default function Note({ note, sessionId }) {
+  const { token, setToken, user } = useAuth();
+  const { setSessions } = useMainContext();
   const [hideIcons, setHideIcons] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const mine = note.user?._id === user?._id;
 
-  const deleteNote = () => {
-    // write delete note function
+  const deleteNote = async () => {
     console.log('delete note');
+    try {
+      if (!sessionId) throw new Error('Session ID does not exist');
+      const data = await api.deleteSessionNote(note._id, sessionId, token);
+      if (data.token) setToken(data.token);
+      setSessions((prev) => {
+        const filteredArray = prev.filter(
+          (session) => session._id !== data.session._id,
+        );
+        return [...filteredArray, data.session];
+      });
+    } catch (error) {
+      alert(error.message || 'Something went wrong');
+    }
   };
 
   const editNote = () => {
-    // write edit note function
-
     console.log('edit note', note);
     setShowModal(true);
   };
@@ -40,6 +56,7 @@ export default function Note({ note }) {
         setShowModal={setShowModal}
         showModal={showModal}
         note={note}
+        sessionId={sessionId}
       />
       <View
         style={{
@@ -58,7 +75,7 @@ export default function Note({ note }) {
           }}
         />
         <View>
-          <Text style={globalStyles.mdText}>{note.user.username}</Text>
+          <Text style={globalStyles.mdText}>{note.user?.username}</Text>
           <Text style={[globalStyles.smText, { color: '#69520399' }]}>
             {new Date(note.createdAt).toDateString()}
           </Text>
@@ -86,11 +103,11 @@ export default function Note({ note }) {
             >
               <Book1 color='#695203' size={24} />
               <View>
-              {note.page &&
-                <Text style={[globalStyles.smText, { color: '#695203' }]}>
-                  Page {note.page}
-                </Text>
-              }
+                {note.page && (
+                  <Text style={[globalStyles.smText, { color: '#695203' }]}>
+                    Page {note.page}
+                  </Text>
+                )}
                 {note.chapter && (
                   <Text style={[globalStyles.smText, { color: '#695203' }]}>
                     {note.chapter}
@@ -98,9 +115,11 @@ export default function Note({ note }) {
                 )}
               </View>
             </View>
-            <TouchableOpacity onPress={() => setHideIcons(false)}>
-              <More color='black' size={24} />
-            </TouchableOpacity>
+            {mine && (
+              <TouchableOpacity onPress={() => setHideIcons(false)}>
+                <More color='black' size={24} />
+              </TouchableOpacity>
+            )}
           </>
         ) : (
           <>

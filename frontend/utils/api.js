@@ -68,6 +68,40 @@ class Api {
       return new Promise.reject(error);
     }
   };
+  deleteSessionNote = async (noteId, sessionId, token) => {
+    try {
+      const response = await fetch(`${this._baseUrl}/sessions/${sessionId}/notes/${noteId}`, {
+        method: 'DELETE',
+        headers: { ...this._headers, Authorization: 'Bearer ' + token },
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      return data;
+    } catch (error) {
+      return new Promise.reject(error);
+    }
+  };
+  updateSessionNote = async (formData, noteId, sessionId, token) => {
+    try {
+      const response = await fetch(
+        `${this._baseUrl}/sessions/${sessionId}/notes/${noteId}`,
+        {
+          method: 'PATCH',
+          headers: { ...this._headers, Authorization: 'Bearer ' + token },
+          body: JSON.stringify(formData),
+        },
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      return data;
+    } catch (error) {
+      return new Promise.reject(error);
+    }
+  };
   createBook = async (formData, token) => {
     try {
       const response = await fetch(`${this._baseUrl}/books`, {

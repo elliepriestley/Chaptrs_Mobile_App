@@ -134,6 +134,7 @@ const SessionsController = {
       if (!session) {
         throw new Error('Session does not exist');
       }
+      console.log('session', session);
       const token = TokenGenerator.jsonwebtoken(req.user_id);
       res.status(201).json({
         message: `Session has been updated at ${
@@ -151,7 +152,7 @@ const SessionsController = {
       const { id, noteId } = req.params;
       const session = await Session.findByIdAndUpdate(
         id,
-        { $pullAll: { notes: noteId } },
+        { $pullAll: { notes: [{ _id: noteId }] } },
         {
           new: true,
         },

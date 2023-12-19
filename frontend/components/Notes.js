@@ -61,7 +61,7 @@ export default function Notes({ setActiveSession, session }) {
           </Text>
         )}
         renderItem={({ item }) => {
-          return <Note note={item} />;
+          return <Note note={item} sessionId={session._id} />;
         }}
         ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
       />

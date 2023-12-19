@@ -12,6 +12,7 @@ router.delete('/:id', tokenChecker, SessionsController.DeleteById);
 router.patch('/:id', tokenChecker, SessionsController.UpdateById);
 router.patch('/:id/join', tokenChecker, SessionsController.JoinSession);
 router.post('/:id/notes', tokenChecker, NotesController.Create, SessionsController.CreateSessionNote);
+router.patch('/:id/notes/:noteId', tokenChecker, NotesController.UpdateById, SessionsController.CreateSessionNote);
 router.delete('/:id/notes/:noteId', tokenChecker, NotesController.DeleteById, SessionsController.DeleteSessionNote);
 
 module.exports = router;

@@ -6,6 +6,7 @@ import {
   ScrollView,
   Pressable,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import api from '../utils/api';
@@ -41,7 +42,16 @@ export default function NewNoteModal({
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
     try {
-      const data = await api.createSessionNote(values, sessionId, token);
+      let data
+      if (!note) {
+        data = await api.createSessionNote(
+          values,
+          sessionId,
+          token,
+        );
+      } else {
+        data = await api.updateSessionNote(values, note._id, sessionId, token);
+      }
       if (data) setToken(data.token);
       setSessions((prev) => {
         const filteredArray = prev.filter(
@@ -90,11 +100,12 @@ export default function NewNoteModal({
                 multiline
                 numberOfLines={6}
                 maxLength={240}
+                displayError={false}
               />
               <View
                 style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
+                  // flexDirection: 'row',
+                  // alignItems: 'center',
                   gap: 20,
                   marginBottom: 20,
                 }}
@@ -103,7 +114,27 @@ export default function NewNoteModal({
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    gap: 5,
+                    gap: 10,
+                  }}
+                >
+                  <Text style={globalStyles.mdText}>Chapter</Text>
+                  <Field
+                    component={CustomInput}
+                    name='chapter'
+                    placeholder='e.g. Lost in Battle'
+                    placeholderTextColor='#69520377'
+                    clearButtonMode='while-editing'
+                    inputStyle={{
+                      marginBottom: 0,
+                      width: 200,
+                    }}
+                  />
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 10,
                   }}
                 >
                   <Text style={globalStyles.mdText}>Page</Text>
@@ -113,26 +144,12 @@ export default function NewNoteModal({
                     placeholder='369'
                     keyboardType='numeric'
                     placeholderTextColor='#69520377'
+                    maxLength={4}
+                    textAlign='center'
                     inputStyle={{
                       marginBottom: 0,
-                      // width: 50,
+                      width: 60,
                     }}
-                  />
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 5,
-                  }}
-                >
-                  <Text style={globalStyles.mdText}>Chapter</Text>
-                  <Field
-                    component={CustomInput}
-                    name='chapter'
-                    placeholder='Chapter Twelve'
-                    placeholderTextColor='#69520377'
-                    inputStyle={{ marginBottom: 0 }}
                   />
                 </View>
               </View>
