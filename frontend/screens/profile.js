@@ -1,14 +1,18 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import React from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Pressable } from 'react-native';
+import React, { useState } from 'react';
 import { useAuth } from '../utils/authContext';
 import { useMainContext } from '../utils/mainContext';
 import { ScrollView } from 'react-native';
 import Heading from '../components/Heading';
 import { Edit } from 'iconsax-react-native';
+import GenreColorBlock from '../components/genreColorBlock';
+import PressableModal from '../components/PressableModal';
 
 function Profile({ navigation: { navigate } }) {
   const { user, setUser, setToken } = useAuth();
   const { myBookclubs } = useMainContext();
+  const [modalVisible, setModalVisible] = useState(false);
+
   const logout = () => {
     setUser(null);
     setToken(null);
@@ -16,7 +20,12 @@ function Profile({ navigation: { navigate } }) {
 
   return (
       <ScrollView style={styles.container}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, marginHorizontal: 20 }}>
+          <View style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginTop: 20,
+            marginHorizontal: 20
+          }}>
             <Heading text='Profile' />
               <Edit
                 onPress={() => navigate('Edit Profile')}
@@ -24,18 +33,29 @@ function Profile({ navigation: { navigate } }) {
                 color='black'
               />
           </View>
-          <Image
-            style={styles.userProfile}
-            source={{
-              uri: user.profile_picture,
-            }}
-          />
+          <Pressable onPress={() => setModalVisible(true)}>
+            <Image
+              style={styles.userProfile}
+              source={{
+                uri: user.profile_picture,
+              }}
+            />
+            <PressableModal isVisible={modalVisible} setModalVisible={setModalVisible} onLogout={logout}  />
+          </Pressable>
           <Text style={styles.userName}>{user.username}</Text>
-          <Heading text='About' textStyles={{ fontSize: 18 }} headingStyles={{ fontSize: 18, marginLeft: 20 }} />
+          <Heading
+            text='About'
+            textStyles={{ fontSize: 18 }}
+            headingStyles={{ fontSize: 18, marginLeft: 20 }}
+          />
           <Text style={[styles.text, { marginBottom: 20, marginLeft: 20 }]}>
             {user.description}
           </Text>
-          <Heading text='Bookclubs' textStyles={{ fontSize: 18 }} headingStyles={{ fontSize: 18, marginLeft: 20 }} />
+          <Heading
+            text='Bookclubs'
+            textStyles={{ fontSize: 18 }}
+            headingStyles={{ fontSize: 18, marginLeft: 20 }}
+          />
           <ScrollView
             horizontal={true}
             style={{ height: 70 }}
@@ -54,11 +74,17 @@ function Profile({ navigation: { navigate } }) {
               );
             })}
           </ScrollView>
-          <TouchableOpacity
-            onPress={logout}
-          >
-            <Text style={styles.text}>log out</Text>
-          </TouchableOpacity>
+          <Heading
+            text='Favourite genres'
+            textStyles={{ fontSize: 18 }}
+            headingStyles={{ fontSize: 18, marginLeft: 20 }}
+            />
+          <View style={{paddingLeft: 20}}>
+            <GenreColorBlock genres={user.genre} />
+          </View>
+          {/* <TouchableOpacity onPress={logout}>
+            <Text style={[styles.text, {marginBottom: 110}]}>log out</Text>
+          </TouchableOpacity> */}
       </ScrollView>
   );
 }
@@ -110,5 +136,20 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignSelf: 'flex-start',
     marginHorizontal: 10
+  },
+  categories: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    marginBottom: 15,
+    flex: 1,
+    paddingLeft: 20,
+  },
+  category: {
+    backgroundColor: '#F8964D7D',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 999,
+    alignSelf: 'flex-start',
   },
 });
