@@ -1,9 +1,10 @@
-import { StyleSheet, View, FlatList, ScrollView } from 'react-native';
+import { StyleSheet, View, FlatList, ScrollView, Text } from 'react-native';
 import Heading from '../components/Heading';
 import SessionCard from '../components/SessionCard';
 import { useEffect, useState } from 'react';
 import { useMainContext } from '../utils/mainContext';
 import { useNavigation } from '@react-navigation/native';
+import globalStyles from '../styles/globalStyles';
 
 function HomeScreen() {
   const { mySessions } = useMainContext();
@@ -47,6 +48,11 @@ function HomeScreen() {
           alwaysBounceHorizontal={true}
           keyExtractor={(session) => session._id}
           ItemSeparatorComponent={Separator}
+          ListEmptyComponent={() => (
+            <Text style={globalStyles.mdText}>
+              You currently have no upcoming sessions
+            </Text>
+          )}
         />
         <Heading text='Past Sessions' headingStyles={{ marginTop: 20 }} />
         <FlatList
@@ -64,6 +70,11 @@ function HomeScreen() {
           horizontal={true}
           keyExtractor={(session) => session._id}
           ItemSeparatorComponent={Separator}
+          ListEmptyComponent={() => (
+            <Text style={globalStyles.mdText}>
+              You haven't been to any sessions yet
+            </Text>
+          )}
         />
       </View>
     </ScrollView>

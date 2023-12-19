@@ -46,6 +46,11 @@ export default function PastBooksTab() {
             );
           }}
           ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+          ListEmptyComponent={() => (
+            <Text style={globalStyles.mdText}>
+              You haven't been to any sessions yet.
+            </Text>
+          )}
         />
       )}
     </View>

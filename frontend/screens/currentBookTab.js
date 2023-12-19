@@ -10,8 +10,11 @@ export default function CurrentBookTab() {
   const { mySessions } = useMainContext();
   const [showModal, setShowModal] = useState(false);
   const [currentSession, setCurrentSession] = useState(
-    mySessions.find((session) => new Date(session.datetime) > new Date()),
+    mySessions.find((session) => new Date(session.datetime) > new Date()) ||
+      null,
   );
+
+  console.log('current session', currentSession);
 
   useEffect(() => {
     const current = mySessions.find(
@@ -22,11 +25,13 @@ export default function CurrentBookTab() {
 
   return (
     <>
-      <NewNoteModal
-        setShowModal={setShowModal}
-        showModal={showModal}
-        sessionId={currentSession._id}
-      />
+      {currentSession && (
+        <NewNoteModal
+          setShowModal={setShowModal}
+          showModal={showModal}
+          sessionId={currentSession._id}
+        />
+      )}
       <View
         style={{
           flex: 1,
@@ -35,26 +40,40 @@ export default function CurrentBookTab() {
           padding: 20,
         }}
       >
-        <SessionCard session={currentSession} color='transparent' />
-        <TouchableOpacity
-          onPress={() => setShowModal(true)}
-          style={[
-            globalStyles.button,
-            { alignSelf: 'flex-start', marginLeft: 0, paddingHorizontal: 20 },
-          ]}
-        >
-          <Text style={globalStyles.mdText}>add note</Text>
-        </TouchableOpacity>
-        <FlatList
-          contentContainerStyle={{ paddingBottom: 70 }}
-          data={currentSession.notes}
-          ListEmptyComponent={() => (
-            <Text style={globalStyles.mdText}>No notes have been left.</Text>
-          )}
-          renderItem={({ item }) => {
-            return <Note note={item} sessionId={currentSession._id} />;
-          }}
-        />
+        {currentSession ? (
+          <>
+            <SessionCard session={currentSession} color='transparent' />
+            <TouchableOpacity
+              onPress={() => setShowModal(true)}
+              style={[
+                globalStyles.button,
+                {
+                  alignSelf: 'flex-start',
+                  marginLeft: 0,
+                  paddingHorizontal: 20,
+                },
+              ]}
+            >
+              <Text style={globalStyles.mdText}>add note</Text>
+            </TouchableOpacity>
+            <FlatList
+              contentContainerStyle={{ paddingBottom: 70 }}
+              data={currentSession.notes}
+              ListEmptyComponent={() => (
+                <Text style={globalStyles.mdText}>
+                  No notes have been left.
+                </Text>
+              )}
+              renderItem={({ item }) => {
+                return <Note note={item} sessionId={currentSession._id} />;
+              }}
+            />
+          </>
+        ) : (
+          <Text style={globalStyles.mdText}>
+            You currently have no upcoming sessions
+          </Text>
+        )}
       </View>
     </>
   );
