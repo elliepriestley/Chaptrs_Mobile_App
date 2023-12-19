@@ -3,7 +3,7 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableOpacity,
+  useWindowDimensions,
   Pressable,
 } from 'react-native';
 import React, { useState } from 'react';
@@ -20,6 +20,7 @@ function Profile({ navigation: { navigate } }) {
   const { user, setUser, setToken } = useAuth();
   const { myBookclubs } = useMainContext();
   const [modalVisible, setModalVisible] = useState(false);
+  const layout = useWindowDimensions();
 
   const logout = () => {
     setUser(null);
@@ -76,8 +77,12 @@ function Profile({ navigation: { navigate } }) {
         />
         <ScrollView
           horizontal={true}
-          style={{ marginHorizontal: 20, marginBottom: 10 }}
-          contentContainerStyle={{ gap: 10, marginBottom: 10 }}
+          style={{ width: layout.width, marginBottom: 10 }}
+          contentContainerStyle={{
+            gap: 10,
+            marginBottom: 10,
+            paddingHorizontal: 20,
+          }}
         >
           {myBookclubs.map((bookclub) => {
             return <BookclubPill bookclub={bookclub} />;
