@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Modal, ScrollView, Pressable, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, ScrollView, Pressable, StyleSheet, Alert } from 'react-native';
 import bookGenres from '../data/bookGenres';
 import { TickCircle } from 'iconsax-react-native';
 
