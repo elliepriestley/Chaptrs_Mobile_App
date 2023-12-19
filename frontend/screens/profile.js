@@ -79,8 +79,8 @@ function Profile({ navigation: { navigate } }) {
           style={{ marginHorizontal: 20, marginBottom: 10 }}
           contentContainerStyle={{ gap: 10, marginBottom: 10 }}
         >
-          {myBookclubs.map((bookclub) => {
-            return <BookclubPill bookclub={bookclub} />;
+          {myBookclubs.map((bookclub, index) => {
+            return <BookclubPill key={index} bookclub={bookclub} />;
           })}
         </ScrollView>
         <Heading

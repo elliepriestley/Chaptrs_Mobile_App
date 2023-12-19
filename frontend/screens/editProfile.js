@@ -5,7 +5,10 @@ import {
     StyleSheet,
     TextInput,
     ScrollView,
-    TouchableOpacity
+    TouchableOpacity,
+    KeyboardAvoidingView,
+    TouchableWithoutFeedback,
+    Keyboard
 } from 'react-native';
 import { useAuth } from '../utils/authContext';
 import api from '../utils/api';
@@ -43,7 +46,7 @@ function EditProfileScreen({ navigation }) {
 
     const handleSubmit = async () => {
         try {
-            const data = await api.editUserInfo(user._id, { 
+            const data = await api.editUserInfo(user._id, {
                 ...newUserInfo,
                 genre: selectedGenres
             }, token);
@@ -60,60 +63,68 @@ function EditProfileScreen({ navigation }) {
     }
 
     return (
-        <View style={styles.container}>
-            <ScrollView nestedScrollEnabled={true}>
-                <Heading text='Edit profile' />
-                <View style={{ gap: 15, marginTop: 20 }}>
-                    <Text style={styles.label}>Name</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Enter your name"
-                        value={newUserInfo.username}
-                        onChangeText={(text) => handleInput('username', text)}
-                    />
-                    <Text style={styles.label}>Description</Text>
-                    <TextInput
-                        style={styles.inputArea}
-                        editable
-                        multiline
-                        numberOfLines={6}
-                        maxLength={240}
-                        value={newUserInfo.description}
-                        onChangeText={(text) => handleInput('description', text)}
-                    />
-                    <Text style={styles.label}>Favourite genres</Text>
-                    <SearchInput placeholder='Search' onPress={() => setModalVisible(true)} />
-                    <View>
-                        {selectedGenres.length === 0
-                        ? <GenreColorBlock genres={prevGenres} />
-                        : <GenreColorBlock genres={selectedGenres} />}
-                        <GenresDropdown
-                            onGenresSelected={handleGenresSelected}
-                            preSelectedGenres={prevGenres}
-                            setModalVisible={setModalVisible}
-                            modalVisible={modalVisible}
-                        />
-                    </View>
+        <KeyboardAvoidingView
+            behavior={'padding'}
+            enabled
+            style={{ flexGrow: 1, height: '100%' }}
+        >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View style={styles.container}>
+                    <ScrollView nestedScrollEnabled={true}>
+                        <Heading text='Edit profile' />
+                        <View style={{ gap: 15, marginTop: 20 }}>
+                            <Text style={styles.label}>Name</Text>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Enter your name"
+                                value={newUserInfo.username}
+                                onChangeText={(text) => handleInput('username', text)}
+                            />
+                            <Text style={styles.label}>Description</Text>
+                            <TextInput
+                                style={styles.inputArea}
+                                editable
+                                multiline
+                                numberOfLines={6}
+                                maxLength={240}
+                                value={newUserInfo.description}
+                                onChangeText={(text) => handleInput('description', text)}
+                            />
+                            <Text style={styles.label}>Favourite genres</Text>
+                            <SearchInput placeholder='Search' onPress={() => setModalVisible(true)} />
+                            <View>
+                                {selectedGenres.length === 0
+                                    ? <GenreColorBlock genres={prevGenres} />
+                                    : <GenreColorBlock genres={selectedGenres} />}
+                                <GenresDropdown
+                                    onGenresSelected={handleGenresSelected}
+                                    preSelectedGenres={prevGenres}
+                                    setModalVisible={setModalVisible}
+                                    modalVisible={modalVisible}
+                                />
+                            </View>
+                        </View>
+                        <View style={{ width: '100%', alignItems: 'center' }}>
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={handleSubmit}
+                            >
+                                <Text
+                                    style={styles.textStyle}>
+                                    save changes
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <Text
+                                    style={styles.textStyle}>
+                                    delete profile
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </ScrollView>
                 </View>
-                <View style={{ width: '100%', alignItems: 'center' }}>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={handleSubmit}
-                    >
-                        <Text
-                            style={styles.textStyle}>
-                            save changes
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text
-                            style={styles.textStyle}>
-                            delete profile
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-            </ScrollView>
-        </View>
+            </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     );
 }
 
