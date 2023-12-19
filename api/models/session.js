@@ -23,6 +23,13 @@ const SessionSchema = new mongoose.Schema({
     required: true,
     autopopulate: true,
   },
+  notes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Note',
+      autopopulate: true,
+    },
+  ],
   suggested_books: [
     {
       user_id: {

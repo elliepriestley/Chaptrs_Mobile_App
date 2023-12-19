@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, Pressable } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Pressable,
+} from 'react-native';
 import React, { useState } from 'react';
 import { useAuth } from '../utils/authContext';
 import { useMainContext } from '../utils/mainContext';
@@ -7,6 +14,7 @@ import Heading from '../components/Heading';
 import { Edit } from 'iconsax-react-native';
 import GenreColorBlock from '../components/genreColorBlock';
 import PressableModal from '../components/PressableModal';
+import BookclubPill from '../components/BookclubPill';
 
 function Profile({ navigation: { navigate } }) {
   const { user, setUser, setToken } = useAuth();
@@ -19,73 +27,72 @@ function Profile({ navigation: { navigate } }) {
   };
 
   return (
-      <ScrollView style={styles.container}>
-          <View style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginTop: 20,
-            marginHorizontal: 20
-          }}>
-            <Heading text='Profile' />
-              <Edit
-                onPress={() => navigate('Edit Profile')}
-                size={36}
-                color='black'
-              />
-          </View>
-          <Pressable onPress={() => setModalVisible(true)}>
-            <Image
-              style={styles.userProfile}
-              source={{
-                uri: user.profile_picture,
-              }}
-            />
-            <PressableModal isVisible={modalVisible} setModalVisible={setModalVisible} onLogout={logout}  />
-          </Pressable>
-          <Text style={styles.userName}>{user.username}</Text>
-          <Heading
-            text='About'
-            textStyles={{ fontSize: 18 }}
-            headingStyles={{ fontSize: 18, marginLeft: 20 }}
-          />
-          <Text style={[styles.text, { marginBottom: 20, marginLeft: 20 }]}>
-            {user.description}
-          </Text>
-          <Heading
-            text='Bookclubs'
-            textStyles={{ fontSize: 18 }}
-            headingStyles={{ fontSize: 18, marginLeft: 20 }}
-          />
-          <ScrollView
-            horizontal={true}
-            style={{ height: 70 }}
-          >
-            {myBookclubs.map((bookclub) => {
-              return (
-                <View key={bookclub._id} style={styles.bookclubContainer}>
-                  <Image
-                    style={styles.bookclubImage}
-                    source={{ uri: bookclub.image }}
-                  />
-                  <Text style={[styles.text, { marginLeft: 10 }]}>
-                    {bookclub.name}
-                  </Text>
-                </View>
-              );
-            })}
-          </ScrollView>
-          <Heading
-            text='Favourite genres'
-            textStyles={{ fontSize: 18 }}
-            headingStyles={{ fontSize: 18, marginLeft: 20 }}
-            />
-          <View style={{paddingLeft: 20}}>
-            <GenreColorBlock genres={user.genre} />
-          </View>
-          {/* <TouchableOpacity onPress={logout}>
-            <Text style={[styles.text, {marginBottom: 110}]}>log out</Text>
-          </TouchableOpacity> */}
+    <View style={styles.container}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginTop: 20,
+          marginHorizontal: 20,
+        }}
+      >
+        <Heading text='Profile' />
+        <Edit
+          onPress={() => navigate('Edit Profile')}
+          size={36}
+          color='black'
+        />
+      </View>
+      <Pressable onPress={() => setModalVisible(true)}>
+        <Image
+          style={styles.userProfile}
+          source={{
+            uri: user.profile_picture,
+          }}
+        />
+        <PressableModal
+          isVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          onLogout={logout}
+        />
+      </Pressable>
+      <Text style={styles.userName}>{user.username}</Text>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 100 }}
+        style={styles.container}
+      >
+        <Heading
+          text='About'
+          textStyles={{ fontSize: 18 }}
+          headingStyles={{ fontSize: 18, marginLeft: 20 }}
+        />
+        <Text style={[styles.text, { marginBottom: 20, marginLeft: 20 }]}>
+          {user.description}
+        </Text>
+        <Heading
+          text='Bookclubs'
+          textStyles={{ fontSize: 18 }}
+          headingStyles={{ fontSize: 18, marginLeft: 20 }}
+        />
+        <ScrollView
+          horizontal={true}
+          style={{ marginHorizontal: 20, marginBottom: 10 }}
+          contentContainerStyle={{ gap: 10, marginBottom: 10 }}
+        >
+          {myBookclubs.map((bookclub) => {
+            return <BookclubPill bookclub={bookclub} />;
+          })}
+        </ScrollView>
+        <Heading
+          text='Favourite genres'
+          textStyles={{ fontSize: 18 }}
+          headingStyles={{ fontSize: 18, marginLeft: 20 }}
+        />
+        <View style={{ paddingLeft: 20 }}>
+          <GenreColorBlock genres={user.genre} />
+        </View>
       </ScrollView>
+    </View>
   );
 }
 
@@ -100,7 +107,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Sansation-Regular',
     fontSize: 24,
     paddingBottom: 5,
-    marginRight: 20
+    marginRight: 20,
   },
   userProfile: {
     height: 115,
@@ -119,7 +126,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Sansation-Regular',
     fontSize: 16,
     lineHeight: 30,
-    marginLeft: 20
+    marginLeft: 20,
   },
   bookclubImage: {
     borderRadius: 100,
@@ -135,7 +142,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 50,
     alignSelf: 'flex-start',
-    marginHorizontal: 10
+    marginHorizontal: 10,
   },
   categories: {
     flexDirection: 'row',

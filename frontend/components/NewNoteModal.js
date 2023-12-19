@@ -6,6 +6,7 @@ import {
   ScrollView,
   Pressable,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import api from '../utils/api';
@@ -13,8 +14,17 @@ import { Field, Formik } from 'formik';
 import noteSchema from '../data/schemas/noteSchema';
 import CustomInput from './CustomInput';
 import globalStyles from '../styles/globalStyles';
+import { useAuth } from '../utils/authContext';
+import { useMainContext } from '../utils/mainContext';
 
-export default function NewNoteModal({ showModal, setShowModal, note }) {
+export default function NewNoteModal({
+  showModal,
+  setShowModal,
+  note,
+  sessionId,
+}) {
+  const { token, setToken } = useAuth();
+  const { setSessions } = useMainContext();
   const [error, setError] = useState(null);
 
   const initialValues = {
@@ -30,13 +40,26 @@ export default function NewNoteModal({ showModal, setShowModal, note }) {
   }, [error]);
 
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
-    console.log(note.page);
     setSubmitting(true);
     try {
-      // const data = await api.createNote(sessionId, token);
-      // if (data) setToken(data.token);
-      // update sessions here
-      throw new Error('Not implemented');
+      let data
+      if (!note) {
+        data = await api.createSessionNote(
+          values,
+          sessionId,
+          token,
+        );
+      } else {
+        data = await api.updateSessionNote(values, note._id, sessionId, token);
+      }
+      if (data) setToken(data.token);
+      setSessions((prev) => {
+        const filteredArray = prev.filter(
+          (session) => session._id !== data.session._id,
+        );
+        return [...filteredArray, data.session];
+      });
+      setError(null);
       resetForm();
       setShowModal(false);
     } catch (error) {
@@ -77,11 +100,12 @@ export default function NewNoteModal({ showModal, setShowModal, note }) {
                 multiline
                 numberOfLines={6}
                 maxLength={240}
+                displayError={false}
               />
               <View
                 style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
+                  // flexDirection: 'row',
+                  // alignItems: 'center',
                   gap: 20,
                   marginBottom: 20,
                 }}
@@ -90,7 +114,27 @@ export default function NewNoteModal({ showModal, setShowModal, note }) {
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    gap: 5,
+                    gap: 10,
+                  }}
+                >
+                  <Text style={globalStyles.mdText}>Chapter</Text>
+                  <Field
+                    component={CustomInput}
+                    name='chapter'
+                    placeholder='e.g. Lost in Battle'
+                    placeholderTextColor='#69520377'
+                    clearButtonMode='while-editing'
+                    inputStyle={{
+                      marginBottom: 0,
+                      width: 200,
+                    }}
+                  />
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 10,
                   }}
                 >
                   <Text style={globalStyles.mdText}>Page</Text>
@@ -100,26 +144,12 @@ export default function NewNoteModal({ showModal, setShowModal, note }) {
                     placeholder='369'
                     keyboardType='numeric'
                     placeholderTextColor='#69520377'
+                    maxLength={4}
+                    textAlign='center'
                     inputStyle={{
                       marginBottom: 0,
-                      // width: 50,
+                      width: 60,
                     }}
-                  />
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 5,
-                  }}
-                >
-                  <Text style={globalStyles.mdText}>Chapter</Text>
-                  <Field
-                    component={CustomInput}
-                    name='chapter'
-                    placeholder='Chapter Twelve'
-                    placeholderTextColor='#69520377'
-                    inputStyle={{ marginBottom: 0 }}
                   />
                 </View>
               </View>

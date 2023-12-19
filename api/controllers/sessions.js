@@ -96,12 +96,63 @@ const SessionsController = {
       res.status(400).json({ message: err.message });
     }
   },
-  joinSession: async (req, res) => {
+  JoinSession: async (req, res) => {
     try {
       const { id } = req.params;
       const session = await Session.findByIdAndUpdate(
         id,
         { $addToSet: { users_attending: req.user_id } },
+        {
+          new: true,
+        },
+      );
+      if (!session) {
+        throw new Error('Session does not exist');
+      }
+      const token = TokenGenerator.jsonwebtoken(req.user_id);
+      res.status(201).json({
+        message: `Session has been updated at ${
+          session.location
+        } on ${session.datetime.toLocaleDateString()} at ${session.datetime.toLocaleTimeString()}`,
+        token: token,
+        session: session,
+      });
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+  },
+  CreateSessionNote: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const session = await Session.findByIdAndUpdate(
+        id,
+        { $addToSet: { notes: req.note._id } },
+        {
+          new: true,
+        },
+      );
+      if (!session) {
+        throw new Error('Session does not exist');
+      }
+      console.log('session', session);
+      const token = TokenGenerator.jsonwebtoken(req.user_id);
+      res.status(201).json({
+        message: `Session has been updated at ${
+          session.location
+        } on ${session.datetime.toLocaleDateString()} at ${session.datetime.toLocaleTimeString()}`,
+        token: token,
+        session: session,
+      });
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+  },
+  DeleteSessionNote: async (req, res) => {
+    try {
+      const { id, noteId } = req.params;
+      const session = await Session.findByIdAndUpdate(
+        id,
+        { $pullAll: { notes: [{ _id: noteId }] } },
         {
           new: true,
         },

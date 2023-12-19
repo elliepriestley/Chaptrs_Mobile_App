@@ -1,22 +1,37 @@
-import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { useMainContext } from '../utils/mainContext';
 import SessionCard from '../components/SessionCard';
 import globalStyles from '../styles/globalStyles';
 import Note from '../components/Note';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NewNoteModal from '../components/NewNoteModal';
 
 export default function CurrentBookTab() {
   const { mySessions } = useMainContext();
   const [showModal, setShowModal] = useState(false);
-  const currentSession = mySessions[0];
-  console.log(currentSession);
+  const [currentSession, setCurrentSession] = useState(
+    mySessions.find((session) => new Date(session.datetime) > new Date()) ||
+      null,
+  );
+
+  console.log('current session', currentSession);
+
+  useEffect(() => {
+    const current = mySessions.find(
+      (session) => new Date(session.datetime) > new Date(),
+    );
+    setCurrentSession(current);
+  }, [mySessions]);
+
   return (
     <>
-      <NewNoteModal
-        setShowModal={setShowModal}
-        showModal={showModal}
-      />
+      {currentSession && (
+        <NewNoteModal
+          setShowModal={setShowModal}
+          showModal={showModal}
+          sessionId={currentSession._id}
+        />
+      )}
       <View
         style={{
           flex: 1,
@@ -25,20 +40,40 @@ export default function CurrentBookTab() {
           padding: 20,
         }}
       >
-        <SessionCard session={currentSession} />
-        <TouchableOpacity
-          onPress={() => setShowModal(true)}
-          style={[
-            globalStyles.button,
-            { alignSelf: 'flex-start', marginLeft: 0, paddingHorizontal: 20 },
-          ]}
-        >
-          <Text style={globalStyles.mdText}>add note</Text>
-        </TouchableOpacity>
-        <ScrollView contentContainerStyle={{ paddingBottom: 70 }}>
-          <Note note={{ content: 'Hello', page: 12, chapter: 'Twelve' }} />
-          <Note />
-        </ScrollView>
+        {currentSession ? (
+          <>
+            <SessionCard session={currentSession} color='transparent' />
+            <TouchableOpacity
+              onPress={() => setShowModal(true)}
+              style={[
+                globalStyles.button,
+                {
+                  alignSelf: 'flex-start',
+                  marginLeft: 0,
+                  paddingHorizontal: 20,
+                },
+              ]}
+            >
+              <Text style={globalStyles.mdText}>add note</Text>
+            </TouchableOpacity>
+            <FlatList
+              contentContainerStyle={{ paddingBottom: 70 }}
+              data={currentSession.notes}
+              ListEmptyComponent={() => (
+                <Text style={globalStyles.mdText}>
+                  No notes have been left.
+                </Text>
+              )}
+              renderItem={({ item }) => {
+                return <Note note={item} sessionId={currentSession._id} />;
+              }}
+            />
+          </>
+        ) : (
+          <Text style={globalStyles.mdText}>
+            You currently have no upcoming sessions
+          </Text>
+        )}
       </View>
     </>
   );

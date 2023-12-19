@@ -1,14 +1,13 @@
-import { StyleSheet, View, FlatList, ScrollView } from 'react-native';
+import { StyleSheet, View, FlatList, ScrollView, Text } from 'react-native';
 import Heading from '../components/Heading';
 import SessionCard from '../components/SessionCard';
-import exampleSessions from '../data/exampleSessions';
 import { useEffect, useState } from 'react';
 import { useMainContext } from '../utils/mainContext';
-import api from '../utils/api';
-import { useAuth } from '../utils/authContext';
+import { useNavigation } from '@react-navigation/native';
+import globalStyles from '../styles/globalStyles';
 
 function HomeScreen() {
-  const { mySessions, setmySessions } = useMainContext();
+  const { mySessions } = useMainContext();
   const [upcomingSessions, setUpcomingSessions] = useState([]);
   const [pastSessions, setPastSessions] = useState([]);
 
@@ -24,53 +23,82 @@ function HomeScreen() {
     setPastSessions(pastSessions);
   }, [mySessions]);
 
+  const navigation = useNavigation();
+  const handlePress = (session) => {
+    navigation.navigate('Session Details', { session });
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View>
-        <Heading text='Upcoming Sessions' headingStyles={{ marginTop: 20, marginLeft: 20 }} />
+        <Heading text='Upcoming Sessions' headingStyles={{ marginTop: 20 }} />
         <FlatList
-          style={{ marginBottom: 20, gap: -10 }}
           data={upcomingSessions}
           renderItem={({ item }) => {
-            return <SessionCard session={item} />;
+            return (
+              <SessionCard
+                session={item}
+                onPress={() =>
+                  navigation.navigate('Session Details', { session: item })
+                }
+              />
+            );
           }}
           horizontal={true}
           alwaysBounceHorizontal={true}
           keyExtractor={(session) => session._id}
+          ItemSeparatorComponent={Separator}
+          ListEmptyComponent={() => (
+            <Text style={globalStyles.mdText}>
+              You currently have no upcoming sessions
+            </Text>
+          )}
         />
-        <Heading text='Past Sessions' headingStyles={{ marginTop: 20, marginLeft: 20 }} />
+        <Heading text='Past Sessions' headingStyles={{ marginTop: 20 }} />
         <FlatList
           data={pastSessions}
           renderItem={({ item }) => {
-            return <SessionCard session={item} />;
+            return (
+              <SessionCard
+                session={item}
+                onPress={() =>
+                  navigation.navigate('Session Details', { session: item })
+                }
+              />
+            );
           }}
           horizontal={true}
           keyExtractor={(session) => session._id}
-          ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
+          ItemSeparatorComponent={Separator}
+          ListEmptyComponent={() => (
+            <Text style={globalStyles.mdText}>
+              You haven't been to any sessions yet
+            </Text>
+          )}
         />
       </View>
     </ScrollView>
   );
 }
 
+const Separator = () => {
+  return (
+    <View
+      style={{
+        width: 2,
+        marginHorizontal: 10,
+        borderRadius: 10,
+        backgroundColor: '#DCC8A9',
+      }}
+    />
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingBottom: 50,
-  },
-  heading: {
-    fontFamily: 'Sansation-Regular',
-    fontSize: 24,
-    paddingBottom: 5,
-    marginTop: 30,
-    marginLeft: 25
-  },
-  line: {
-    height: 0,
-    borderTopColor: '#DCC8A9',
-    borderTopWidth: 2,
-    marginTop: 5,
+    paddingHorizontal: 20,
   },
 });
 
