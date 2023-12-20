@@ -11,17 +11,19 @@ const AuthenticationController = {
       const user = await User.findOne({ email: email });
       if (!user) {
         console.log('auth error: user not found');
-        res.status(401).json({ message: 'Login details incorrectwww' });
-      }
-      const passwordsMatch = await bcrypt.compare(password, user.password);
-      if (!passwordsMatch) {
-        console.log('auth error: passwords do not match');
         res.status(401).json({ message: 'Login details incorrect' });
+      } else {
+        const passwordsMatch = await bcrypt.compare(password, user.password);
+        if (!passwordsMatch) {
+          console.log('auth error: passwords do not match');
+          res.status(401).json({ message: 'Login details incorrect' });
+        } else {
+          const token = TokenGenerator.jsonwebtoken(user.id);
+          res
+            .status(201)
+            .json({ token: token, message: 'User authorised', user: user });
+        }
       }
-      const token = TokenGenerator.jsonwebtoken(user.id);
-      res
-        .status(201)
-        .json({ token: token, message: 'User authorised', user: user });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }

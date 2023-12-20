@@ -6,12 +6,12 @@ const session = require('express-session');
 const SessionsController = {
   FindAll: async (req, res) => {
     try {
-      const sessions = await Session.find()
-        .populate('chosen_book')
-        .populate('users_attending')
-        .populate('suggested_books.user_id')
-        .populate('suggested_books.book_id')
-        .populate('bookclub');
+      const sessions = await Session.find();
+      // .populate('chosen_book')
+      // .populate('users_attending')
+      // .populate('suggested_books.user_id')
+      // .populate('suggested_books.book_id')
+      // .populate('bookclub');
       if (!sessions) {
         throw new Error('Sessions not found');
       }
@@ -23,12 +23,12 @@ const SessionsController = {
   },
   FindById: async (req, res) => {
     try {
-      const sessions = await Session.findById(req.params.id)
-        .populate('chosen_book')
-        .populate('users_attending')
-        .populate('suggested_books.user_id')
-        .populate('suggested_books.book_id')
-        .populate('bookclub');
+      const sessions = await Session.findById(req.params.id);
+      // .populate('chosen_book')
+      // .populate('users_attending')
+      // .populate('suggested_books.user_id')
+      // .populate('suggested_books.book_id')
+      // .populate('bookclub');
       if (!sessions) {
         throw new Error('Sessions not found');
       }
@@ -134,7 +134,6 @@ const SessionsController = {
       if (!session) {
         throw new Error('Session does not exist');
       }
-      console.log('session', session);
       const token = TokenGenerator.jsonwebtoken(req.user_id);
       res.status(201).json({
         message: `Session has been updated at ${

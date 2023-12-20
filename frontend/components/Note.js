@@ -12,12 +12,14 @@ import api from '../utils/api';
 import NewNoteModal from '../components/NewNoteModal';
 import { useAuth } from '../utils/authContext';
 import { useMainContext } from '../utils/mainContext';
+import ConfirmModal from './ConfirmModal';
 
 export default function Note({ note, sessionId }) {
   const { token, setToken, user } = useAuth();
   const { setSessions } = useMainContext();
   const [hideIcons, setHideIcons] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const mine = note.user?._id === user?._id;
 
   const deleteNote = async () => {
@@ -57,6 +59,11 @@ export default function Note({ note, sessionId }) {
         showModal={showModal}
         note={note}
         sessionId={sessionId}
+      />
+      <ConfirmModal
+        isVisible={showConfirmDelete}
+        setModalVisible={setShowConfirmDelete}
+        onConfirm={deleteNote}
       />
       <View
         style={{
@@ -123,7 +130,7 @@ export default function Note({ note, sessionId }) {
           </>
         ) : (
           <>
-            <TouchableOpacity onPress={deleteNote}>
+            <TouchableOpacity onPress={() => setShowConfirmDelete(true)}>
               <BagCross color='tomato' size={24} />
             </TouchableOpacity>
             <TouchableOpacity onPress={editNote}>
