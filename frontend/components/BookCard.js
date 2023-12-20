@@ -36,8 +36,12 @@ export default function BookCard({ book, setShowModal, setSelectedBook }) {
             </View>
           )}
           <View style={{ alignSelf: 'center', flex: 1 }}>
-            <Text style={styles.title}>{book.title}</Text>
-            <Text style={styles.author}>{book.authors.join(', ')}</Text>
+            <Text style={styles.title} numberOfLines={2}>
+              {book.title}
+            </Text>
+            <Text style={styles.author} numberOfLines={2}>
+              {book.authors.join(', ')}
+            </Text>
             <Text style={styles.author}>{book.published.getFullYear()}</Text>
           </View>
         </View>
