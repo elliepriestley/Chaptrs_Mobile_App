@@ -29,7 +29,7 @@ export default function NewNoteModal({
 
   const initialValues = {
     content: note?.content || '',
-    page: note?.page.toString() || null,
+    page: note?.page?.toString() || null,
     chapter: note?.chapter || null,
   };
 
