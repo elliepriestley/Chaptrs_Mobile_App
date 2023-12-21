@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Modal, ScrollView, Pressable, StyleSheet,
 import bookGenres from '../data/bookGenres';
 import { TickCircle } from 'iconsax-react-native';
 
-const GenresDropdown = ({ onGenresSelected, preSelectedGenres, modalVisible, setModalVisible }) => {
+const GenresDropdown = ({ onGenresSelected, preSelectedGenres = [], modalVisible, setModalVisible }) => {
     const [selectedGenres, setSelectedGenres] = useState(preSelectedGenres);
 
     useEffect(() => {
@@ -27,11 +27,7 @@ const GenresDropdown = ({ onGenresSelected, preSelectedGenres, modalVisible, set
             <Modal
                 animationType="fade"
                 transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
-                    setModalVisible(!modalVisible);
-                }}>
+                visible={modalVisible}>
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <ScrollView contentContainerStyle={styles.scrollView}>

@@ -2,6 +2,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HeaderCenter from '../components/HeaderCenter.js';
 import CommunityScreen from '../screens/community.js';
 import NewBookclubScreen from '../screens/newBookclub.js';
+import BookclubDetailsScreen from '../screens/bookclubDetails.js';
+import EditBookclubScreen from '../screens/editBookclub.js';
 
 const CommunityStack = createNativeStackNavigator();
 
@@ -21,6 +23,14 @@ export default function CommunityStackScreen() {
       <CommunityStack.Screen
         name='New Bookclub'
         component={NewBookclubScreen}
+      />
+      <CommunityStack.Screen
+        name='Bookclub Details'
+        component={BookclubDetailsScreen}
+      />
+      <CommunityStack.Screen
+        name='Edit Bookclub'
+        component={EditBookclubScreen}
       />
     </CommunityStack.Navigator>
   );

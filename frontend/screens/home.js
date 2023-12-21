@@ -17,9 +17,10 @@ import globalStyles from '../styles/globalStyles';
 import Sessions from '../components/Sessions';
 
 function HomeScreen() {
-  const { mySessions, setSessions } = useMainContext();
+  const { mySessions, setSessions, bookclubs, setBookclubs } = useMainContext();
   const [upcomingSessions, setUpcomingSessions] = useState([]);
   const [pastSessions, setPastSessions] = useState([]);
+  const navigation = useNavigation();
   const layout = useWindowDimensions();
 
   const [refetching, setRefetching] = useState(false);
@@ -57,11 +58,6 @@ function HomeScreen() {
     setUpcomingSessions(upcomingSessions);
     setPastSessions(pastSessions);
   }, [mySessions]);
-
-  const navigation = useNavigation();
-  const handlePress = (session) => {
-    navigation.navigate('Session Details', { session });
-  };
 
   return (
     <ScrollView

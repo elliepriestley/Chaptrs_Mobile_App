@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
     View,
     Text,
@@ -10,23 +10,27 @@ import {
     TouchableWithoutFeedback,
     Keyboard
 } from 'react-native';
-import { useAuth } from '../utils/authContext';
+import { useMainContext } from '../utils/mainContext';
 import api from '../utils/api';
 import Heading from '../components/Heading';
+import { useAuth } from '../utils/authContext';
 import GenresDropdown from '../components/GenresDropdown';
 import GenreColorBlock from '../components/genreColorBlock';
 import SearchInput from '../components/SearchInput';
 
-function EditProfileScreen({ navigation }) {
-    const { user, setUser, token, setToken } = useAuth();
-    const [newUserInfo, setNewUserInfo] = useState({
-        username: user.username,
-        description: user.description,
-        genre: user.genre
+function EditBookclubScreen({ navigation, route }) {
+    const bookclub = route.params?.bookclub;
+    const updatedBookclub = useRef(bookclub);
+    const { token, setToken } = useAuth();
+    const { setBookclubs } = useMainContext();
+    const [newBookclubInfo, setNewBookclubInfo] = useState({
+        name: bookclub.name,
+        description: bookclub.description,
+        genre: bookclub.genre
     });
 
     const [selectedGenres, setSelectedGenres] = useState([]);
-    const [prevGenres, setPrevGenres] = useState(newUserInfo.genre);
+    const [prevGenres, setPrevGenres] = useState(newBookclubInfo.genre);
     // const [query, setQuery] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -35,30 +39,36 @@ function EditProfileScreen({ navigation }) {
     };
 
     const handleInput = (key, value) => {
-        setNewUserInfo({
-            ...newUserInfo,
+        setNewBookclubInfo({
+            ...newBookclubInfo,
             [key]: value,
         });
     };
 
-    useEffect(() => {
-    }, [selectedGenres]);
+    // useEffect(() => {
+    // }, [selectedGenres]);
 
     const handleSubmit = async () => {
         try {
-            const data = await api.editUserInfo(user._id, {
-                ...newUserInfo,
+            const data = await api.editBookclubInfo(bookclub._id, {
+                ...newBookclubInfo,
                 genre: selectedGenres
             }, token);
             if (data) setToken(data.token);
-            setUser(data.user);
+            setBookclubs((prev) => {
+                const updatedBookclubs = prev.map((prevBookclub) =>
+                    prevBookclub._id === data.bookclub._id ? data.bookclub : prevBookclub
+                );
+                return updatedBookclubs;
+            });
+            updatedBookclub.current = data.bookclub;
         }
         catch (error) {
             alert(error.message || 'Something went wrong');
         }
         finally {
             console.log('success')
-            navigation.navigate('Profile')
+            navigation.navigate('Bookclub Details', { bookclub: updatedBookclub.current });
         }
     }
 
@@ -71,14 +81,14 @@ function EditProfileScreen({ navigation }) {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
                     <ScrollView nestedScrollEnabled={true}>
-                        <Heading text='Edit profile' />
+                        <Heading text='Edit bookclub' />
                         <View style={{ gap: 15, marginTop: 20 }}>
                             <Text style={styles.label}>Name</Text>
                             <TextInput
                                 style={styles.input}
-                                placeholder="Enter your name"
-                                value={newUserInfo.username}
-                                onChangeText={(text) => handleInput('username', text)}
+                                placeholder="Enter your bookclub name"
+                                value={newBookclubInfo.name}
+                                onChangeText={(text) => handleInput('name', text)}
                             />
                             <Text style={styles.label}>Description</Text>
                             <TextInput
@@ -87,11 +97,14 @@ function EditProfileScreen({ navigation }) {
                                 multiline
                                 numberOfLines={6}
                                 maxLength={240}
-                                value={newUserInfo.description}
+                                value={newBookclubInfo.description}
                                 onChangeText={(text) => handleInput('description', text)}
                             />
                             <Text style={styles.label}>Favourite genres</Text>
-                            <SearchInput placeholder='Search' onPress={() => setModalVisible(true)} />
+                            <SearchInput placeholder='Search' onPress={() => {
+                                console.log('pressedddd')
+                                setModalVisible(true)
+                            }} />
                             <View>
                                 {selectedGenres.length === 0
                                     ? <GenreColorBlock genres={prevGenres} />
@@ -117,7 +130,7 @@ function EditProfileScreen({ navigation }) {
                             <TouchableOpacity>
                                 <Text
                                     style={styles.textStyle}>
-                                    delete profile
+                                    delete bookclub
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -165,4 +178,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default EditProfileScreen;
+export default EditBookclubScreen;

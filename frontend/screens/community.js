@@ -55,7 +55,12 @@ export default function CommunityScreen({ navigation: { navigate } }) {
       />
       <ScrollView contentContainerStyle={{ gap: 15, paddingBottom: 100, }}>
         {filteredBookclubs.map((bookclub) => {
-          return <BookclubCard key={bookclub._id} bookclub={bookclub} />;
+          return <BookclubCard 
+                    key={bookclub._id}
+                    bookclub={bookclub}
+                    onPress={() =>
+                      navigate('Bookclub Details', { bookclub: bookclub })
+                }/>;
         })}
       </ScrollView>
     </View>
