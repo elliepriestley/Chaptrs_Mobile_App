@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
-import { Location, Calendar, Clock } from 'iconsax-react-native';
+import { Location, Calendar } from 'iconsax-react-native';
 import BookclubPill from './BookclubPill';
 
 function SessionCard({ session, onPress, color = '#E9E1D54D' }) {

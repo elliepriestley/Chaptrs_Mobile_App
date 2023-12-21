@@ -14,9 +14,10 @@ import { useNavigation } from '@react-navigation/native';
 import globalStyles from '../styles/globalStyles';
 
 function HomeScreen() {
-  const { mySessions } = useMainContext();
+  const { mySessions, bookclubs, setBookclubs } = useMainContext();
   const [upcomingSessions, setUpcomingSessions] = useState([]);
   const [pastSessions, setPastSessions] = useState([]);
+  const navigation = useNavigation();
   const layout = useWindowDimensions();
 
   useEffect(() => {
@@ -30,11 +31,6 @@ function HomeScreen() {
     setUpcomingSessions(upcomingSessions);
     setPastSessions(pastSessions);
   }, [mySessions]);
-
-  const navigation = useNavigation();
-  const handlePress = (session) => {
-    navigation.navigate('Session Details', { session });
-  };
 
   return (
     <ScrollView style={styles.container}>

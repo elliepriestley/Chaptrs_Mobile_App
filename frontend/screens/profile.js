@@ -94,7 +94,9 @@ function Profile({ navigation: { navigate } }) {
           headingStyles={{ fontSize: 18, marginLeft: 20 }}
         />
         <View style={{ paddingLeft: 20 }}>
-          <GenreColorBlock genres={user.genre} />
+          {user.genre.length !== 0
+            ? <GenreColorBlock genres={user.genre} />
+            : <Text>Choose you favourite genres</Text>}
         </View>
       </ScrollView>
     </View>

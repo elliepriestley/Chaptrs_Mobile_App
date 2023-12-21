@@ -11,17 +11,20 @@ import Heading from '../components/Heading';
 import { useMainContext } from '../utils/mainContext';
 import { Edit } from 'iconsax-react-native';
 import GenreColorBlock from '../components/genreColorBlock';
+import MembersGroup from '../components/MembersGroup';
 
-function BookclubDetailsScreen({ route }) {
+function BookclubDetailsScreen({ route, navigation: {navigate} }) {
     const bookclub = route.params?.bookclub;
 
-    if (!bookclub) {
-        return (
-            <View>
-                <Text>Loading...</Text>
-            </View>
-        );
-    }
+    // if (!bookclub) {
+    //     return (
+    //         <View
+    //         // need to style pages for loading part i think
+    //         >
+    //             <Text>Loading...</Text>
+    //         </View>
+    //     );
+    // }
 
 
     return (
@@ -38,7 +41,7 @@ function BookclubDetailsScreen({ route }) {
 
                 <Edit
                     // if only you are in this bookclub
-                    // onPress={() => navigate('Edit Bookclub')}
+                    onPress={() => navigate('Edit Bookclub', { bookclub: bookclub })}
                     size={36}
                     color='black'
                 />
@@ -75,13 +78,14 @@ function BookclubDetailsScreen({ route }) {
                     headingStyles={{ fontSize: 18, marginLeft: 20 }}
                 />
                 <View style={{ paddingLeft: 20 }}>
-                    {bookclub.genre ? <GenreColorBlock genres={bookclub.genre} /> : <Text>Add you favourite genres...</Text>}
+                    {bookclub.genre.length !== 0 ? <GenreColorBlock genres={bookclub.genre} /> : <Text style={{marginBottom: 20}}>Add you favourite genres...</Text>}
                 </View>
                 <Heading
                     text='Members'
                     textStyles={{ fontSize: 18 }}
                     headingStyles={{ fontSize: 18, marginLeft: 20 }}
                 />
+                <MembersGroup bookclub={bookclub} />
             </ScrollView>
         </View>
     );
