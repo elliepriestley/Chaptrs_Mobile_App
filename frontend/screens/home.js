@@ -5,19 +5,46 @@ import {
   ScrollView,
   Text,
   useWindowDimensions,
+  RefreshControl,
 } from 'react-native';
 import Heading from '../components/Heading';
 import SessionCard from '../components/SessionCard';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useMainContext } from '../utils/mainContext';
+import useFetch from '../utils/useFetch';
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from '../styles/globalStyles';
+import Sessions from '../components/Sessions';
 
 function HomeScreen() {
-  const { mySessions } = useMainContext();
+  const { mySessions, setSessions } = useMainContext();
   const [upcomingSessions, setUpcomingSessions] = useState([]);
   const [pastSessions, setPastSessions] = useState([]);
   const layout = useWindowDimensions();
+
+  const [refetching, setRefetching] = useState(false);
+  // if refetching is set to false, data will be fetched on mount
+  // When refetching is set to true, data will be re-fetched
+  // if refetching is set to null, data will not be fetched on mount
+  // const { sessions } = useMainContext();
+  const url = 'http://192.168.1.124:8080/sessions';
+  const { data, loading, error } = useFetch(url, null, {}, refetching);
+
+  useEffect(() => {
+    // once data is fetched, set refetching to null
+    // if set to false it will fetch data again
+    if (!loading) {
+      setRefetching(null);
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    if (data?.sessions) setSessions(data.sessions);
+  }, [data]);
+
+  const onRefresh = useCallback(() => {
+    setRefetching((prev) => !prev);
+  }, [loading]);
 
   useEffect(() => {
     mySessions.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
@@ -37,10 +64,21 @@ function HomeScreen() {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      refreshing={loading}
+      refreshControl={
+        <RefreshControl
+          tintColor='#DAA520'
+          refreshing={refetching}
+          onRefresh={onRefresh}
+        />
+      }
+    >
       <View>
         <Heading text='Upcoming Sessions' headingStyles={{ marginTop: 20 }} />
-        <FlatList
+        <Sessions sessions={upcomingSessions} />
+        {/* <FlatList
           style={{ width: layout.width, transform: [{ translateX: -20 }] }}
           contentContainerStyle={{
             gap: 15,
@@ -66,9 +104,10 @@ function HomeScreen() {
               You currently have no upcoming sessions
             </Text>
           )}
-        />
+        /> */}
         <Heading text='Past Sessions' headingStyles={{ marginTop: 20 }} />
-        <FlatList
+        <Sessions sessions={pastSessions} />
+        {/* <FlatList
           style={{ width: layout.width, transform: [{ translateX: -20 }] }}
           contentContainerStyle={{
             gap: 15,
@@ -93,7 +132,7 @@ function HomeScreen() {
               You haven't been to any sessions yet
             </Text>
           )}
-        />
+        /> */}
       </View>
     </ScrollView>
   );

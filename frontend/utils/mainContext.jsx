@@ -22,7 +22,7 @@ const MainProvider = (props) => {
 
   useEffect(() => {
     getBookclubs();
-    getSessions();
+    // getSessions();
   }, []);
 
   const getBookclubs = async () => {
@@ -39,15 +39,15 @@ const MainProvider = (props) => {
     }
   };
 
-  const getSessions = async () => {
-    try {
-      const sessionsData = await api.getSessions(token);
-      setSessions(sessionsData.sessions);
-      if (sessionsData.token) setToken(sessionsData.token);
-    } catch (error) {
-      alert(error.message);
-    }
-  };
+  // const getSessions = async () => {
+  //   try {
+  //     const sessionsData = await api.getSessions(token);
+  //     setSessions(sessionsData.sessions);
+  //     if (sessionsData.token) setToken(sessionsData.token);
+  //   } catch (error) {
+  //     alert(error.message);
+  //   }
+  // };
 
   useEffect(() => {
     const arr = [];

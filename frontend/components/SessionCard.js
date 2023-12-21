@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
-import { Location, Calendar, Clock } from 'iconsax-react-native';
+import { Location, Calendar } from 'iconsax-react-native';
 import BookclubPill from './BookclubPill';
 
 function SessionCard({ session, onPress, color = '#E9E1D54D' }) {
@@ -72,8 +72,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   image: {
-    width: 120,
-    height: 180,
+    width: 100,
+    // height: 180,
     borderRadius: 10,
   },
   title: {
