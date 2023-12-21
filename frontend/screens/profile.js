@@ -5,6 +5,7 @@ import {
   Image,
   useWindowDimensions,
   Pressable,
+  TouchableOpacity,
 } from 'react-native';
 import React, { useState } from 'react';
 import { useAuth } from '../utils/authContext';
@@ -15,6 +16,7 @@ import { Edit } from 'iconsax-react-native';
 import GenreColorBlock from '../components/genreColorBlock';
 import PressableModal from '../components/PressableModal';
 import BookclubPill from '../components/BookclubPill';
+import { Colours, Typography } from '../styles';
 
 function Profile({ navigation: { navigate } }) {
   const { user, setUser, setToken } = useAuth();
@@ -55,6 +57,8 @@ function Profile({ navigation: { navigate } }) {
           isVisible={modalVisible}
           setModalVisible={setModalVisible}
           onLogout={logout}
+          itemOne={'change profile picture'}
+          itemTwo={'log out'}
         />
       </Pressable>
       <Text style={styles.userName}>{user.username}</Text>
@@ -62,14 +66,18 @@ function Profile({ navigation: { navigate } }) {
         contentContainerStyle={{ paddingBottom: 100 }}
         style={styles.container}
       >
-        <Heading
-          text='About'
-          textStyles={{ fontSize: 18 }}
-          headingStyles={{ fontSize: 18, marginLeft: 20 }}
-        />
-        <Text style={[styles.text, { marginBottom: 20, marginLeft: 20 }]}>
-          {user.description}
-        </Text>
+        {user.description
+          ? <>
+              <Heading
+                text='About'
+                textStyles={{ fontSize: 18 }}
+                headingStyles={{ fontSize: 18, marginLeft: 20 }}
+              />
+              <Text style={[styles.text, { marginBottom: 20, marginLeft: 20 }]}>
+                {user.description}
+              </Text>
+            </>
+          : null}
         <Heading
           text='Bookclubs'
           textStyles={{ fontSize: 18 }}
@@ -96,7 +104,10 @@ function Profile({ navigation: { navigate } }) {
         <View style={{ paddingLeft: 20 }}>
           {user.genre.length !== 0
             ? <GenreColorBlock genres={user.genre} />
-            : <Text>Choose you favourite genres</Text>}
+            : <TouchableOpacity onPress={() => navigate('Edit Profile')}>
+                <Text style={Typography.fontSize.lg}>Choose your favourite genres</Text>
+              </TouchableOpacity>
+          }
         </View>
       </ScrollView>
     </View>
