@@ -6,27 +6,27 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import BgImg from '../assets/chaptrs.jpg';
+import { Buttons, Typography } from '../styles';
 
 function WelcomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <ImageBackground source={BgImg} resizeMode='cover' style={styles.image}>
-      
         <Text style={styles.heading}>Welcome to Chaptrs</Text>
-        <Text style={{ marginBottom: 20 }}>
+        <Text style={styles.subheading}>
           The social media app for book lovers
         </Text>
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('Login')}
         >
-          <Text>Log In</Text>
+          <Text style={Buttons.main.primary.text}>Log In</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('Sign Up')}
         >
-          <Text>Sign Up</Text>
+          <Text style={Buttons.main.primary.text}>Sign Up</Text>
         </TouchableOpacity>
       </ImageBackground>
     </View>
@@ -40,10 +40,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   heading: {
-    fontSize: 48,
-    lineHeight: 60,
-    fontWeight: 'bold',
+    ...Typography.heading['4xl'],
+    lineHeight: 48,
     textAlign: 'center',
+    marginBottom: 10,
+  },
+  subheading: {
+    ...Typography.fontSize.xxl,
+    width: 200,
+    textAlign: 'center',
+    marginBottom: 10,
   },
   image: {
     flex: 1,
@@ -51,12 +57,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    marginVertical: 20,
-    backgroundColor: '#DCC8A9',
-    padding: 10,
-    borderRadius: 999,
-    marginHorizontal: 50,
-    width: '50%',
-    alignItems: 'center',
+    ...Buttons.main.primary.container,
+    marginVertical: 10,
+    paddingHorizontal: 70,
   },
 });

@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const TokenGenerator = require('../lib/token_generator');
 
@@ -14,14 +15,18 @@ const UsersController = {
           res.status(409).json({ message: 'Email already exists' });
         }
       } else {
+        const saltRounds = 10;
+        const hash = await bcrypt.hash(req.body.password, saltRounds);
+        if (!hash) {
+          res.status(401).json({ message: "Password encryption error" });
+        }
+        req.body.password = hash;
         const user = new User(req.body);
         const newUser = await user.save();
-        res
-          .status(201)
-          .json({
-            message: `User ${user.username} has been created`,
-            user: newUser,
-          });
+        res.status(201).json({
+          message: `User ${user.username} has been created`,
+          user: newUser,
+        });
       }
     } catch (err) {
       res.status(500).json({ message: 'Internal Server Error' });
@@ -51,6 +56,10 @@ const UsersController = {
   UpdateById: async (req, res) => {
     try {
       const { id } = req.params;
+      if (id !== req.user_id) {
+        throw new Error('You are not authorised to update this user');
+      }
+      // maybe remove password from req.body in case user tries to update it?
       const user = await User.findByIdAndUpdate(id, req.body, {
         new: true,
       }).select('-password');
