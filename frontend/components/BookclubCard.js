@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { UserAdd, TickCircle } from 'iconsax-react-native';
 import AvatarGroup from './AvatarGroup';
 import React from 'react';
@@ -6,7 +6,7 @@ import api from '../utils/api';
 import { useAuth } from '../utils/authContext';
 import { useMainContext } from '../utils/mainContext';
 
-export default function BookclubCard({ bookclub }) {
+export default function BookclubCard({ bookclub, onPress }) {
   const { token, user } = useAuth();
   const { setBookclubs } = useMainContext();
 
@@ -27,6 +27,7 @@ export default function BookclubCard({ bookclub }) {
   };
 
   return (
+    <TouchableOpacity onPress={onPress}>
     <View style={styles.card}>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
         <Image
@@ -67,6 +68,7 @@ export default function BookclubCard({ bookclub }) {
         <AvatarGroup users={bookclub.members} />
       </View>
     </View>
+    </TouchableOpacity>
   );
 }
 

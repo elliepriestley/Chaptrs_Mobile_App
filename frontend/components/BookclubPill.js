@@ -1,7 +1,15 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
 import React from 'react';
+import { useMainContext } from '../utils/mainContext';
 
 export default function BookclubPill({ bookclub, size = 30 }) {
+  const { bookclubs } = useMainContext();
+  const updatedBookclub = bookclubs.find((i) => i?._id === bookclub._id);
+
+  if (!updatedBookclub) {
+    return null;
+  }
+
   return (
     <View
       style={{
@@ -24,7 +32,7 @@ export default function BookclubPill({ bookclub, size = 30 }) {
           backgroundColor: 'white',
         }}
         source={{
-          uri: bookclub.image,
+          uri: updatedBookclub.image,
         }}
       />
       <Text
@@ -35,7 +43,7 @@ export default function BookclubPill({ bookclub, size = 30 }) {
           flexShrink: 1,
         }}
       >
-        {bookclub.name}
+        {updatedBookclub.name}
       </Text>
     </View>
   );

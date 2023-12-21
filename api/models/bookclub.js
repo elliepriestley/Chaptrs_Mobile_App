@@ -4,6 +4,7 @@ const BookclubSchema = new mongoose.Schema({
   name: { type: String, required: true },
   image: String,
   description: String,
+  genre: [String],
   members: [
     {
       type: mongoose.Schema.Types.ObjectId,

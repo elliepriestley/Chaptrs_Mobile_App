@@ -78,7 +78,7 @@ export default function Note({ note, sessionId }) {
         <Image
           style={{ width: 30, height: 30, borderRadius: 100 }}
           source={{
-            uri: `https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png`,
+            uri: user.profile_picture
           }}
         />
         <View>
