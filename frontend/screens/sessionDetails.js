@@ -5,7 +5,6 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  Pressable,
 } from 'react-native';
 import { useState } from 'react';
 import Heading from '../components/Heading';
@@ -20,7 +19,6 @@ import { Colours, Typography } from '../styles';
 function SessionDetailsScreen({ route, navigation: { navigate } }) {
   const { user, token, setToken } = useAuth();
   const { setSessions } = useMainContext();
-  console.log('params', route.params);
   const session = route.params?.session;
   const categories = session.chosen_book?.categories?.slice(0, 3) || [];
   const description = session.chosen_book?.description || '';
@@ -128,8 +126,8 @@ function SessionDetailsScreen({ route, navigation: { navigate } }) {
             }}
             onTextLayout={(event) => {
               const { lines } = event.nativeEvent;
-              console.log(event.nativeEvent);
               setIsTruncatedText(lines?.length > numberOfLines);
+              setShowMore(lines?.length > numberOfLines);
             }}
           >
             {description}

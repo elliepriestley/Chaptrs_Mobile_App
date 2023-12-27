@@ -17,16 +17,6 @@ import globalStyles from '../styles/globalStyles';
 function BookclubDetailsScreen({ route, navigation: { navigate } }) {
   const bookclub = route.params?.bookclub;
 
-  // if (!bookclub) {
-  //     return (
-  //         <View
-  //         // need to style pages for loading part i think
-  //         >
-  //             <Text>Loading...</Text>
-  //         </View>
-  //     );
-  // }
-
   return (
     <View style={styles.container}>
       <View
@@ -46,19 +36,12 @@ function BookclubDetailsScreen({ route, navigation: { navigate } }) {
           color='black'
         />
       </View>
-      {/* <Pressable onPress={() => setModalVisible(true)}> */}
       <Image
         style={styles.userProfile}
         source={{
           uri: bookclub.image,
         }}
       />
-      {/* <PressableModal
-            isVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            onLogout={logout}
-            />
-            </Pressable> */}
       <Text style={styles.userName}>{bookclub.name}</Text>
       <ScrollView
         contentContainerStyle={{ paddingBottom: 100 }}

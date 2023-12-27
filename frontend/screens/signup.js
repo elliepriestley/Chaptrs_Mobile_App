@@ -31,13 +31,11 @@ function SignupScreen({ navigation }) {
     const randomImage = profileImg[Math.floor(Math.random() * profileImg.length)];
     try {
       const formData = { ...values };
-      console.log(formData);
       delete formData.confirmPassword;
       const data = await api.signupUser({
         ...formData,
         profile_picture: randomImage.url
       });
-      console.log(data, 'with profile img i hope');
       if (data)
         navigation.navigate('Login', {
           email: values.email,

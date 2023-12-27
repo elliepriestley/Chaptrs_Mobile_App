@@ -17,7 +17,7 @@ import { useAuth } from '../utils/authContext';
 
 function LoginScreen({ navigation, route }) {
   const { setUser, setToken } = useAuth();
-  
+
   // Handling form validation
   const initialValues = {
     email: route.params?.email || '',
@@ -30,7 +30,6 @@ function LoginScreen({ navigation, route }) {
       const formData = { ...values };
       delete formData.confirmPassword;
       const data = await api.loginUser(formData);
-      console.log('login data', data);
       if (data) {
         setToken(data.token);
         setUser(data.user);
@@ -42,20 +41,10 @@ function LoginScreen({ navigation, route }) {
     }
   };
 
-  const DemoLogin = async () => {
-    try {
-      const data = await api.loginUser({
-        email: 'user@test.com',
-        password: 'Qwerty1!',
-      });
-      if (data) {
-        console.log('login data', data);
-        setToken(data.token);
-        setUser(data.user);
-      }
-    } catch (error) {
-      alert(error.message || 'Something went wrong');
-    }
+  const DemoLogin = async (setValues, setTouched, handleSubmit) => {
+    await setValues({ email: 'user@test.com', password: 'Qwerty1!' });
+    await setTouched({ email: 'true', password: 'true' });
+    handleSubmit();
   };
 
   return (
@@ -77,7 +66,7 @@ function LoginScreen({ navigation, route }) {
           validationSchema={loginSchema}
           onSubmit={onSubmit}
         >
-          {({ handleSubmit, isValid }) => (
+          {({ handleSubmit, isValid, setValues, setTouched }) => (
             <View style={styles.signupContainer}>
               <Heading text='Log In' textStyles={{ fontSize: 20 }} />
               <Field
@@ -129,7 +118,11 @@ function LoginScreen({ navigation, route }) {
                   <Text style={styles.underline}>Sign Up</Text>
                 </TouchableOpacity>
               </Text>
-              <Button title='Demo Login' color={'red'} onPress={DemoLogin} />
+              <Button
+                title='Demo Login'
+                color='red'
+                onPress={() => DemoLogin(setValues, setTouched, handleSubmit)}
+              />
             </View>
           )}
         </Formik>

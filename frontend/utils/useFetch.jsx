@@ -12,7 +12,6 @@ function useFetch(url, initialData, options, refetch) {
   useEffect(() => {
     if (refetch !== null) {
       setLoading(true);
-      console.log('fetching');
       const request$ = fetch(url, {
         headers: {
           'Content-Type': 'application/json',
@@ -41,8 +40,6 @@ function useFetch(url, initialData, options, refetch) {
         })
         .then((resData) => {
           if (resData?.token) setToken(resData.token);
-          // console.log('resDatatoken', resData?.token);
-          console.log('resData', resData);
           setData(resData);
           setError(null);
         })

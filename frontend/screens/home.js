@@ -1,35 +1,30 @@
 import {
   StyleSheet,
   View,
-  FlatList,
   ScrollView,
-  Text,
-  useWindowDimensions,
   RefreshControl,
+  ActivityIndicator,
 } from 'react-native';
 import Heading from '../components/Heading';
-import SessionCard from '../components/SessionCard';
 import { useEffect, useState, useCallback } from 'react';
 import { useMainContext } from '../utils/mainContext';
 import useFetch from '../utils/useFetch';
-import { useNavigation } from '@react-navigation/native';
-import globalStyles from '../styles/globalStyles';
 import Sessions from '../components/Sessions';
+import fetchBookclubs from '../utils/fetchBookclubs';
+import fetchSessions from '../utils/fetchSessions';
 
-function HomeScreen() {
-  const { mySessions, setSessions, bookclubs, setBookclubs } = useMainContext();
+export default function HomeScreen() {
+  const { mySessions, setSessions } = useMainContext();
   const [upcomingSessions, setUpcomingSessions] = useState([]);
   const [pastSessions, setPastSessions] = useState([]);
-  const navigation = useNavigation();
-  const layout = useWindowDimensions();
-
   const [refetching, setRefetching] = useState(false);
   // if refetching is set to false, data will be fetched on mount
   // When refetching is set to true, data will be re-fetched
   // if refetching is set to null, data will not be fetched on mount
-  // const { sessions } = useMainContext();
   const url = 'http://192.168.1.124:8080/sessions';
-  const { data, loading, error } = useFetch(url, null, {}, refetching);
+  // const { data, loading, error } = useFetch(url, null, {}, refetching);
+  const { loading, error } = fetchSessions(refetching);
+  fetchBookclubs(refetching);
 
   useEffect(() => {
     // once data is fetched, set refetching to null
@@ -38,10 +33,6 @@ function HomeScreen() {
       setRefetching(null);
     }
   }, [loading]);
-
-  useEffect(() => {
-    if (data?.sessions) setSessions(data.sessions);
-  }, [data]);
 
   const onRefresh = useCallback(() => {
     setRefetching((prev) => !prev);
@@ -73,62 +64,25 @@ function HomeScreen() {
     >
       <View>
         <Heading text='Upcoming Sessions' headingStyles={{ marginTop: 20 }} />
-        <Sessions sessions={upcomingSessions} />
-        {/* <FlatList
-          style={{ width: layout.width, transform: [{ translateX: -20 }] }}
-          contentContainerStyle={{
-            gap: 15,
-            marginBottom: 10,
-            paddingHorizontal: 20,
-          }}
-          data={upcomingSessions}
-          renderItem={({ item }) => {
-            return (
-              <SessionCard
-                session={item}
-                onPress={() =>
-                  navigation.navigate('Session Details', { session: item })
-                }
-              />
-            );
-          }}
-          horizontal={true}
-          alwaysBounceHorizontal={true}
-          keyExtractor={(session) => session._id}
-          ListEmptyComponent={() => (
-            <Text style={globalStyles.mdText}>
-              You currently have no upcoming sessions
-            </Text>
-          )}
-        /> */}
+        {loading && !refetching ? (
+          <ActivityIndicator
+            size='large'
+            color='#DAA520'
+            style={{ height: 200 }}
+          />
+        ) : (
+          <Sessions sessions={upcomingSessions} />
+        )}
         <Heading text='Past Sessions' headingStyles={{ marginTop: 20 }} />
-        <Sessions sessions={pastSessions} />
-        {/* <FlatList
-          style={{ width: layout.width, transform: [{ translateX: -20 }] }}
-          contentContainerStyle={{
-            gap: 15,
-            marginBottom: 10,
-            paddingHorizontal: 20,
-          }}
-          data={pastSessions}
-          renderItem={({ item }) => {
-            return (
-              <SessionCard
-                session={item}
-                onPress={() =>
-                  navigation.navigate('Session Details', { session: item })
-                }
-              />
-            );
-          }}
-          horizontal={true}
-          keyExtractor={(session) => session._id}
-          ListEmptyComponent={() => (
-            <Text style={globalStyles.mdText}>
-              You haven't been to any sessions yet
-            </Text>
-          )}
-        /> */}
+        {loading && !refetching ? (
+          <ActivityIndicator
+            size='large'
+            color='#DAA520'
+            style={{ height: 200 }}
+          />
+        ) : (
+          <Sessions sessions={pastSessions} />
+        )}
       </View>
     </ScrollView>
   );
@@ -142,5 +96,3 @@ const styles = StyleSheet.create({
     gap: 10,
   },
 });
-
-export default HomeScreen;

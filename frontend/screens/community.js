@@ -1,24 +1,31 @@
+// Libraries
 import {
   View,
-  Text,
   StyleSheet,
-  TextInput,
-  Image,
+  RefreshControl,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { AddCircle, Scroll, UserAdd } from 'iconsax-react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+
+// Components
 import Heading from '../components/Heading';
 import BookclubCard from '../components/BookclubCard';
 import SearchInput from '../components/SearchInput';
+
+// Utils and data
 import { useMainContext } from '../utils/mainContext';
-import { useAuth } from '../utils/authContext';
+import fetchBookclubs from '../utils/fetchBookclubs';
+
+// Icons
+import { AddCircle } from 'iconsax-react-native';
 
 export default function CommunityScreen({ navigation: { navigate } }) {
-  const { user, token, setToken } = useAuth();
-  const { bookclubs, setBookclubs } = useMainContext();
+  const { bookclubs } = useMainContext();
   const [searchValue, setSearchValue] = useState('');
   const [filteredBookclubs, setFilteredBookclubs] = useState([]);
+  const [refetch, setRefetch] = useState(false);
+  const { loading, error } = fetchBookclubs(refetch);
 
   useEffect(() => {
     setFilteredBookclubs(bookclubs);
@@ -38,6 +45,18 @@ export default function CommunityScreen({ navigation: { navigate } }) {
     }
   }, [searchValue]);
 
+  const onRefresh = useCallback(() => {
+    setRefetch((prev) => !prev);
+  }, [loading]);
+
+  useEffect(() => {
+    // once data is fetched, set refetching to null
+    // if set to false it will fetch data again
+    if (!loading) {
+      setRefetch(null);
+    }
+  }, [loading]);
+
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -53,14 +72,35 @@ export default function CommunityScreen({ navigation: { navigate } }) {
         onChangeText={setSearchValue}
         placeholder="Example: Ranter's Book Nook"
       />
-      <ScrollView contentContainerStyle={{ gap: 15, paddingBottom: 100, }}>
+      {loading && !refetch && (
+        <ActivityIndicator
+          size='large'
+          color='#DAA520'
+          style={{ marginBottom: 10 }}
+        />
+      )}
+      <ScrollView
+        contentContainerStyle={{ gap: 15, paddingBottom: 100 }}
+        pagingEnabled={true}
+        refreshing={loading}
+        refreshControl={
+          <RefreshControl
+            tintColor='#DAA520'
+            refreshing={refetch}
+            onRefresh={onRefresh}
+          />
+        }
+      >
         {filteredBookclubs.map((bookclub) => {
-          return <BookclubCard 
-                    key={bookclub._id}
-                    bookclub={bookclub}
-                    onPress={() =>
-                      navigate('Bookclub Details', { bookclub: bookclub })
-                }/>;
+          return (
+            <BookclubCard
+              key={bookclub._id}
+              bookclub={bookclub}
+              onPress={() =>
+                navigate('Bookclub Details', { bookclub: bookclub })
+              }
+            />
+          );
         })}
       </ScrollView>
     </View>

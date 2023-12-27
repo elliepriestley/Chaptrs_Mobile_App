@@ -23,7 +23,6 @@ export default function Note({ note, sessionId }) {
   const mine = note.user?._id === user?._id;
 
   const deleteNote = async () => {
-    console.log('delete note');
     try {
       if (!sessionId) throw new Error('Session ID does not exist');
       const data = await api.deleteSessionNote(note._id, sessionId, token);
@@ -40,7 +39,6 @@ export default function Note({ note, sessionId }) {
   };
 
   const editNote = () => {
-    console.log('edit note', note);
     setShowModal(true);
   };
 

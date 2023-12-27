@@ -13,7 +13,7 @@
   </p>
 </p>
 
-![Contributors](https://img.shields.io/github/contributors/elliepriestley/Chaptrs_Mobile_App?color=dark-green) ![Forks](https://img.shields.io/github/forks/elliepriestley/Chaptrs_Mobile_App?style=social) ![Stargazers](https://img.shields.io/github/stars/elliepriestley/Chaptrs_Mobile_App?style=social) ![Issues](https://img.shields.io/github/issues/elliepriestley/Chaptrs_Mobile_App) 
+![Contributors](https://img.shields.io/github/contributors/elliepriestley/Chaptrs_Mobile_App?color=dark-green) ![Forks](https://img.shields.io/github/forks/elliepriestley/Chaptrs_Mobile_App?style=social) ![Stargazers](https://img.shields.io/github/stars/elliepriestley/Chaptrs_Mobile_App?style=social) ![Issues](https://img.shields.io/github/issues/elliepriestley/Chaptrs_Mobile_App)
 
 ## Table Of Contents
 
@@ -34,21 +34,21 @@ Welcome to Chaptrs, an app for bookworms! Plan and track your bookclubs with fel
 
 ## Authors
 
-* **[Ellie Priestley](https://github.com/elliepriestley)**
-* **[Rikie Patrick](https://github.com/1sAndZeros)**
-* **[Alina Ermakova](https://github.com/alalinaermakova)**
-* **[Ami Day](https://github.com/ami-day)**
-* **[Cloud Spotter](https://github.com/cloud-spotter)**
-* **[Emily Cowan](https://github.com/Emily-RC)**
-* **[Roberto Quadraccia](https://github.com/super-robbin)**
+- **[Ellie Priestley](https://github.com/elliepriestley)**
+- **[Rikie Patrick](https://github.com/1sAndZeros)**
+- **[Alina Ermakova](https://github.com/alalinaermakova)**
+- **[Cloud Spotter](https://github.com/cloud-spotter)**
 
 ## Built With
 
-* [React Native](https://reactnative.dev/)
-* [Expo](https://expo.dev/)
-* [MongoDB](https://www.mongodb.com/)
-* [Express](https://expressjs.com/)
-* [Node](https://nodejs.org/)
+- [React Native](https://reactnative.dev/)
+- [Expo](https://expo.dev/)
+- [MongoDB](https://www.mongodb.com/)
+- [Express](https://expressjs.com/)
+- [Node](https://nodejs.org/)
+- [React Navigation](https://reactnavigation.org/)
+- [Formik](https://formik.org/)
+- [Yup](https://github.com/jquense/yup)
 
 ## Getting Started
 
@@ -56,7 +56,7 @@ To get the app running on an android device / iOS device via Expo Go, Android ph
 
 ### Prerequisites
 
-* npm
+- npm
 
 ```sh
 npm install npm@latest -g
@@ -64,24 +64,28 @@ npm install npm@latest -g
 
 Expo, Android Studio and Xcode are the three ways you can run the application. You do not need all three.
 
-* Expo
+- Expo
+
 ```
 Signup to expo
 Download Expo Go on your Android Device or iOS Device
 ```
 
-* Android Studio
+- Android Studio
+
 ```
 Download Android Studio along with the Android phone emulator
 Launch the device emulator to preview the application via Expo
 ```
 
-* XCode
+- XCode
+
 ```
 Download XCode and launch the iOS phone simulator
 ```
 
-* MongoDB
+- MongoDB
+
 ```
 brew tap mongodb/brew
 brew install mongodb-community@6.0
@@ -142,16 +146,18 @@ To run on the XCode emulator, press `i` in the terminal while the simulator is r
 ```
 EXPO_PUBLIC_API_URL=http://192.168.1.???:8080
 ```
-Replace the ??? part with the appropriate digits from the IP address particular to your device, where you run the frontend. You can find this IP address after running npm start in the frontend folder (just under the QR code in a line starting “Metro waiting on …”). Leave the port the same as above (8080). 
 
-Restart the backend and the frontend. This step is needed to signup/login. 
+Replace the ??? part with the appropriate digits from the IP address particular to your device, where you run the frontend. You can find this IP address after running npm start in the frontend folder (just under the QR code in a line starting “Metro waiting on …”). Leave the port the same as above (8080).
+
+Restart the backend and the frontend. This step is needed to signup/login.
 
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-* If you have suggestions for adding or removing projects, feel free to [open an issue](https://github.com/elliepriestley/Chaptrs_Mobile_App/issues/new) to discuss it, or directly create a pull request after you edit the *README.md* file with necessary changes.
-* Please make sure you check your spelling and grammar.
-* Create individual PR for each suggestion.
+
+- If you have suggestions for adding or removing projects, feel free to [open an issue](https://github.com/elliepriestley/Chaptrs_Mobile_App/issues/new) to discuss it, or directly create a pull request after you edit the _README.md_ file with necessary changes.
+- Please make sure you check your spelling and grammar.
+- Create individual PR for each suggestion.
 
 ### Creating A Pull Request
 

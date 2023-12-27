@@ -49,7 +49,6 @@ function NewBookclubScreen({ navigation }) {
       catch (error) {
     alert(error.message || 'Something went wrong');
     } finally {
-    console.log('success')
     navigation.navigate('Community')
     }
   };
