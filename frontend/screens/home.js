@@ -71,7 +71,7 @@ export default function HomeScreen() {
             style={{ height: 200 }}
           />
         ) : (
-          <Sessions sessions={upcomingSessions} />
+          <Sessions sessions={upcomingSessions} sessionType='upcoming' />
         )}
         <Heading text='Past Sessions' headingStyles={{ marginTop: 20 }} />
         {loading && !refetching ? (
@@ -81,7 +81,7 @@ export default function HomeScreen() {
             style={{ height: 200 }}
           />
         ) : (
-          <Sessions sessions={pastSessions} />
+          <Sessions sessions={pastSessions} sessionType='past' />
         )}
       </View>
     </ScrollView>

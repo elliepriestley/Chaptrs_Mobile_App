@@ -3,7 +3,7 @@ import SessionCard from './SessionCard';
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from '../styles/globalStyles';
 
-export default function FetchButton({ sessions = [] }) {
+export default function Sessions({ sessions = [], sessionType }) {
   const layout = useWindowDimensions();
 
   const navigation = useNavigation();
@@ -25,18 +25,15 @@ export default function FetchButton({ sessions = [] }) {
       }}
       data={sessions}
       renderItem={({ item }) => {
-        return (
-          <SessionCard
-            session={item}
-            onPress={() => handlePress(item)}
-          />
-        );
+        return <SessionCard session={item} onPress={() => handlePress(item)} />;
       }}
       horizontal={true}
       keyExtractor={(session) => session._id}
       ListEmptyComponent={() => (
         <Text style={globalStyles.mdText}>
-          You haven't been to any sessions yet
+          {`There are no ${
+            sessionType ? sessionType.toLowerCase() + ' ' : ''
+          }sessions.`}
         </Text>
       )}
     />
