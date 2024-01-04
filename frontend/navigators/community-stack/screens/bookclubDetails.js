@@ -5,16 +5,14 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
-  Pressable,
 } from 'react-native';
 import React, { useState } from 'react';
-import Heading from '../components/Heading';
-import { useMainContext } from '../utils/mainContext';
+import Heading from '../../../components/ui/Heading';
+import { useMainContext } from '../../../utils/mainContext';
 import { Edit } from 'iconsax-react-native';
-import GenreColorBlock from '../components/genreColorBlock';
-import MembersGroup from '../components/ui/MembersGroup';
-import globalStyles from '../styles/globalStyles';
-import PressableModal from '../components/modals/PressableModal';
+import GenreColorBlock from '../../../components/ui/genreColorBlock';
+import MembersGroup from '../../../components/ui/MembersGroup';
+import globalStyles from '../../../styles/globalStyles';
 
 function BookclubDetailsScreen({ route, navigation: { navigate } }) {
   const bookclub = route.params?.bookclub;
@@ -38,20 +36,12 @@ function BookclubDetailsScreen({ route, navigation: { navigate } }) {
           color='black'
         />
       </View>
-      <Pressable onPress={() => setModalVisible(true)}>
-        <Image
-          style={styles.userProfile}
-          source={{
-            uri: bookclub.image,
-          }}
-        />
-        <PressableModal
-          isVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          itemOne={'change bookclub picture'}
-          itemTwo={'leave bookclub'}
-        />
-      </Pressable>
+      <Image
+        style={styles.userProfile}
+        source={{
+          uri: bookclub.image,
+        }}
+      />
       <Text style={styles.userName}>{bookclub.name}</Text>
       <ScrollView
         contentContainerStyle={{ paddingBottom: 100 }}

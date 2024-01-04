@@ -1,8 +1,8 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { Text } from 'react-native';
 import { useFonts } from 'expo-font';
-import TabNavigator from './navigators/TabNavigator.js';
-import AuthStack from './navigators/AuthStack';
+import TabNavigator from './navigators/notes-stack/TabNavigator.js';
+import AuthStack from './navigators/auth-stack/AuthStack';
 import { AuthProvider, useAuth } from './utils/authContext.jsx';
 import { MainProvider } from './utils/mainContext.jsx';
 

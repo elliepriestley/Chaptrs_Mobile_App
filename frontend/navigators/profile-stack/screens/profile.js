@@ -1,23 +1,31 @@
 import {
   View,
   Text,
-  Image,
-  TouchableOpacity,
-  ScrollView,
   StyleSheet,
+  Image,
+  useWindowDimensions,
   Pressable,
 } from 'react-native';
 import React, { useState } from 'react';
-import Heading from '../components/Heading';
-import { useMainContext } from '../utils/mainContext';
+import { useAuth } from '../../../utils/authContext';
+import { useMainContext } from '../../../utils/mainContext';
+import { ScrollView } from 'react-native';
+import Heading from '../../../components/ui/Heading';
 import { Edit } from 'iconsax-react-native';
-import GenreColorBlock from '../components/genreColorBlock';
-import MembersGroup from '../components/ui/MembersGroup';
-import globalStyles from '../styles/globalStyles';
-import PressableModal from '../components/modals/PressableModal';
+import GenreColorBlock from '../../../components/ui/genreColorBlock';
+import PressableModal from '../../../components/modals/PressableModal';
+import BookclubPill from '../../../components/ui/BookclubPill';
 
-function BookclubDetailsScreen({ route, navigation: { navigate } }) {
-  const bookclub = route.params?.bookclub;
+function Profile({ navigation: { navigate } }) {
+  const { user, setUser, setToken } = useAuth();
+  const { myBookclubs } = useMainContext();
+  const [modalVisible, setModalVisible] = useState(false);
+  const layout = useWindowDimensions();
+
+  const logout = () => {
+    setUser(null);
+    setToken(null);
+  };
 
   return (
     <View style={styles.container}>
@@ -29,11 +37,9 @@ function BookclubDetailsScreen({ route, navigation: { navigate } }) {
           marginHorizontal: 20,
         }}
       >
-        <Heading text='Bookclub details' />
-
+        <Heading text='Profile' />
         <Edit
-          // if only you are in this bookclub
-          onPress={() => navigate('Edit Bookclub', { bookclub: bookclub })}
+          onPress={() => navigate('Edit Profile')}
           size={36}
           color='black'
         />
@@ -42,17 +48,16 @@ function BookclubDetailsScreen({ route, navigation: { navigate } }) {
         <Image
           style={styles.userProfile}
           source={{
-            uri: bookclub.image,
+            uri: user.profile_picture,
           }}
         />
         <PressableModal
           isVisible={modalVisible}
           setModalVisible={setModalVisible}
-          itemOne={'change bookclub picture'}
-          itemTwo={'leave bookclub'}
+          onLogout={logout}
         />
       </Pressable>
-      <Text style={styles.userName}>{bookclub.name}</Text>
+      <Text style={styles.userName}>{user.username}</Text>
       <ScrollView
         contentContainerStyle={{ paddingBottom: 100 }}
         style={styles.container}
@@ -63,34 +68,44 @@ function BookclubDetailsScreen({ route, navigation: { navigate } }) {
           headingStyles={{ fontSize: 18, marginLeft: 20 }}
         />
         <Text style={[styles.text, { marginBottom: 20, marginLeft: 20 }]}>
-          {bookclub.description}
+          {user.description}
         </Text>
+        <Heading
+          text='Bookclubs'
+          textStyles={{ fontSize: 18 }}
+          headingStyles={{ fontSize: 18, marginLeft: 20 }}
+        />
+        <ScrollView
+          horizontal={true}
+          style={{ width: layout.width, marginBottom: 10 }}
+          contentContainerStyle={{
+            gap: 10,
+            marginBottom: 10,
+            paddingHorizontal: 20,
+          }}
+        >
+          {myBookclubs.map((bookclub, index) => {
+            return <BookclubPill key={index} bookclub={bookclub} />;
+          })}
+        </ScrollView>
         <Heading
           text='Favourite genres'
           textStyles={{ fontSize: 18 }}
           headingStyles={{ fontSize: 18, marginLeft: 20 }}
         />
         <View style={{ paddingLeft: 20 }}>
-          {bookclub.genre.length !== 0 ? (
-            <GenreColorBlock genres={bookclub.genre} />
+          {user.genre.length !== 0 ? (
+            <GenreColorBlock genres={user.genre} />
           ) : (
-            <Text style={[globalStyles.mdText, { marginBottom: 20 }]}>
-              Add your favourite genres...
-            </Text>
+            <Text>Choose you favourite genres</Text>
           )}
         </View>
-        <Heading
-          text='Members'
-          textStyles={{ fontSize: 18 }}
-          headingStyles={{ fontSize: 18, marginLeft: 20 }}
-        />
-        <MembersGroup bookclub={bookclub} />
       </ScrollView>
     </View>
   );
 }
 
-export default BookclubDetailsScreen;
+export default Profile;
 
 const styles = StyleSheet.create({
   container: {
