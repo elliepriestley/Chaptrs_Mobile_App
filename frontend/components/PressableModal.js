@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Modal, Pressable, StyleSheet } from 'react-native';
 import { Logout, Image } from 'iconsax-react-native';
 
-const PressableModal = ({ isVisible, setModalVisible, onLogout }) => {
+const PressableModal = ({ isVisible, setModalVisible, onLogout, itemOne, itemTwo }) => {
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -18,14 +18,14 @@ const PressableModal = ({ isVisible, setModalVisible, onLogout }) => {
           <Pressable>
             <View style={styles.iconContainer}>
               <Image size={28} color='black' />
-              <Text style={styles.textStyle}>change profile picture</Text>
+              <Text style={styles.textStyle}>{itemOne}</Text>
             </View>
           </Pressable>
           <Pressable onPress={() => onLogout()}>
             <View style={styles.iconContainer}>
               <Logout size={28} color='black' />
               <Text style={[styles.textStyle, { marginVertical: 20 }]}>
-                log out
+                {itemTwo}
               </Text>
             </View>
           </Pressable>

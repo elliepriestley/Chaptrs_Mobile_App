@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
+  Pressable
 } from 'react-native';
 import React, { useState } from 'react';
 import Heading from '../components/Heading';
@@ -13,9 +14,11 @@ import { Edit } from 'iconsax-react-native';
 import GenreColorBlock from '../components/genreColorBlock';
 import MembersGroup from '../components/MembersGroup';
 import globalStyles from '../styles/globalStyles';
+import PressableModal from '../components/PressableModal';
 
 function BookclubDetailsScreen({ route, navigation: { navigate } }) {
   const bookclub = route.params?.bookclub;
+  const [modalVisible, setModalVisible] = useState(false);
 
   // if (!bookclub) {
   //     return (
@@ -46,19 +49,20 @@ function BookclubDetailsScreen({ route, navigation: { navigate } }) {
           color='black'
         />
       </View>
-      {/* <Pressable onPress={() => setModalVisible(true)}> */}
+      <Pressable onPress={() => setModalVisible(true)}>
       <Image
         style={styles.userProfile}
         source={{
           uri: bookclub.image,
         }}
       />
-      {/* <PressableModal
+      <PressableModal
             isVisible={modalVisible}
             setModalVisible={setModalVisible}
-            onLogout={logout}
+            itemOne={'change bookclub picture'}
+            itemTwo={'leave bookclub'}
             />
-            </Pressable> */}
+            </Pressable>
       <Text style={styles.userName}>{bookclub.name}</Text>
       <ScrollView
         contentContainerStyle={{ paddingBottom: 100 }}
