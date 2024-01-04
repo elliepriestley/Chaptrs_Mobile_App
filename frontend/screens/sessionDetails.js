@@ -103,7 +103,7 @@ function SessionDetailsScreen({ route, navigation: { navigate } }) {
           <>
             <Text
               style={Typography.fontSize.lg}
-              numberOfLines={showMore ? numberOfLines : 0}
+              numberOfLines={!showMore ? numberOfLines : 0}
             >
               {description}
             </Text>
@@ -115,7 +115,7 @@ function SessionDetailsScreen({ route, navigation: { navigate } }) {
               }}
               onPress={() => setShowMore(!showMore)}
             >
-              {showMore ? 'see more' : 'see less'}
+              {!showMore ? 'see more' : 'see less'}
             </Text>
           </>
         ) : (

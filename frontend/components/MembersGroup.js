@@ -8,7 +8,7 @@ export default function MembersGroup({ bookclub }) {
         {bookclub.members.map((i, index) => (
           <View
             key={index}
-            style={{ gap: 10, flexDirection: 'column', alignItems: 'center' }}
+            style={{ gap: 10, flexDirection: 'column', alignItems: 'center', marginHorizontal: 5 }}
           >
             <Image
               source={{ uri: i.profile_picture }}
@@ -18,7 +18,7 @@ export default function MembersGroup({ bookclub }) {
                 borderRadius: 999,
               }}
             />
-            <Text style={{ fontSize: 18, fontFamily: 'Sansation-Regular' }}>
+            <Text style={{ fontSize: 12, fontFamily: 'Sansation-Regular' }}>
               {i.username}
             </Text>
           </View>
