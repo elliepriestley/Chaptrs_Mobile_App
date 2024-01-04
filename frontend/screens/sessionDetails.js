@@ -5,7 +5,6 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  Pressable,
 } from 'react-native';
 import { useState } from 'react';
 import Heading from '../components/Heading';
@@ -127,8 +126,8 @@ function SessionDetailsScreen({ route, navigation: { navigate } }) {
             }}
             onTextLayout={(event) => {
               const { lines } = event.nativeEvent;
-              console.log(event.nativeEvent);
               setIsTruncatedText(lines?.length > numberOfLines);
+              setShowMore(lines?.length > numberOfLines);
             }}
           >
             {description}

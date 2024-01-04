@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
 import { useEffect } from 'react';
 import { useAuth } from './authContext';
 import api from './api';
@@ -14,40 +14,11 @@ function useMainContext() {
 }
 
 const MainProvider = (props) => {
-  const { user, token, setToken } = useAuth();
+  const { user } = useAuth();
   const [sessions, setSessions] = useState([]);
   const [mySessions, setMySessions] = useState([]);
   const [bookclubs, setBookclubs] = useState([]);
   const [myBookclubs, setMyBookclubs] = useState([]);
-
-  useEffect(() => {
-    getBookclubs();
-    getSessions();
-  }, []);
-
-  const getBookclubs = async () => {
-    try {
-      const bookclubsData = await api.getBookclubs(token);
-      bookclubsData.bookclubs.sort((a, b) => {
-        if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
-        else return -1;
-      });
-      setBookclubs(bookclubsData.bookclubs);
-      if (bookclubsData.token) setToken(bookclubsData.token);
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
-  const getSessions = async () => {
-    try {
-      const sessionsData = await api.getSessions(token);
-      setSessions(sessionsData.sessions);
-      if (sessionsData.token) setToken(sessionsData.token);
-    } catch (error) {
-      alert(error.message);
-    }
-  };
 
   useEffect(() => {
     const arr = [];
@@ -84,7 +55,7 @@ const MainProvider = (props) => {
         bookclubs,
         setBookclubs,
         myBookclubs,
-        setBookclubs,
+        setMyBookclubs,
       }}
     />
   );

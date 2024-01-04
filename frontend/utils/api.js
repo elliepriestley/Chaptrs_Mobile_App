@@ -4,7 +4,6 @@ class Api {
     this._headers = headers;
   }
   signupUser = async (formData) => {
-    console.log(baseUrl);
     try {
       const response = await fetch(`${this._baseUrl}/users`, {
         method: 'POST',
@@ -210,7 +209,6 @@ class Api {
         `https://www.googleapis.com/books/v1/volumes?q=intitle:${query}&maxResults=40&langRestrict=en`,
       );
       const data = await res.json();
-      // console.log(data.items);
       let books = [];
       data.items.forEach((book) => {
         books.push({
@@ -226,7 +224,6 @@ class Api {
             : null,
         });
       });
-      console.log('books', books);
       return books;
     } catch (error) {
       return new Promise.reject(error);

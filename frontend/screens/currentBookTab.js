@@ -14,8 +14,6 @@ export default function CurrentBookTab() {
       null,
   );
 
-  console.log('current session', currentSession);
-
   useEffect(() => {
     const current = mySessions.find(
       (session) => new Date(session.datetime) > new Date(),

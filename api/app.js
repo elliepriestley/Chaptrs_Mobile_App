@@ -21,6 +21,12 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use((_, __, next) => {
+  setTimeout(() => {
+    next();
+  }, 1000);
+});
+
 // route setup
 app.use('/books', booksRouter);
 app.use('/bookclubs', bookclubsRouter);

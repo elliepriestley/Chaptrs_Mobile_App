@@ -5,30 +5,19 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
-  Pressable
+  Pressable,
 } from 'react-native';
 import React, { useState } from 'react';
 import Heading from '../components/Heading';
 import { useMainContext } from '../utils/mainContext';
 import { Edit } from 'iconsax-react-native';
 import GenreColorBlock from '../components/genreColorBlock';
-import MembersGroup from '../components/MembersGroup';
+import MembersGroup from '../components/ui/MembersGroup';
 import globalStyles from '../styles/globalStyles';
-import PressableModal from '../components/PressableModal';
+import PressableModal from '../components/modals/PressableModal';
 
 function BookclubDetailsScreen({ route, navigation: { navigate } }) {
   const bookclub = route.params?.bookclub;
-  const [modalVisible, setModalVisible] = useState(false);
-
-  // if (!bookclub) {
-  //     return (
-  //         <View
-  //         // need to style pages for loading part i think
-  //         >
-  //             <Text>Loading...</Text>
-  //         </View>
-  //     );
-  // }
 
   return (
     <View style={styles.container}>
@@ -50,19 +39,19 @@ function BookclubDetailsScreen({ route, navigation: { navigate } }) {
         />
       </View>
       <Pressable onPress={() => setModalVisible(true)}>
-      <Image
-        style={styles.userProfile}
-        source={{
-          uri: bookclub.image,
-        }}
-      />
-      <PressableModal
-            isVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            itemOne={'change bookclub picture'}
-            itemTwo={'leave bookclub'}
-            />
-            </Pressable>
+        <Image
+          style={styles.userProfile}
+          source={{
+            uri: bookclub.image,
+          }}
+        />
+        <PressableModal
+          isVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          itemOne={'change bookclub picture'}
+          itemTwo={'leave bookclub'}
+        />
+      </Pressable>
       <Text style={styles.userName}>{bookclub.name}</Text>
       <ScrollView
         contentContainerStyle={{ paddingBottom: 100 }}
