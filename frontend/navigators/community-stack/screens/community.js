@@ -81,7 +81,6 @@ export default function CommunityScreen({ navigation: { navigate } }) {
       )}
       <ScrollView
         contentContainerStyle={{ gap: 15, paddingBottom: 100 }}
-        pagingEnabled={true}
         refreshing={loading}
         refreshControl={
           <RefreshControl

@@ -18,6 +18,10 @@ function BookclubDetailsScreen({ route, navigation: { navigate } }) {
   const bookclub = route.params?.bookclub;
   const [modalVisible, setModalVisible] = useState(false);
 
+  const leaveBookclub = () => {
+    
+  };
+
   return (
     <View style={styles.container}>
       <View
@@ -47,7 +51,6 @@ function BookclubDetailsScreen({ route, navigation: { navigate } }) {
         <PressableModal
           isVisible={modalVisible}
           setModalVisible={setModalVisible}
-          itemOne={'change bookclub picture'}
           itemTwo={'leave bookclub'}
         />
       </Pressable>
