@@ -1,17 +1,29 @@
 <br/>
-<p align="center">
-  <a href="https://github.com/elliepriestley/Chaptrs_Mobile_App">
-    <img src="./chaptrs.jpg" alt="Logo" width="150" height="150">
+
+<div align="center">
+  
+  <a align="center" href="http://www.youtube.com/watch?v=pDjx7iOq_YQ">
+    <img src="./frontend/assets/logo-medium.svg" alt="Chaptrs Mobile" height="100" >
   </a>
-
+  
   <h3 align="center">Chaptrs Mobile</h3>
-
+  
   <p align="center">
     Welcome to Chaptrs, an app for bookworms! Plan and track your bookclubs with fellow book lovers right here.
     <br/>
-    <br/>
   </p>
-</p>
+    <br/>
+    <br/>
+
+  <div align="center">
+ <a href="http://www.youtube.com/watch?v=pDjx7iOq_YQ">
+    <img src="http://img.youtube.com/vi/pDjx7iOq_YQ/0.jpg" alt="Chaptrs Mobile" height="300" >
+  </a>
+  </div>
+    <br/>
+    <br/>
+
+</div>
 
 ![Contributors](https://img.shields.io/github/contributors/elliepriestley/Chaptrs_Mobile_App?color=dark-green) ![Forks](https://img.shields.io/github/forks/elliepriestley/Chaptrs_Mobile_App?style=social) ![Stargazers](https://img.shields.io/github/stars/elliepriestley/Chaptrs_Mobile_App?style=social) ![Issues](https://img.shields.io/github/issues/elliepriestley/Chaptrs_Mobile_App)
 
