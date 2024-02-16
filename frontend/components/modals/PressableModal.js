@@ -15,12 +15,12 @@ const PressableModal = ({ isVisible, setModalVisible, onLogout, itemOne, itemTwo
         }}
       >
         <View style={styles.modalView}>
-          <Pressable>
+          {/* <Pressable>
             <View style={styles.iconContainer}>
               <Image size={28} color='black' />
               <Text style={styles.textStyle}>{itemOne}</Text>
             </View>
-          </Pressable>
+          </Pressable> */}
           <Pressable onPress={() => onLogout()}>
             <View style={styles.iconContainer}>
               <Logout size={28} color='black' />

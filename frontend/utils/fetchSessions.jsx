@@ -3,7 +3,8 @@ import useFetch from './useFetch';
 import { useMainContext } from './mainContext';
 
 function fetchSessions(refetch) {
-  const url = 'http://192.168.1.124:8080/sessions';
+  const baseUrl = process.env.EXPO_PUBLIC_API_URL;
+  const url = `${baseUrl}/sessions`;
   const { sessions, setSessions } = useMainContext();
   const options = null;
   const { data, loading, error } = useFetch(url, sessions, options, refetch);

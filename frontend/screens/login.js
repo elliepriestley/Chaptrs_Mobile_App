@@ -118,11 +118,11 @@ function LoginScreen({ navigation, route }) {
                   <Text style={styles.underline}>Sign Up</Text>
                 </TouchableOpacity>
               </Text>
-              <Button
+              {/* <Button
                 title='Demo Login'
                 color='red'
                 onPress={() => DemoLogin(setValues, setTouched, handleSubmit)}
-              />
+              /> */}
             </View>
           )}
         </Formik>

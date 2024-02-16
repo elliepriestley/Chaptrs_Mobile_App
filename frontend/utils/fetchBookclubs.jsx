@@ -3,7 +3,8 @@ import useFetch from './useFetch';
 import { useMainContext } from './mainContext';
 
 function fetchBookclubs(refetch) {
-  const url = 'http://192.168.1.124:8080/bookclubs';
+  const baseUrl = process.env.EXPO_PUBLIC_API_URL;
+  const url = `${baseUrl}/bookclubs`;
   const { bookclubs, setBookclubs } = useMainContext();
   const options = null;
   const { data, loading, error } = useFetch(url, bookclubs, options, refetch);

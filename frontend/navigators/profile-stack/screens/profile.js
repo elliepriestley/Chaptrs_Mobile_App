@@ -55,6 +55,7 @@ function Profile({ navigation: { navigate } }) {
           isVisible={modalVisible}
           setModalVisible={setModalVisible}
           onLogout={logout}
+          itemTwo={'log out'}
         />
       </Pressable>
       <Text style={styles.userName}>{user.username}</Text>

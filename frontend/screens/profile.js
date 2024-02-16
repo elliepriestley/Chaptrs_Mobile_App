@@ -57,7 +57,6 @@ function Profile({ navigation: { navigate } }) {
           isVisible={modalVisible}
           setModalVisible={setModalVisible}
           onLogout={logout}
-          itemOne={'change profile picture'}
           itemTwo={'log out'}
         />
       </Pressable>
